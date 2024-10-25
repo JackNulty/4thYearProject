@@ -4,7 +4,8 @@ Game::Game()
     : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML Game"),
     fixedTimeStep(1.0f / 60.0f),
     timeAccumulator(0.0f),
-    isRunning(true) {
+    isRunning(true),
+    grunt(EnemyBehaviourTypes::Seek){
 }
 
 void Game::run() {
@@ -39,17 +40,20 @@ void Game::fixedUpdate(float deltaTime) {
     std::cout << "Fixed Update: " << deltaTime << " seconds\n";
     player.fixedUpdate(deltaTime);
     gameWorld.fixedUpdate(deltaTime);
+    grunt.fixedUpdate(deltaTime, player.getPos());
 }
 
 void Game::update(float deltaTime) {
     std::cout << "Regular Update: " << deltaTime << " seconds\n";
     player.update(deltaTime);
-    gameWorld.fixedUpdate(deltaTime);
+    gameWorld.update(deltaTime);
+    grunt.update(deltaTime);
 }
 
 void Game::render() {
     window.clear();
     gameWorld.render(window);
     player.render(window);
+    grunt.render(window);
     window.display();
 }

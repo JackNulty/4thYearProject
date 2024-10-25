@@ -8,6 +8,7 @@ public:
 	void update(float deltaTime);
 	void fixedUpdate(float deltaTime);
 	void render(sf::RenderWindow& window);
+	sf::Vector2f getPos();
 
 private:
 

@@ -22,6 +22,11 @@ void Player::render(sf::RenderWindow& window)
 	window.draw(playerShape);
 }
 
+sf::Vector2f Player::getPos()
+{
+    return playerShape.getPosition();
+}
+
 void Player::playerMovement(float deltaTime)
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))

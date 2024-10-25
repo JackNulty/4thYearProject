@@ -2,6 +2,8 @@
 #include "globals.h"
 #include "Player.h"
 #include "Level.h"
+#include "Grunt.h"
+#include "EnemyBehavioursEnum.h"
 
 #ifndef GAME_H
 #define GAME_H
@@ -19,6 +21,7 @@ private:
 
     Player player;
     Level gameWorld;
+    Grunt grunt;
 
     void handleEvents();
     void fixedUpdate(float deltaTime);

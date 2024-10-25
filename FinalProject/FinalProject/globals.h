@@ -14,7 +14,14 @@
 #endif  
 
 #include <iostream>
+#include <random>
 #include <SFML/Graphics.hpp> 
 
+// global access to window size
 const int WINDOW_HEIGHT = 800;
 const int WINDOW_WIDTH = 1200;
+
+//important reusable global functions
+sf::Vector2f normalize(const sf::Vector2f& vec);
+float getMagnitude(const sf::Vector2f& vec);
+sf::Vector2f randomPosition(const sf::Vector2f& vec);

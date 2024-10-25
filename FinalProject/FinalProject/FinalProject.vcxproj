@@ -129,13 +129,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="EnemyBehaviours.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="globals.cpp" />
     <ClCompile Include="Grunt.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EnemyBehaviours.h" />
+    <ClInclude Include="EnemyBehavioursEnum.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="Grunt.h" />
