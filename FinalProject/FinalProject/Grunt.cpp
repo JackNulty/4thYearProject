@@ -17,9 +17,24 @@ void Grunt::fixedUpdate(float deltaTime, sf::Vector2f playerPos)
 {
 	if (currentBehaviour == EnemyBehaviourTypes::Seek)
 	{
-		gruntShape.move(behaviours.calculateSeek(gruntShape.getPosition(), playerPos, m_speed));
+		sf::Vector2f steering = behaviours.calculateSeek(gruntShape.getPosition(), playerPos, velocity, maxSpeed);
+		acceleration += steering;
 	}
+
+	// limit velocity to max speed
+	velocity += acceleration;
+	float velocityMagnitude = std::sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
+	if (velocityMagnitude > maxSpeed)
+	{
+		velocity = (velocity / velocityMagnitude) * maxSpeed;
+	}
+
+	//update sprite
+	gruntShape.move(velocity);
 	gruntShape.setRotation(behaviours.calculateRotation(gruntShape.getPosition(), playerPos));
+
+	// reset acceleration
+	acceleration = { 0.0f, 0.0f };
 }
 
 void Grunt::render(sf::RenderWindow& window)

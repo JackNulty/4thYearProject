@@ -18,7 +18,11 @@ private:
 	sf::RectangleShape gruntShape;
 	EnemyBehaviours behaviours;
 	EnemyBehaviourTypes currentBehaviour;
-	int m_speed;
+	float m_speed;
+	sf::Vector2f velocity;
+	sf::Vector2f acceleration;
+	float maxSpeed = 5.0f;
+	float maxForce = 0.1f;
 
 };
 

@@ -10,14 +10,16 @@
 
 class Game {
 public:
-    Game();
+    Game(sf::RenderWindow& window);
     void run();
+    void exitToMenu();
 
 private:
-    sf::RenderWindow window;
+    sf::RenderWindow& window;
     const float fixedTimeStep; 
     float timeAccumulator;
     bool isRunning;
+    bool exiting = false;
 
     Player player;
     Level gameWorld;
