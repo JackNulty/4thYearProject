@@ -1,4 +1,5 @@
 #include "Grunt.h"
+#include "Bullet.h"
 
 Grunt::Grunt(EnemyBehaviourTypes startBehaviour)
 	: currentBehaviour(startBehaviour){
@@ -41,3 +42,9 @@ void Grunt::render(sf::RenderWindow& window)
 {
 	window.draw(gruntShape);
 }
+
+sf::FloatRect Grunt::getBounds() const
+{
+	return gruntShape.getGlobalBounds();
+}
+

@@ -36,8 +36,6 @@ void Game::handleEvents()
 {
     sf::Event event;
     while (window.pollEvent(event)) {
-        if (event.type == sf::Event::Closed)
-            window.close();
         if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
             exitToMenu();
     }
@@ -45,16 +43,17 @@ void Game::handleEvents()
 
 void Game::fixedUpdate(float deltaTime) 
 {
-    std::cout << "Fixed Update: " << deltaTime << " seconds\n";
-    player.fixedUpdate(deltaTime);
+    //std::cout << "Fixed Update: " << deltaTime << " seconds\n";
+    player.fixedUpdate(deltaTime, window.mapPixelToCoords(sf::Mouse::getPosition(window)));
     gameWorld.fixedUpdate(deltaTime);
     grunt.fixedUpdate(deltaTime, player.getPos());
+    handleBulletCollisions();
 }
 
 void Game::update(float deltaTime) 
 {
-    std::cout << "Regular Update: " << deltaTime << " seconds\n";
-    player.update(deltaTime);
+    //std::cout << "Regular Update: " << deltaTime << " seconds\n";
+    player.update(deltaTime, window.mapPixelToCoords(sf::Mouse::getPosition(window)));
     gameWorld.update(deltaTime);
     grunt.update(deltaTime);
 }
@@ -66,4 +65,26 @@ void Game::render()
     player.render(window);
     grunt.render(window);
     window.display();
+}
+
+void Game::handleBulletCollisions()
+{
+    auto& bullets = player.getBullets();
+    for (auto bullet = bullets.begin(); bullet != bullets.end();)
+    {
+        bool bulletHit = false;
+        if (bullet->getBounds().intersects(grunt.getBounds()))
+        {
+            std::cout << "Grunt hit" << std::endl;
+            bulletHit = true;
+            break;
+        }
+        if (bulletHit)
+        {
+            bullet = bullets.erase(bullet);
+        }
+        else {
+            ++bullet;
+        }
+    }
 }

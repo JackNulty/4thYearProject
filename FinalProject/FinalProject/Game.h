@@ -15,7 +15,7 @@ public:
     void exitToMenu();
 
 private:
-    sf::RenderWindow& window;
+    sf::RenderWindow& window; // window 
     const float fixedTimeStep; 
     float timeAccumulator;
     bool isRunning;
@@ -29,6 +29,7 @@ private:
     void fixedUpdate(float deltaTime);
     void update(float deltaTime);
     void render();
+    void handleBulletCollisions();
 };
 
 #endif

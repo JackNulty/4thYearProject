@@ -10,6 +10,7 @@ public:
 	void update(float deltaTime);
 	void fixedUpdate(float deltaTime, sf::Vector2f playerPos);
 	void render(sf::RenderWindow& window);
+	sf::FloatRect getBounds() const; 
 
 private:
 	//private functions
