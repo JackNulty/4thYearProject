@@ -11,8 +11,8 @@ public:
 	sf::FloatRect getBounds() const;
 
 private:
-	sf::CircleShape bulletShape;
-	sf::Vector2f direction;
-	float speed;
+	sf::CircleShape m_bulletShape;
+	sf::Vector2f m_direction;
+	float m_speed;
 };
 

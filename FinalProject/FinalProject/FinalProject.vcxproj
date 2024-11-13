@@ -135,6 +135,7 @@
     <ClCompile Include="GameplayScene.cpp" />
     <ClCompile Include="globals.cpp" />
     <ClCompile Include="Grunt.cpp" />
+    <ClCompile Include="Horde.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenuScene.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="GameplayScene.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="Grunt.h" />
+    <ClInclude Include="Horde.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="MainMenuScene.h" />
     <ClInclude Include="Player.h" />

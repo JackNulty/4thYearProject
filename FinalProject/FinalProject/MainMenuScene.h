@@ -10,7 +10,7 @@ public:
 
 private:
     sf::RenderWindow& window;
-    sf::Texture buttonTexture; 
-    sf::Sprite startButtonSprite;
+    sf::Texture m_buttonTexture; 
+    sf::Sprite m_startButtonSprite;
     void loadAssets();
 };

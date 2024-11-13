@@ -8,17 +8,17 @@ SceneManager& SceneManager::getInstance() {
 
 void SceneManager::addScene(const std::string& name, std::unique_ptr<Scene> scene) 
 {
-    scenes[name] = std::move(scene);
+    m_scenes[name] = std::move(scene);
 }
 
 void SceneManager::changeScene(const std::string& name) 
 {
-    auto it = scenes.find(name);
-    if (it != scenes.end()) {
-        currentScene = it->second.get();
+    auto it = m_scenes.find(name);
+    if (it != m_scenes.end()) {
+        m_currentScene = it->second.get();
 
         //check if the current scene is gameplay to start the game.run()
-        if (GameplayScene* gameplayScene = dynamic_cast<GameplayScene*>(currentScene)) {
+        if (GameplayScene* gameplayScene = dynamic_cast<GameplayScene*>(m_currentScene)) {
             gameplayScene->startGame();
         }
     }
@@ -26,5 +26,5 @@ void SceneManager::changeScene(const std::string& name)
 
 Scene* SceneManager::getCurrentScene() 
 {
-    return currentScene;
+    return m_currentScene;
 }

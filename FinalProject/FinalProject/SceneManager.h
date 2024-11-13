@@ -15,6 +15,6 @@ public:
 private:
     SceneManager() = default;
 
-    std::unordered_map<std::string, std::unique_ptr<Scene>> scenes;
-    Scene* currentScene = nullptr;
+    std::unordered_map<std::string, std::unique_ptr<Scene>> m_scenes;
+    Scene* m_currentScene = nullptr;
 };

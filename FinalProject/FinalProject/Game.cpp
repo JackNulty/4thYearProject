@@ -3,23 +3,25 @@
 Game::Game(sf::RenderWindow& windowRef)
     : window(windowRef),
     fixedTimeStep(1.0f / 60.0f),
-    timeAccumulator(0.0f),
-    isRunning(true),
-    grunt(EnemyBehaviourTypes::Seek){
+    m_timeAccumulator(0.0f),
+    m_isRunning(true),
+    m_grunt(EnemyBehaviourTypes::Seek, 500, 500),
+    m_horde(12, EnemyBehaviourTypes::Seek, sf::Vector2f(300,300))
+{
 }
 
 void Game::run() 
 {
     sf::Clock clock;
-    while (isRunning && !exiting) {
+    while (m_isRunning && !m_exiting) {
         sf::Time deltaTime = clock.restart();
-        timeAccumulator += deltaTime.asSeconds();
+        m_timeAccumulator += deltaTime.asSeconds();
 
         handleEvents();
 
-        while (timeAccumulator >= fixedTimeStep) {
+        while (m_timeAccumulator >= fixedTimeStep) {
             fixedUpdate(fixedTimeStep);
-            timeAccumulator -= fixedTimeStep;
+            m_timeAccumulator -= fixedTimeStep;
         }
 
         update(deltaTime.asSeconds());
@@ -29,7 +31,7 @@ void Game::run()
 
 void Game::exitToMenu() 
 {
-    exiting = true;
+    m_exiting = true;
 }
 
 void Game::handleEvents() 
@@ -44,36 +46,39 @@ void Game::handleEvents()
 void Game::fixedUpdate(float deltaTime) 
 {
     //std::cout << "Fixed Update: " << deltaTime << " seconds\n";
-    player.fixedUpdate(deltaTime, window.mapPixelToCoords(sf::Mouse::getPosition(window)));
-    gameWorld.fixedUpdate(deltaTime);
-    grunt.fixedUpdate(deltaTime, player.getPos());
+    m_player.fixedUpdate(deltaTime, window.mapPixelToCoords(sf::Mouse::getPosition(window)));
+    m_gameWorld.fixedUpdate(deltaTime);
+    m_horde.fixedUpdate(deltaTime, m_player.getPos());
+    m_grunt.fixedUpdate(deltaTime, m_player.getPos());
     handleBulletCollisions();
 }
 
 void Game::update(float deltaTime) 
 {
     //std::cout << "Regular Update: " << deltaTime << " seconds\n";
-    player.update(deltaTime, window.mapPixelToCoords(sf::Mouse::getPosition(window)));
-    gameWorld.update(deltaTime);
-    grunt.update(deltaTime);
+    m_player.update(deltaTime, window.mapPixelToCoords(sf::Mouse::getPosition(window)));
+    m_gameWorld.update(deltaTime);
+    m_horde.update(deltaTime);
+    m_grunt.update(deltaTime);
 }
 
 void Game::render() 
 {
     window.clear();
-    gameWorld.render(window);
-    player.render(window);
-    grunt.render(window);
+    m_gameWorld.render(window);
+    m_player.render(window);
+    m_horde.render(window);
+    m_grunt.render(window);
     window.display();
 }
 
 void Game::handleBulletCollisions()
 {
-    auto& bullets = player.getBullets();
+    auto& bullets = m_player.getBullets();
     for (auto bullet = bullets.begin(); bullet != bullets.end();)
     {
         bool bulletHit = false;
-        if (bullet->getBounds().intersects(grunt.getBounds()))
+        if (bullet->getBounds().intersects(m_grunt.getBounds()))
         {
             std::cout << "Grunt hit" << std::endl;
             bulletHit = true;

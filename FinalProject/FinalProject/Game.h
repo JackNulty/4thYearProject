@@ -4,6 +4,7 @@
 #include "Level.h"
 #include "Grunt.h"
 #include "EnemyBehavioursEnum.h"
+#include "Horde.h"
 
 #ifndef GAME_H
 #define GAME_H
@@ -17,13 +18,14 @@ public:
 private:
     sf::RenderWindow& window; // window 
     const float fixedTimeStep; 
-    float timeAccumulator;
-    bool isRunning;
-    bool exiting = false;
+    float m_timeAccumulator;
+    bool m_isRunning;
+    bool m_exiting = false;
 
-    Player player;
-    Level gameWorld;
-    Grunt grunt;
+    Player m_player;
+    Level m_gameWorld;
+    Grunt m_grunt;
+    Horde m_horde;
 
     void handleEvents();
     void fixedUpdate(float deltaTime);

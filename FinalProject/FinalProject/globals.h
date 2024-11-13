@@ -21,6 +21,9 @@
 const int WINDOW_HEIGHT = 800;
 const int WINDOW_WIDTH = 1200;
 
+//global for PI
+const float PI = 3.14159f;
+
 //important reusable global functions
 sf::Vector2f normalize(const sf::Vector2f& vec);
 float getMagnitude(const sf::Vector2f& vec);
