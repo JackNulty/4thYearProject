@@ -3,4 +3,5 @@
 enum class EnemyBehaviourTypes
 {
 	Seek,
+	Arrive
 };

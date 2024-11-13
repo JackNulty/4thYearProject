@@ -5,8 +5,7 @@ Game::Game(sf::RenderWindow& windowRef)
     fixedTimeStep(1.0f / 60.0f),
     m_timeAccumulator(0.0f),
     m_isRunning(true),
-    m_grunt(EnemyBehaviourTypes::Seek, 500, 500),
-    m_horde(12, EnemyBehaviourTypes::Seek, sf::Vector2f(300,300))
+    m_horde(12, EnemyBehaviourTypes::Arrive, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), HordeFormation::Grid, 100) 
 {
 }
 
@@ -40,6 +39,10 @@ void Game::handleEvents()
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
             exitToMenu();
+        if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P)
+        {
+            m_horde.setFormation(HordeFormation::Cricle, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), 100);
+        }
     }
 }
 
@@ -49,7 +52,6 @@ void Game::fixedUpdate(float deltaTime)
     m_player.fixedUpdate(deltaTime, window.mapPixelToCoords(sf::Mouse::getPosition(window)));
     m_gameWorld.fixedUpdate(deltaTime);
     m_horde.fixedUpdate(deltaTime, m_player.getPos());
-    m_grunt.fixedUpdate(deltaTime, m_player.getPos());
     handleBulletCollisions();
 }
 
@@ -59,7 +61,6 @@ void Game::update(float deltaTime)
     m_player.update(deltaTime, window.mapPixelToCoords(sf::Mouse::getPosition(window)));
     m_gameWorld.update(deltaTime);
     m_horde.update(deltaTime);
-    m_grunt.update(deltaTime);
 }
 
 void Game::render() 
@@ -68,22 +69,30 @@ void Game::render()
     m_gameWorld.render(window);
     m_player.render(window);
     m_horde.render(window);
-    m_grunt.render(window);
     window.display();
 }
 
 void Game::handleBulletCollisions()
 {
     auto& bullets = m_player.getBullets();
+    // iterator based loop for grunts as the size of horde is varaible
     for (auto bullet = bullets.begin(); bullet != bullets.end();)
     {
         bool bulletHit = false;
-        if (bullet->getBounds().intersects(m_grunt.getBounds()))
-        {
-            std::cout << "Grunt hit" << std::endl;
-            bulletHit = true;
-            break;
+        // iterator based loop for grunts as the size of horde is varaible
+        for (auto grunt = m_horde.m_grunts.begin(); grunt != m_horde.m_grunts.end();) {
+            if (bullet->getBounds().intersects(grunt->getBounds())) {
+                std::cout << "Grunt hit" << std::endl;
+                grunt = m_horde.m_grunts.erase(grunt);
+                bulletHit = true;
+                break; 
+            }
+            else {
+                grunt++;
+            }
         }
+
+        // remove bulet if it collides
         if (bulletHit)
         {
             bullet = bullets.erase(bullet);

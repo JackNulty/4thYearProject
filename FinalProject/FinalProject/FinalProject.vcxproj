@@ -151,6 +151,7 @@
     <ClInclude Include="globals.h" />
     <ClInclude Include="Grunt.h" />
     <ClInclude Include="Horde.h" />
+    <ClInclude Include="HordeFormationsEnum.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="MainMenuScene.h" />
     <ClInclude Include="Player.h" />

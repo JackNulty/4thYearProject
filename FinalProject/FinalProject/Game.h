@@ -24,7 +24,6 @@ private:
 
     Player m_player;
     Level m_gameWorld;
-    Grunt m_grunt;
     Horde m_horde;
 
     void handleEvents();

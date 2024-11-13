@@ -21,6 +21,11 @@ void Grunt::fixedUpdate(float deltaTime, sf::Vector2f playerPos)
 		sf::Vector2f steering = m_behaviours.calculateSeek(m_gruntShape.getPosition(), playerPos, m_velocity, maxSpeed);
 		m_acceleration += steering;
 	}
+	if (m_currentBehaviour == EnemyBehaviourTypes::Arrive)
+	{
+		sf::Vector2f steeringArrive = m_behaviours.calculateArrive(m_gruntShape.getPosition(), playerPos, m_velocity, maxSpeed, 5.0f, 250.0f);
+		m_acceleration += steeringArrive;
+	}
 
 	// limit velocity to max speed
 	m_velocity += m_acceleration;
@@ -46,5 +51,15 @@ void Grunt::render(sf::RenderWindow& window)
 sf::FloatRect Grunt::getBounds() const
 {
 	return m_gruntShape.getGlobalBounds();
+}
+
+sf::Vector2f Grunt::getPos() const
+{
+	return m_gruntShape.getPosition();
+}
+
+void Grunt::setPos(sf::Vector2f pos)
+{
+	m_gruntShape.setPosition(pos);
 }
 

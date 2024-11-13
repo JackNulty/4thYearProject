@@ -92,5 +92,8 @@
     <ClInclude Include="Horde.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="HordeFormationsEnum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
