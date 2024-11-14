@@ -15,16 +15,17 @@ std::vector<sf::Vector2f> Horde::generateFormation(int maxEnemies, sf::Vector2f 
 	// vector for positions of enemy hordes
 	std::vector<sf::Vector2f> positions;
 
-	if (m_currentFormation == HordeFormation::Cricle)
+	if (m_currentFormation == HordeFormation::Circle)
 	{
 		// circle formation
 		// for each enemy place aroud the circumference of a circle
-		float angleDivder = 360.0f / maxEnemies;
+		radius = (maxEnemies * enemySpacing) / (2 * PI); // dynamically adjust radius of cirlce depending on the number of enemies and the spacing between them
+		float angleDivder = 2 * PI / maxEnemies;
 		for (int i = 0; i < maxEnemies; i++)
 		{
 			float angle = i * angleDivder;
-			float x = centreHorde.x + radius * cos(angle * (PI / 180.0f));
-			float y = centreHorde.y + radius * sin(angle * (PI / 180.0f));
+			float x = centreHorde.x + std::cos(angle) * radius;
+			float y = centreHorde.y + std::sin(angle) * radius;
 			positions.emplace_back(x, y);
 		}
 	}
@@ -32,7 +33,7 @@ std::vector<sf::Vector2f> Horde::generateFormation(int maxEnemies, sf::Vector2f 
 	{
 		// grid formation
 		// place formation in a grid based on rows and columns
-		int gridSize = static_cast<int>(std::sqrt(maxEnemies)); // calc for getting dimensions of grid#
+		int gridSize = static_cast<int>(std::sqrt(maxEnemies)); // calc for getting dimensions of grid
 		for (int i = 0; i < maxEnemies; i++)
 		{
 			int row = i / gridSize;
@@ -40,6 +41,35 @@ std::vector<sf::Vector2f> Horde::generateFormation(int maxEnemies, sf::Vector2f 
 			float x = centreHorde.x + (col - gridSize / 2) * enemySpacing;
 			float y = centreHorde.y + (row - gridSize / 2) * enemySpacing;
 			positions.emplace_back(x,y);
+		}
+	}
+	if (m_currentFormation == HordeFormation::Cluster)
+	{
+		//cluster formation
+		int clusterAmount = maxEnemies / 8;
+		if (clusterAmount <= 1)
+		{
+			clusterAmount = 1;
+		}
+		int perCluster = maxEnemies / clusterAmount;
+		float clusterRadius = enemySpacing;
+		float clusterSpacing = enemySpacing * 2;
+		for (int clusterCount = 0; clusterCount < clusterAmount; clusterCount++)
+		{
+			// get a centre per cluster near enough the main centre given
+			float angle = (2 * PI / clusterAmount) * clusterCount;
+			float x = centreHorde.x + std::cos(angle) * clusterRadius;
+			float y = centreHorde.y + std::sin(angle) * clusterRadius;
+			sf::Vector2f clusterCentre(x, y);
+			for (int i = 0; i < perCluster; i++)
+			{
+				//then generate positions within each cluster
+				float randomAngle = static_cast<float>(rand()) / RAND_MAX * 2 * PI;
+				float randomDistance = static_cast<float>(rand()) / RAND_MAX * clusterSpacing;
+				float posX = clusterCentre.x + std::cos(randomAngle) * randomDistance;
+				float posY = clusterCentre.y + std::sin(randomAngle) * randomDistance;
+				positions.emplace_back(posX, posY);
+			}
 		}
 	}
 

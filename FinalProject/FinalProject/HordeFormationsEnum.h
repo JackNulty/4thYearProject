@@ -2,7 +2,7 @@
 
 enum class HordeFormation
 {
-	Cricle,
+	Circle,
 	Grid,
-	Lines
+	Cluster
 };

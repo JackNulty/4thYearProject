@@ -15,10 +15,10 @@ public:
 	void update(float deltaTime);
 	void fixedUpdate(float deltaTime, sf::Vector2f playerPos);
 	void render(sf::RenderWindow& window);
+	HordeFormation m_currentFormation;
 	void setFormation(HordeFormation type, sf::Vector2f centreHorde, int enemySpacing);
 
 private:
-	HordeFormation m_currentFormation;
 	std::vector<sf::Vector2f> positions;
 	void seperation();
 	float radius = 100.0f;

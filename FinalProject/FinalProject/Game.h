@@ -21,6 +21,9 @@ private:
     float m_timeAccumulator;
     bool m_isRunning;
     bool m_exiting = false;
+    int waveNum = 1;
+    int enemyCount = 10;
+    int enemySpacing = 50;
 
     Player m_player;
     Level m_gameWorld;
@@ -31,6 +34,7 @@ private:
     void update(float deltaTime);
     void render();
     void handleBulletCollisions();
+    void spawnWave();
 };
 
 #endif

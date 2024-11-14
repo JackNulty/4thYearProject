@@ -2,10 +2,10 @@
 
 Game::Game(sf::RenderWindow& windowRef)
     : window(windowRef),
-    fixedTimeStep(1.0f / 60.0f),
+    fixedTimeStep(1.0f / 60.0f),// 60fps fixed update
     m_timeAccumulator(0.0f),
     m_isRunning(true),
-    m_horde(12, EnemyBehaviourTypes::Arrive, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), HordeFormation::Grid, 100) 
+    m_horde(enemyCount, EnemyBehaviourTypes::Arrive, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), HordeFormation::Cluster, enemySpacing) 
 {
 }
 
@@ -41,7 +41,10 @@ void Game::handleEvents()
             exitToMenu();
         if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P)
         {
-            m_horde.setFormation(HordeFormation::Cricle, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), 100);
+            if(m_horde.m_currentFormation == HordeFormation::Circle)
+                m_horde.setFormation(HordeFormation::Grid, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), 50);
+            else if (m_horde.m_currentFormation == HordeFormation::Grid)
+                m_horde.setFormation(HordeFormation::Circle, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), 50);
         }
     }
 }
@@ -53,6 +56,10 @@ void Game::fixedUpdate(float deltaTime)
     m_gameWorld.fixedUpdate(deltaTime);
     m_horde.fixedUpdate(deltaTime, m_player.getPos());
     handleBulletCollisions();
+    if (m_horde.m_grunts.empty())
+    {
+        spawnWave();
+    }
 }
 
 void Game::update(float deltaTime) 
@@ -101,4 +108,19 @@ void Game::handleBulletCollisions()
             ++bullet;
         }
     }
+}
+
+void Game::spawnWave()
+{
+    waveNum++;
+    int newEnemyCount = enemyCount * std::pow(1.1, waveNum - 1);
+    std::cout << "Wave" << waveNum << "now spawning " << newEnemyCount << "enemies in next wave" << std::endl;
+    HordeFormation Formation;
+    if (waveNum % 3 == 0)
+        Formation = HordeFormation::Circle;
+    else if (waveNum % 3 == 2)
+        Formation = HordeFormation::Grid;
+    else
+        Formation = HordeFormation::Cluster;
+    m_horde = Horde(newEnemyCount, EnemyBehaviourTypes::Arrive, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), Formation, enemySpacing);
 }
