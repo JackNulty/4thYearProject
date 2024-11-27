@@ -46,30 +46,36 @@ std::vector<sf::Vector2f> Horde::generateFormation(int maxEnemies, sf::Vector2f 
 	if (m_currentFormation == HordeFormation::Cluster)
 	{
 		//cluster formation
-		int clusterAmount = maxEnemies / 8;
-		if (clusterAmount <= 1)
+		float clusterRadius = enemySpacing * 4;
+		std::vector<sf::Vector2f> clusterPositions;
+		for (int i = 0; i < maxEnemies; i++)
 		{
-			clusterAmount = 1;
-		}
-		int perCluster = maxEnemies / clusterAmount;
-		float clusterRadius = enemySpacing;
-		float clusterSpacing = enemySpacing * 2;
-		for (int clusterCount = 0; clusterCount < clusterAmount; clusterCount++)
-		{
-			// get a centre per cluster near enough the main centre given
-			float angle = (2 * PI / clusterAmount) * clusterCount;
-			float x = centreHorde.x + std::cos(angle) * clusterRadius;
-			float y = centreHorde.y + std::sin(angle) * clusterRadius;
-			sf::Vector2f clusterCentre(x, y);
-			for (int i = 0; i < perCluster; i++)
-			{
-				//then generate positions within each cluster
+			sf::Vector2f newEnemyPosition;
+			bool validPosition = false;
+			//keep looping unitl no overlap
+			while (!validPosition) {
+				//then generate positions around the centre
 				float randomAngle = static_cast<float>(rand()) / RAND_MAX * 2 * PI;
-				float randomDistance = static_cast<float>(rand()) / RAND_MAX * clusterSpacing;
-				float posX = clusterCentre.x + std::cos(randomAngle) * randomDistance;
-				float posY = clusterCentre.y + std::sin(randomAngle) * randomDistance;
-				positions.emplace_back(posX, posY);
+				float randomDistance = static_cast<float>(rand()) / RAND_MAX * clusterRadius;
+				float posX = centreHorde.x + std::cos(randomAngle) * randomDistance;
+				float posY = centreHorde.y + std::sin(randomAngle) * randomDistance;
+				newEnemyPosition = sf::Vector2f(posX, posY);
+				// assume validity initially
+				validPosition = true;
+				// check against rest of cluster
+				for (sf::Vector2f& existingPos : clusterPositions) {
+					sf::Vector2f vectorBetween = newEnemyPosition - existingPos;
+					float distanceBetween = std::sqrt(vectorBetween.x * vectorBetween.x + vectorBetween.y * vectorBetween.y);
+
+					if (distanceBetween < enemySpacing) { // Minimum distance
+						validPosition = false;
+						break;
+					}
+				}
 			}
+			// Add the positions to the cluster and the global positions
+			clusterPositions.emplace_back(newEnemyPosition);
+			positions.emplace_back(newEnemyPosition);
 		}
 	}
 
@@ -138,6 +144,7 @@ void Horde::seperation()
 					seperationForce += vectorBetween / distanceBetween;
 				}
 			}
+
 		}
 		// normalise seperation force and multiply
 		seperationForce = normalize(seperationForce) * 2.0f;

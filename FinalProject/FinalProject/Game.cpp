@@ -113,9 +113,11 @@ void Game::handleBulletCollisions()
 void Game::spawnWave()
 {
     waveNum++;
+    // increase enemies by 10% every wave
     int newEnemyCount = enemyCount * std::pow(1.1, waveNum - 1);
-    std::cout << "Wave" << waveNum << "now spawning " << newEnemyCount << "enemies in next wave" << std::endl;
+    std::cout << "Wave " << waveNum << "now spawning " << newEnemyCount << " enemies in next wave" << std::endl;
     HordeFormation Formation;
+    // cycle through formations 
     if (waveNum % 3 == 0)
         Formation = HordeFormation::Circle;
     else if (waveNum % 3 == 2)
