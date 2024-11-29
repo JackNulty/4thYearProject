@@ -87,11 +87,11 @@ void Player::shootBullet(sf::Vector2f mousePos)
 
             if (m_bulletVector.size() < MAX_BULLETS)
             {
-                m_bulletVector.emplace_back(currentPos, direction, 300);
+                m_bulletVector.emplace_back(currentPos, direction, 600);
             }
             else {
                 m_bulletVector.erase(m_bulletVector.begin());
-                m_bulletVector.emplace_back(currentPos, direction, 300);
+                m_bulletVector.emplace_back(currentPos, direction, 600);
             }
             m_bulletDelay = 0;
         }

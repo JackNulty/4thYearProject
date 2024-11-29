@@ -72,7 +72,7 @@ void Game::update(float deltaTime)
 
 void Game::render() 
 {
-    window.clear();
+    window.clear(sf::Color(210, 180, 140));
     m_gameWorld.render(window);
     m_player.render(window);
     m_horde.render(window);
