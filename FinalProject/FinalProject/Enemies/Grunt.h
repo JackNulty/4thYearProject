@@ -20,7 +20,7 @@ private:
 	//private functions
 
 	//private vars
-	sf::CircleShape m_gruntShape;
+	sf::RectangleShape m_gruntShape;
 	EnemyBehaviours m_behaviours;
 	EnemyBehaviourTypes m_currentBehaviour;
 	float m_speed;
