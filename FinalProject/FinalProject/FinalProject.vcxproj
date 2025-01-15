@@ -129,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bow.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="EnemyBehaviours.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="GameplayScene.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="Grunt.h" />
+    <ClInclude Include="Bow.h" />
     <ClInclude Include="Heavy.h" />
     <ClInclude Include="Horde.h" />
     <ClInclude Include="HordeFormationsEnum.h" />

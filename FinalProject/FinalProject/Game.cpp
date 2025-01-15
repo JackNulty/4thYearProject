@@ -56,9 +56,14 @@ void Game::fixedUpdate(float deltaTime)
     m_gameWorld.fixedUpdate(deltaTime);
     m_horde.fixedUpdate(deltaTime, m_player.getPos());
     handleBulletCollisions();
+    playerCollision();
     if (m_horde.m_grunts.empty())
     {
         spawnWave();
+        if (m_player.getLives() < 6)
+        {
+            m_player.addLife();
+        }
     }
 }
 
@@ -68,6 +73,7 @@ void Game::update(float deltaTime)
     m_player.update(deltaTime, window.mapPixelToCoords(sf::Mouse::getPosition(window)));
     m_gameWorld.update(deltaTime);
     m_horde.update(deltaTime);
+    
 }
 
 void Game::render() 
@@ -125,4 +131,19 @@ void Game::spawnWave()
     else
         Formation = HordeFormation::Cluster;
     m_horde = Horde(newEnemyCount, EnemyBehaviourTypes::Arrive, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), Formation, enemySpacing);
+}
+
+void Game::playerCollision()
+{
+    // iterator based loop for grunts to check if player collides with grunt
+    for (auto grunt = m_horde.m_grunts.begin(); grunt != m_horde.m_grunts.end();) {
+		if (m_player.getBounds().intersects(grunt->getBounds())) {
+			std::cout << "Player hit" << std::endl;
+            m_player.removeLife();
+            grunt = m_horde.m_grunts.erase(grunt);
+		}
+        else {
+            ++grunt;
+        }
+	}
 }

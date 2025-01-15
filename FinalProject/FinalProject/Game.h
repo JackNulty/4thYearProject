@@ -35,6 +35,7 @@ private:
     void render();
     void handleBulletCollisions();
     void spawnWave();
+    void playerCollision();
 };
 
 #endif

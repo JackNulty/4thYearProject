@@ -25,3 +25,5 @@ sf::Vector2f randomPosition(const sf::Vector2f& vec)
 
     return sf::Vector2f(randomX, randomY);
 }
+
+
