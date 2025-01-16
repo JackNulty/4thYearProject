@@ -18,6 +18,7 @@ private:
 	//private vars
 	sf::Texture m_bowTexture;
 	sf::Sprite m_bowSprite;
+	sf::Sprite m_arrowSprite;
 	bool isActive = false;
 	bool isAnimating = false;
 	const int frameDelay = 25; // delay for each frame of animation

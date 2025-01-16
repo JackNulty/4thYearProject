@@ -16,11 +16,19 @@ Bow::Bow()
 	m_bowFrames.push_back(sf::IntRect(10, 0, 6, 16));
 	m_bowFrames.push_back(sf::IntRect(17, 0, 12, 16));
 	m_bowFrames.push_back(sf::IntRect(30, 0, 11, 16));
+
+	//arrow sprite
+	m_arrowSprite.setTexture(m_bowTexture);
+	m_arrowSprite.setTextureRect(sf::IntRect(60, 3, 4, 13));
+	m_arrowSprite.setOrigin(m_arrowSprite.getGlobalBounds().width / 2, m_arrowSprite.getGlobalBounds().height / 2);
+	m_arrowSprite.setScale(2, 2);
+	m_arrowSprite.setPosition(600, 300);
 }
 
 void Bow::render(sf::RenderWindow& window)
 {
 	window.draw(m_bowSprite);
+	window.draw(m_arrowSprite);
 }
 
 void Bow::update(float deltaTime, sf::Vector2f playerPos)
@@ -32,6 +40,7 @@ void Bow::update(float deltaTime, sf::Vector2f playerPos)
 	if (isActive)
 	{
 		m_bowSprite.setPosition(playerPos);
+		m_arrowSprite.setPosition(playerPos);
 	}
 	else if (!isActive)
 	{
@@ -75,11 +84,12 @@ void Bow::animateBow()
 void Bow::rotateAroundPlayer(sf::Vector2f playerPos, sf::Vector2f mousePos)
 {
 	sf::Vector2f direction = mousePos - playerPos;
-	float mag = std::sqrt(direction.x * direction.x + direction.y * direction.y);
-	if (mag != 0)
+	float magnitude = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+	if (magnitude != 0)
 	{
-		direction /= mag;
+		direction /= magnitude;
 	}
-	float angle = std::atan2(direction.y, direction.x) * 180 / 3.14159265;
+	float angle = std::atan2(direction.y, direction.x) * 180 / PI;
 	m_bowSprite.setRotation(angle);
+	m_arrowSprite.setRotation(angle + 270);
 }
