@@ -17,6 +17,9 @@ public:
 	void removeLife(); // remove player life
 	void addLife(); // add player life
 
+	Bow m_bow; // bow object
+
+
 private:
 
 	//private functions
@@ -44,6 +47,6 @@ private:
 	sf::Sprite m_livesSprite; // sprite for player lives
 	sf::Sprite m_livesSpriteHalf; // sprite for player lives
 	sf::Sprite m_livesSpriteEmpty; // sprite for player lives
-	Bow m_bow; // bow object
+	
 };
 

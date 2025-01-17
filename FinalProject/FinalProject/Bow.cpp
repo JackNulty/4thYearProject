@@ -29,6 +29,10 @@ void Bow::render(sf::RenderWindow& window)
 {
 	window.draw(m_bowSprite);
 	window.draw(m_arrowSprite);
+	for (auto arrow : m_arrowVector)
+	{
+		arrow.render(window);
+	}
 }
 
 void Bow::update(float deltaTime, sf::Vector2f playerPos)
@@ -55,6 +59,7 @@ void Bow::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::Vector2f mous
 		isAnimating = true;
 		currentFrame = 0;
 		frameCounter = 0;
+		shootArrowFlag = true;
 	}
 	if (isAnimating)
 	{
@@ -62,6 +67,28 @@ void Bow::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::Vector2f mous
 	}
 
 	rotateAroundPlayer(playerPos, mousePos);
+	if (!isAnimating && shootArrowFlag)
+	{
+		shootArrow(playerPos, mousePos);
+		shootArrowFlag = false;
+	}
+
+	for (auto arrow = m_arrowVector.begin(); arrow != m_arrowVector.end();)
+	{
+		arrow->fixedUpdate(deltaTime);
+		if (arrow->checkBounds())
+		{
+			arrow = m_arrowVector.erase(arrow);
+		}
+		else {
+			++arrow;
+		}
+	}
+}
+
+std::vector<Arrow>& Bow::getArrows()
+{
+	return m_arrowVector;
 }
 
 void Bow::animateBow()
@@ -92,4 +119,23 @@ void Bow::rotateAroundPlayer(sf::Vector2f playerPos, sf::Vector2f mousePos)
 	float angle = std::atan2(direction.y, direction.x) * 180 / PI;
 	m_bowSprite.setRotation(angle);
 	m_arrowSprite.setRotation(angle + 270);
+}
+
+void Bow::shootArrow(sf::Vector2f playerPos, sf::Vector2f mousePos)
+{
+	sf::Vector2f direction = mousePos - playerPos;
+	float magnitude = getMagnitude(direction);
+	if (magnitude != 0)
+	{
+		direction /= magnitude;
+	}
+	if (m_arrowVector.size() < MAX_ARROWS)
+	{
+		m_arrowVector.emplace_back(&m_bowTexture, playerPos, arrowSpeed, direction, m_arrowSprite.getRotation());
+	}
+	else
+	{
+		m_arrowVector.erase(m_arrowVector.begin());
+		m_arrowVector.emplace_back(&m_bowTexture, playerPos, arrowSpeed, direction, m_arrowSprite.getRotation());
+	}
 }

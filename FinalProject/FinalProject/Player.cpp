@@ -39,7 +39,7 @@ void Player::update(float deltaTime, sf::Vector2f mousePos)
 void Player::fixedUpdate(float deltaTime, sf::Vector2f mousePos)
 {
     playerMovement(deltaTime);
-    shootBullet(mousePos);
+    //shootBullet(mousePos);
     playerAnimations();
     m_bow.fixedUpdate(deltaTime, getPos(), mousePos);
     // loop through the player bullets depending on size and if it goes out of the screen bounds then delete it

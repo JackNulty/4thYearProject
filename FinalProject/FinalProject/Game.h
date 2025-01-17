@@ -34,6 +34,7 @@ private:
     void update(float deltaTime);
     void render();
     void handleBulletCollisions();
+    void handleArrowCollisions();
     void spawnWave();
     void playerCollision();
 };

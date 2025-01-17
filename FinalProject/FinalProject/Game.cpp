@@ -56,6 +56,7 @@ void Game::fixedUpdate(float deltaTime)
     m_gameWorld.fixedUpdate(deltaTime);
     m_horde.fixedUpdate(deltaTime, m_player.getPos());
     handleBulletCollisions();
+    handleArrowCollisions();
     playerCollision();
     if (m_horde.m_grunts.empty())
     {
@@ -114,6 +115,38 @@ void Game::handleBulletCollisions()
             ++bullet;
         }
     }
+}
+
+void Game::handleArrowCollisions()
+{
+    auto& arrows = m_player.m_bow.getArrows();
+	// iterator based loop for grunts as the size of horde is varaible
+	for (auto arrow = arrows.begin(); arrow != arrows.end();)
+	{
+		bool arrowHit = false;
+		// iterator based loop for grunts as the size of horde is varaible
+		for (auto grunt = m_horde.m_grunts.begin(); grunt != m_horde.m_grunts.end();) {
+			if (arrow->getBounds().intersects(grunt->getBounds())) {
+				std::cout << "Grunt hit" << std::endl;
+				grunt = m_horde.m_grunts.erase(grunt);
+				arrowHit = true;
+				break;
+			}
+			else {
+				grunt++;
+			}
+		}
+
+		// remove arrow if it collides
+		if (arrowHit)
+		{
+			arrow = arrows.erase(arrow);
+		}
+		else {
+			++arrow;
+		}
+	}
+
 }
 
 void Game::spawnWave()
