@@ -5,8 +5,15 @@ Game::Game(sf::RenderWindow& windowRef)
     fixedTimeStep(1.0f / 60.0f),// 60fps fixed update
     m_timeAccumulator(0.0f),
     m_isRunning(true),
-    m_horde(enemyCount, EnemyBehaviourTypes::Arrive, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), HordeFormation::Cluster, enemySpacing) 
+    m_horde(enemyCount, EnemyBehaviourTypes::Arrive, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), HordeFormation::Cluster, enemySpacing),
+    m_particleSystem(1000)
 {
+    if(!m_particleTexture.loadFromFile("ASSETS/UI/particle.png"))
+	{
+		std::cout << "Error loading particle texture" << std::endl;
+	}
+    m_particleSystem.setTexture(m_particleTexture);
+    m_particleSystem.setBlendMode(sf::BlendAlpha);
 }
 
 void Game::run() 
@@ -46,6 +53,15 @@ void Game::handleEvents()
             else if (m_horde.m_currentFormation == HordeFormation::Grid)
                 m_horde.setFormation(HordeFormation::Circle, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), 50);
         }
+        if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::O)
+		{
+            sf::Vector2f temp = { 100,100 };
+            m_particleSystem.emitParticles(temp, [](Particle& p) {
+                p.velocity = { 0, 0 };
+                p.colour = sf::Color::Red;
+                p.lifetime = 1.0f;
+              }, 5);
+		}
     }
 }
 
@@ -74,6 +90,7 @@ void Game::update(float deltaTime)
     m_player.update(deltaTime, window.mapPixelToCoords(sf::Mouse::getPosition(window)));
     m_gameWorld.update(deltaTime);
     m_horde.update(deltaTime);
+    m_particleSystem.update(deltaTime);
     
 }
 
@@ -83,6 +100,7 @@ void Game::render()
     m_gameWorld.render(window);
     m_player.render(window);
     m_horde.render(window);
+    window.draw(m_particleSystem);
     window.display();
 }
 

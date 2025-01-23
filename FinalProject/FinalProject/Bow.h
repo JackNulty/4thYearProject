@@ -35,7 +35,7 @@ private:
 	const int MAX_ARROWS = 20;
 	int m_arrowDelay = 0;
 	const int maxArrowDelay = 10;
-	const int arrowSpeed = 500;
+	const int arrowSpeed = 1000;
 	const int arrowRotation = 0;
 	bool shootArrowFlag = false;
 

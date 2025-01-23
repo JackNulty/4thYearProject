@@ -142,12 +142,14 @@
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenuScene.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Arrow.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Emmiters.h" />
     <ClInclude Include="EnemyBehaviours.h" />
     <ClInclude Include="EnemyBehavioursEnum.h" />
     <ClInclude Include="Game.h" />
@@ -160,6 +162,7 @@
     <ClInclude Include="HordeFormationsEnum.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="MainMenuScene.h" />
+    <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
