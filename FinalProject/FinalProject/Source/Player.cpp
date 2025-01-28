@@ -39,7 +39,7 @@ void Player::update(float deltaTime, sf::Vector2f mousePos)
 void Player::fixedUpdate(float deltaTime, sf::Vector2f mousePos)
 {
     playerMovement(deltaTime);
-    //shootBullet(mousePos);
+    shootBullet(mousePos);
     playerAnimations();
     m_bow.fixedUpdate(deltaTime, getPos(), mousePos);
     // loop through the player bullets depending on size and if it goes out of the screen bounds then delete it
@@ -117,6 +117,15 @@ void Player::playerMovement(float deltaTime)
     {
         m_playerSprite.move(m_speed * deltaTime, 0);    //right
     }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	{
+        ParticleManager& particleManager = ResourceManager::getParticleManager();
+        std::shared_ptr<ParticleSystem> system = particleManager.addParticleSystem(
+            "muzzle_flash", 5, m_playerSprite.getPosition());
+        system->configure(200.f, 4.5f, 2.f, sf::Color::Red);
+        //std::cout << "Added new particle system: muzzle_flash\n";
+	}
+
 }
 
 void Player::shootBullet(sf::Vector2f mousePos)

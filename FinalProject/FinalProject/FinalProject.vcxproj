@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SFML_SDK)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\gameuser\Desktop\Desktopfolder\Project\4thYearProject\FinalProject\FinalProject\Headers;$(SFML_SDK)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -129,43 +129,46 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Arrow.cpp" />
-    <ClCompile Include="Bow.cpp" />
-    <ClCompile Include="Bullet.cpp" />
-    <ClCompile Include="EnemyBehaviours.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameplayScene.cpp" />
-    <ClCompile Include="globals.cpp" />
-    <ClCompile Include="Grunt.cpp" />
-    <ClCompile Include="Heavy.cpp" />
-    <ClCompile Include="Horde.cpp" />
-    <ClCompile Include="Level.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="MainMenuScene.cpp" />
-    <ClCompile Include="ParticleSystem.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="Source\Arrow.cpp" />
+    <ClCompile Include="Source\Bow.cpp" />
+    <ClCompile Include="Source\Bullet.cpp" />
+    <ClCompile Include="Source\EnemyBehaviours.cpp" />
+    <ClCompile Include="Source\Game.cpp" />
+    <ClCompile Include="Source\GameplayScene.cpp" />
+    <ClCompile Include="Source\globals.cpp" />
+    <ClCompile Include="Source\Grunt.cpp" />
+    <ClCompile Include="Source\Heavy.cpp" />
+    <ClCompile Include="Source\Horde.cpp" />
+    <ClCompile Include="Source\Level.cpp" />
+    <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\MainMenuScene.cpp" />
+    <ClCompile Include="Source\ParticleManager.cpp" />
+    <ClCompile Include="Source\ParticleSystem.cpp" />
+    <ClCompile Include="Source\Player.cpp" />
+    <ClCompile Include="Source\ResourceManager.cpp" />
+    <ClCompile Include="Source\SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Arrow.h" />
-    <ClInclude Include="Bullet.h" />
-    <ClInclude Include="Emmiters.h" />
-    <ClInclude Include="EnemyBehaviours.h" />
-    <ClInclude Include="EnemyBehavioursEnum.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="GameplayScene.h" />
-    <ClInclude Include="globals.h" />
-    <ClInclude Include="Grunt.h" />
-    <ClInclude Include="Bow.h" />
-    <ClInclude Include="Heavy.h" />
-    <ClInclude Include="Horde.h" />
-    <ClInclude Include="HordeFormationsEnum.h" />
-    <ClInclude Include="Level.h" />
-    <ClInclude Include="MainMenuScene.h" />
-    <ClInclude Include="ParticleSystem.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="Headers\Bullet.h" />
+    <ClInclude Include="Headers\EnemyBehaviours.h" />
+    <ClInclude Include="Headers\EnemyBehavioursEnum.h" />
+    <ClInclude Include="Headers\Game.h" />
+    <ClInclude Include="Headers\GameplayScene.h" />
+    <ClInclude Include="Headers\globals.h" />
+    <ClInclude Include="Headers\Grunt.h" />
+    <ClInclude Include="Headers\Heavy.h" />
+    <ClInclude Include="Headers\Horde.h" />
+    <ClInclude Include="Headers\HordeFormationsEnum.h" />
+    <ClInclude Include="Headers\Level.h" />
+    <ClInclude Include="Headers\MainMenuScene.h" />
+    <ClInclude Include="Headers\ParticleManager.h" />
+    <ClInclude Include="Headers\ParticleSystem.h" />
+    <ClInclude Include="Headers\Player.h" />
+    <ClInclude Include="Headers\ResourceManager.h" />
+    <ClInclude Include="Headers\Scene.h" />
+    <ClInclude Include="Headers\SceneManager.h" />
+    <ClInclude Include="Headers\Arrow.h" />
+    <ClInclude Include="Headers\Bow.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

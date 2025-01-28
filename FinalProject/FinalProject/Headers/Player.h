@@ -3,6 +3,8 @@
 #include "Bullet.h"
 #include "Bow.h"
 
+#include "ResourceManager.h"
+
 class Player
 {
 public:

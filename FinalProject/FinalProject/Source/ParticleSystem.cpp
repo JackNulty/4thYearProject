@@ -1,0 +1,88 @@
+#include "ParticleSystem.h"
+
+// particle contructor
+Particle::Particle(float radius, const sf::Color& colour)
+	: shape(radius) {
+	shape.setFillColor(colour);
+}
+
+// particle system constructor
+ParticleSystem::ParticleSystem(size_t maxParticles, sf::Vector2f position)
+	: m_maxParticles(maxParticles),
+	m_emitter(position)
+{
+}
+
+void ParticleSystem::setEmitter(sf::Vector2f position)
+{
+	m_emitter = position;
+}
+
+void ParticleSystem::update(float deltaTime)
+{
+	for (auto iterator = m_particles.begin(); iterator != m_particles.end();)
+	{
+		iterator->lifetime -= sf::seconds(deltaTime);
+
+		if (iterator->lifetime <= sf::Time::Zero)
+		{
+			iterator = m_particles.erase(iterator);
+		}
+		else
+		{
+			iterator->shape.move(iterator->velocity * deltaTime);
+			++iterator;
+		}
+	}
+
+	emitParticles();
+	if (m_particles.empty())
+	{
+		m_active = false; // Deactivate the system when empty
+		//std::cout << "Particle system is now empty and deactivated.\n";
+	}
+}
+
+void ParticleSystem::render(sf::RenderWindow& window)
+{
+	for(Particle& particle : m_particles)
+	{
+		window.draw(particle.shape);
+	}
+}
+
+void ParticleSystem::configure(float speed, float lifetime, float radius, const sf::Color& colour)
+{
+	m_particleSpeed = speed;
+	m_particleLifetime = sf::seconds(lifetime);
+	m_particleRadius = radius;
+	m_particleColour = colour;
+}
+
+bool ParticleSystem::isEmpty() const
+{
+	//std::cout << "Checking if particle system is empty: " << m_particles.empty() << "\n";
+	return m_particles.empty();
+}
+
+int ParticleSystem::getParticleCount() const
+{
+	return m_particles.size();
+}
+
+void ParticleSystem::emitParticles()
+{
+	if (!m_active) return;
+	while (m_particles.size() < m_maxParticles)
+	{
+		Particle particle(m_particleRadius, m_particleColour);
+		particle.shape.setPosition(m_emitter);
+
+		float angle = (std::rand() % 360) * PI / 180.0f;
+		particle.velocity = { m_particleSpeed * std::cos(angle), m_particleSpeed * std::sin(angle) };
+		particle.lifetime = m_particleLifetime;
+
+		m_particles.push_back(particle);
+		//std::cout << "Emitting new particle. Total particles: " << m_particles.size() << "\n";
+	}
+}
