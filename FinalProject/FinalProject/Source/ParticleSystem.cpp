@@ -38,7 +38,7 @@ void ParticleSystem::update(float deltaTime)
 	static float emissionCooldown = 0.0f;
 	emissionCooldown += deltaTime;
 
-	if (emissionCooldown >= 0.1f)  // Emit every 0.1 seconds
+	if (emissionCooldown >= 0.02f) 
 	{
 		emitParticles();
 		emissionCooldown = 0.0f;  // Reset cooldown
@@ -81,18 +81,18 @@ void ParticleSystem::emitParticles()
 {
 	if (!m_active) return;
 	if (m_particles.empty()) // Emit only if the system is empty
-	{
-		for (size_t i = 0; i < m_maxParticles; ++i)
-		{
-			Particle particle(m_particleRadius, m_particleColour);
-			particle.shape.setPosition(m_emitter);
+    {
+        for (size_t i = 0; i < m_maxParticles; ++i)
+        {
+            Particle particle(m_particleRadius, m_particleColour);
+            particle.shape.setPosition(m_emitter);
 
-			float angle = (std::rand() % 360) * PI / 180.0f;
-			particle.velocity = { m_particleSpeed * std::cos(angle), m_particleSpeed * std::sin(angle) };
+            float angle = (std::rand() % 360) * PI / 180.0f;
+            particle.velocity = { m_particleSpeed * std::cos(angle), m_particleSpeed * std::sin(angle) };
 
-			particle.lifetime = m_particleLifetime;
+            particle.lifetime = m_particleLifetime;
 
-			m_particles.push_back(particle);
-		}
-	}
+            m_particles.push_back(particle);
+        }
+    }
 }

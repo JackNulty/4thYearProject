@@ -121,8 +121,8 @@ void Player::playerMovement(float deltaTime)
 	{
         ParticleManager& particleManager = ResourceManager::getParticleManager();
         std::shared_ptr<ParticleSystem> system = particleManager.addParticleSystem(
-            "muzzle_flash", 5, m_playerSprite.getPosition());
-        system->configure(200.f, 2.5f, 2.f, sf::Color::Red);
+            "muzzle_flash", 50, m_playerSprite.getPosition());
+        system->configure(200.f, 1.0f, 2.f, sf::Color::Red);
         std::cout << "Added new particle system: muzzle_flash\n";
 	}
 
