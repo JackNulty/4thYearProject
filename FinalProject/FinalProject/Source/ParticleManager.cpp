@@ -23,17 +23,17 @@ bool ParticleManager::hasParticleSystem(const std::string& id) const
 
 void ParticleManager::update(float deltaTime)
 {
-    //std::cout << "Updating particle systems...\n";
-    //std::cout << "Total systems: " << m_particleSystems.size() << "\n";
+    std::cout << "Updating particle systems...\n";
+    std::cout << "Total systems: " << m_particleSystems.size() << "\n";
 
     for (auto iterator = m_particleSystems.begin(); iterator != m_particleSystems.end();)
     {
-        //std::cout << "Updating system: " << iterator->first << "\n";
+        std::cout << "Updating system: " << iterator->first << "\n";
         iterator->second->update(deltaTime);
 
         if (iterator->second->isEmpty())
         {
-            //std::cout << "Removing system: " << iterator->first << "\n";
+            std::cout << "Removing system: " << iterator->first << "\n";
             iterator = m_particleSystems.erase(iterator);
         }
         else

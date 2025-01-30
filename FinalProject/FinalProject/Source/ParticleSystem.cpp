@@ -35,11 +35,18 @@ void ParticleSystem::update(float deltaTime)
 		}
 	}
 
-	emitParticles();
+	static float emissionCooldown = 0.0f;
+	emissionCooldown += deltaTime;
+
+	if (emissionCooldown >= 0.1f)  // Emit every 0.1 seconds
+	{
+		emitParticles();
+		emissionCooldown = 0.0f;  // Reset cooldown
+	}
 	if (m_particles.empty())
 	{
 		m_active = false; // Deactivate the system when empty
-		//std::cout << "Particle system is now empty and deactivated.\n";
+		std::cout << "Particle system is now empty and deactivated.\n";
 	}
 }
 
@@ -61,7 +68,7 @@ void ParticleSystem::configure(float speed, float lifetime, float radius, const 
 
 bool ParticleSystem::isEmpty() const
 {
-	//std::cout << "Checking if particle system is empty: " << m_particles.empty() << "\n";
+	std::cout << "Checking if particle system is empty: " << m_particles.empty() << "\n";
 	return m_particles.empty();
 }
 
@@ -73,16 +80,19 @@ int ParticleSystem::getParticleCount() const
 void ParticleSystem::emitParticles()
 {
 	if (!m_active) return;
-	while (m_particles.size() < m_maxParticles)
+	if (m_particles.empty()) // Emit only if the system is empty
 	{
-		Particle particle(m_particleRadius, m_particleColour);
-		particle.shape.setPosition(m_emitter);
+		for (size_t i = 0; i < m_maxParticles; ++i)
+		{
+			Particle particle(m_particleRadius, m_particleColour);
+			particle.shape.setPosition(m_emitter);
 
-		float angle = (std::rand() % 360) * PI / 180.0f;
-		particle.velocity = { m_particleSpeed * std::cos(angle), m_particleSpeed * std::sin(angle) };
-		particle.lifetime = m_particleLifetime;
+			float angle = (std::rand() % 360) * PI / 180.0f;
+			particle.velocity = { m_particleSpeed * std::cos(angle), m_particleSpeed * std::sin(angle) };
 
-		m_particles.push_back(particle);
-		//std::cout << "Emitting new particle. Total particles: " << m_particles.size() << "\n";
+			particle.lifetime = m_particleLifetime;
+
+			m_particles.push_back(particle);
+		}
 	}
 }
