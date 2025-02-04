@@ -100,6 +100,11 @@ void Game::handleBulletCollisions()
         for (auto grunt = m_horde.m_grunts.begin(); grunt != m_horde.m_grunts.end();) {
             if (bullet->getBounds().intersects(grunt->getBounds())) {
                 std::cout << "Grunt hit" << std::endl;
+                ParticleManager& particleManager = ResourceManager::getParticleManager();
+                std::shared_ptr<ParticleSystem> system = particleManager.addParticleSystem(
+                    "grunt_hit", 10, grunt->getPos());
+                system->configure(200.f, 0.4f, 1.f, sf::Color::Red);
+                std::cout << "Added new particle system: grunt_hit\n";
                 grunt = m_horde.m_grunts.erase(grunt);
                 bulletHit = true;
                 break; 
@@ -131,6 +136,11 @@ void Game::handleArrowCollisions()
 		for (auto grunt = m_horde.m_grunts.begin(); grunt != m_horde.m_grunts.end();) {
 			if (arrow->getBounds().intersects(grunt->getBounds())) {
 				std::cout << "Grunt hit" << std::endl;
+                ParticleManager& particleManager = ResourceManager::getParticleManager();
+                std::shared_ptr<ParticleSystem> system = particleManager.addParticleSystem(
+                    "grunt_hit", 10, grunt->getPos());
+                system->configure(200.f, 0.4f, 1.f, sf::Color::Red);
+                std::cout << "Added new particle system: grunt_hit\n";
 				grunt = m_horde.m_grunts.erase(grunt);
 				arrowHit = true;
 				break;
