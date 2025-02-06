@@ -5,9 +5,8 @@ Game::Game(sf::RenderWindow& windowRef)
     fixedTimeStep(1.0f / 60.0f),// 60fps fixed update
     m_timeAccumulator(0.0f),
     m_isRunning(true),
-    m_horde(enemyCount, EnemyBehaviourTypes::Arrive, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), HordeFormation::Cluster, enemySpacing)
+    m_horde(enemyCount, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), HordeFormation::Cluster, enemySpacing)
 {
-
 }
 
 void Game::run() 
@@ -176,7 +175,7 @@ void Game::spawnWave()
         Formation = HordeFormation::Grid;
     else
         Formation = HordeFormation::Cluster;
-    m_horde = Horde(newEnemyCount, EnemyBehaviourTypes::Arrive, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), Formation, enemySpacing);
+    m_horde = Horde(newEnemyCount, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), Formation, enemySpacing);
 }
 
 void Game::playerCollision()

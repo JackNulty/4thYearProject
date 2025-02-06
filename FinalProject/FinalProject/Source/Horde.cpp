@@ -1,12 +1,17 @@
 #include "Horde.h"
 
-Horde::Horde(int maxEnemies, EnemyBehaviourTypes setupBehaviour, sf::Vector2f centreHorde, HordeFormation startFormation, int enemySpacing)
+
+Horde::Horde(int maxEnemies, sf::Vector2f centreHorde, HordeFormation startFormation, int enemySpacing)
 {
 	m_currentFormation = startFormation;
 	positions = generateFormation(maxEnemies, centreHorde, enemySpacing);
 	for (const auto& position : positions)
 	{
-		m_grunts.emplace_back(Grunt(setupBehaviour, position.x, position.y));
+		m_grunts.emplace_back(Grunt(position.x, position.y));
+	}
+	for(auto& grunt : m_grunts)
+	{
+		grunt.setBehaviour(std::make_unique<SeekBehaviour>());
 	}
 }
 

@@ -15,6 +15,7 @@
 
 #include <iostream>
 #include <random>
+#include <memory>
 #include <SFML/Graphics.hpp> 
 
 // global access to window size
@@ -28,3 +29,6 @@ const float PI = 3.14159f;
 sf::Vector2f normalize(const sf::Vector2f& vec);
 float getMagnitude(const sf::Vector2f& vec);
 sf::Vector2f randomPosition(const sf::Vector2f& vec);
+
+// static textures
+static sf::Texture gruntTexture;

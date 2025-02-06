@@ -3,12 +3,13 @@
 #include "Grunt.h"
 #include "Bullet.h"
 #include "HordeFormationsEnum.h"
+#include "SeekBehaviour.h"
 
 
 class Horde
 {
 public:
-	Horde(int maxEnemies, EnemyBehaviourTypes setupBehaviour, sf::Vector2f centreHorde, HordeFormation startFormation, int enemySpacing);
+	Horde(int maxEnemies, sf::Vector2f centreHorde, HordeFormation startFormation, int enemySpacing);
 	std::vector<Grunt> m_grunts;
 	sf::Clock m_formationClock;
 	std::vector<sf::Vector2f> generateFormation(int maxEnemies, sf::Vector2f centreHorde, int enemySpacing);

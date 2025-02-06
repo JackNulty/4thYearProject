@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\gameuser\Desktop\Desktopfolder\Project\4thYearProject\FinalProject\FinalProject\Headers;$(SFML_SDK)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Headers;$(SFML_SDK)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -129,6 +129,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="SeekBehaviour.cpp" />
     <ClCompile Include="Source\Arrow.cpp" />
     <ClCompile Include="Source\Bow.cpp" />
     <ClCompile Include="Source\Bullet.cpp" />
@@ -149,7 +151,9 @@
     <ClCompile Include="Source\SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Headers\Behaviour.h" />
     <ClInclude Include="Headers\Bullet.h" />
+    <ClInclude Include="Headers\Enemy.h" />
     <ClInclude Include="Headers\EnemyBehaviours.h" />
     <ClInclude Include="Headers\EnemyBehavioursEnum.h" />
     <ClInclude Include="Headers\Game.h" />
@@ -169,6 +173,7 @@
     <ClInclude Include="Headers\SceneManager.h" />
     <ClInclude Include="Headers\Arrow.h" />
     <ClInclude Include="Headers\Bow.h" />
+    <ClInclude Include="SeekBehaviour.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
