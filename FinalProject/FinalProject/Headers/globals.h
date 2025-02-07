@@ -32,3 +32,4 @@ sf::Vector2f randomPosition(const sf::Vector2f& vec);
 
 // static textures
 static sf::Texture gruntTexture;
+static sf::Texture heavyTexture;

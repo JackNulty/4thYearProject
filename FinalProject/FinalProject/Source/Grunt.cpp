@@ -2,7 +2,8 @@
 #include "Bullet.h"
 
 Grunt::Grunt(float x, float y)
-    : Enemy(x, y, 2.0f) {
+: Enemy(x, y, 2.0f) 
+{
     if (!gruntTexture.loadFromFile("ASSETS/Enemies/Skeleton.png")) {
         std::cerr << "Error: Failed to load texture!" << std::endl;
     }

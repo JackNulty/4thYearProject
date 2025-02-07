@@ -5,6 +5,7 @@
 #include "Grunt.h"
 #include "EnemyBehavioursEnum.h"
 #include "Horde.h"
+#include "Heavy.h"
 
 #ifndef GAME_H
 #define GAME_H
@@ -28,6 +29,7 @@ private:
     Player m_player;
     Level m_gameWorld;
     Horde m_horde;
+	Heavy m_heavy;
 
     void handleEvents();
     void fixedUpdate(float deltaTime);

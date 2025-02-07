@@ -5,8 +5,10 @@ Game::Game(sf::RenderWindow& windowRef)
     fixedTimeStep(1.0f / 60.0f),// 60fps fixed update
     m_timeAccumulator(0.0f),
     m_isRunning(true),
-    m_horde(enemyCount, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), HordeFormation::Cluster, enemySpacing)
+    m_horde(enemyCount, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), HordeFormation::Cluster, enemySpacing),
+	m_heavy(100, 100)
 {
+	m_heavy.setBehaviour(std::make_unique<SeekBehaviour>());
 }
 
 void Game::run() 
@@ -56,6 +58,7 @@ void Game::fixedUpdate(float deltaTime)
     m_player.fixedUpdate(deltaTime, window.mapPixelToCoords(sf::Mouse::getPosition(window)));
     m_gameWorld.fixedUpdate(deltaTime);
     m_horde.fixedUpdate(deltaTime, m_player.getPos());
+	m_heavy.fixedUpdate(deltaTime, m_player.getPos());
     handleBulletCollisions();
     handleArrowCollisions();
     playerCollision();
@@ -75,7 +78,7 @@ void Game::update(float deltaTime)
     m_player.update(deltaTime, window.mapPixelToCoords(sf::Mouse::getPosition(window)));
     m_gameWorld.update(deltaTime);
     m_horde.update(deltaTime);
-    
+	m_heavy.update(deltaTime);
 }
 
 void Game::render() 
@@ -84,6 +87,7 @@ void Game::render()
     m_gameWorld.render(window);
     m_player.render(window);
     m_horde.render(window);
+	m_heavy.render(window);
     ResourceManager::getParticleManager().render(window);
     window.display();
 }

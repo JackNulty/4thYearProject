@@ -2,27 +2,22 @@
 #include "globals.h"
 #include "EnemyBehavioursEnum.h"
 #include "EnemyBehaviours.h"
+#include "Enemy.h"
 
-class Heavy
+class Heavy : public Enemy
 {
 public:
-	Heavy(EnemyBehaviourTypes startBehaviour, float x, float y);
-	void update(float deltaTime);
-	void fixedUpdate(float deltaTime, sf::Vector2f playerPos);
-	void render(sf::RenderWindow& window);
-	sf::FloatRect getBounds() const;
-	sf::Vector2f getPos() const;
-	void setPos(sf::Vector2f pos);
+	Heavy(float x, float y);
+	void update(float deltaTime) override;
+	void fixedUpdate(float deltaTime, sf::Vector2f playerPos) override;
 
-	sf::Vector2f m_velocity;
 private:
 
-	sf::RectangleShape m_heavyShape;
-	EnemyBehaviours m_behaviours;
-	EnemyBehaviourTypes m_currentBehaviour;
-	float m_speed;
-	sf::Vector2f m_acceleration;
-	float maxSpeed = 5.0f;
-	float maxForce = 0.1f;
+    void heavyAnimations();
+    int frameDelay = 5;
+    int frameCounter = 0;
+    int currentFrame = 0;
+    int frameWidth = 32;
+    int frameHeight = 32;
 };
 
