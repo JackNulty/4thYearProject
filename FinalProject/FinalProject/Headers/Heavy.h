@@ -14,7 +14,7 @@ public:
 private:
 
     void heavyAnimations();
-    int frameDelay = 5;
+    int frameDelay = 315;
     int frameCounter = 0;
     int currentFrame = 0;
     int frameWidth = 32;
