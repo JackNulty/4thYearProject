@@ -7,6 +7,7 @@ public:
     Grunt(float x, float y);
     void update(float deltaTime) override;
     void fixedUpdate(float deltaTime, sf::Vector2f playerPos) override;
+    void attack() override;
 
 private:
     void gruntAnimations();

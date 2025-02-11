@@ -6,7 +6,7 @@ Game::Game(sf::RenderWindow& windowRef)
     m_timeAccumulator(0.0f),
     m_isRunning(true),
     m_horde(enemyCount, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), HordeFormation::Cluster, enemySpacing),
-	m_heavy(100, 100)
+	m_heavy(700, 100)
 {
 	m_heavy.setBehaviour(std::make_unique<SeekBehaviour>());
 }
@@ -194,5 +194,13 @@ void Game::playerCollision()
         else {
             ++grunt;
         }
+	}
+    if(m_heavy.getBounds().intersects(m_player.getBounds()))
+	{
+		if(m_heavy.canAttack())
+		{
+            m_heavy.attack();
+			m_player.removeLife();
+		}
 	}
 }

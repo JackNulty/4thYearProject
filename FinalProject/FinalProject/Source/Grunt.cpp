@@ -29,6 +29,10 @@ void Grunt::fixedUpdate(float deltaTime, sf::Vector2f playerPos) {
     m_acceleration = { 0.0f, 0.0f };
 }
 
+void Grunt::attack()
+{
+}
+
 void Grunt::gruntAnimations() {
     frameCounter++;
     if (frameCounter >= frameDelay) {

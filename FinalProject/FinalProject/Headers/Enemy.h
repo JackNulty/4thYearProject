@@ -8,6 +8,7 @@ public:
     virtual void update(float deltaTime) = 0;
     virtual void fixedUpdate(float deltaTime, sf::Vector2f playerPos) = 0;
     virtual void render(sf::RenderWindow& window);
+    virtual void attack() = 0;
 
     sf::FloatRect getBounds() const;
     sf::Vector2f getPos() const;
