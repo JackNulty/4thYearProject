@@ -129,11 +129,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="SeekBehaviour.cpp" />
+    <ClCompile Include="Source\Archer.cpp" />
     <ClCompile Include="Source\Arrow.cpp" />
     <ClCompile Include="Source\Bow.cpp" />
     <ClCompile Include="Source\Bullet.cpp" />
+    <ClCompile Include="Source\Enemy.cpp" />
     <ClCompile Include="Source\EnemyBehaviours.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\GameplayScene.cpp" />
@@ -141,6 +141,7 @@
     <ClCompile Include="Source\Grunt.cpp" />
     <ClCompile Include="Source\Heavy.cpp" />
     <ClCompile Include="Source\Horde.cpp" />
+    <ClCompile Include="Source\KeepDistance.cpp" />
     <ClCompile Include="Source\Level.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\MainMenuScene.cpp" />
@@ -149,8 +150,10 @@
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\ResourceManager.cpp" />
     <ClCompile Include="Source\SceneManager.cpp" />
+    <ClCompile Include="Source\SeekBehaviour.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Headers\Archer.h" />
     <ClInclude Include="Headers\Behaviour.h" />
     <ClInclude Include="Headers\Bullet.h" />
     <ClInclude Include="Headers\Enemy.h" />
@@ -163,6 +166,7 @@
     <ClInclude Include="Headers\Heavy.h" />
     <ClInclude Include="Headers\Horde.h" />
     <ClInclude Include="Headers\HordeFormationsEnum.h" />
+    <ClInclude Include="Headers\KeepDistance.h" />
     <ClInclude Include="Headers\Level.h" />
     <ClInclude Include="Headers\MainMenuScene.h" />
     <ClInclude Include="Headers\ParticleManager.h" />
@@ -173,7 +177,7 @@
     <ClInclude Include="Headers\SceneManager.h" />
     <ClInclude Include="Headers\Arrow.h" />
     <ClInclude Include="Headers\Bow.h" />
-    <ClInclude Include="SeekBehaviour.h" />
+    <ClInclude Include="Headers\SeekBehaviour.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

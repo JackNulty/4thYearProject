@@ -1,5 +1,7 @@
 #pragma once
 #include "globals.h"
+#include "EnemyBehavioursEnum.h"
+#include "EnemyBehaviours.h"
 #include "Enemy.h"
 
 class Archer : public Enemy {
@@ -11,10 +13,14 @@ public:
 
 private:
 	void archerAnimations();
-	int frameDelay = 315;
+	void fillFrames();
+	int frameDelay = 215;
 	int frameCounter = 0;
 	int currentFrame = 0;
-	int frameWidth = 32;
-	int frameHeight = 32;
+	int frameWidth = 16;
+	int frameHeight = 23;
 
-}
+	std::vector<sf::Vector2f> m_moveFrames;
+	int m_currentMoveFrame = 0;
+
+};

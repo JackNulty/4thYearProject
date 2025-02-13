@@ -8,9 +8,10 @@ Archer::Archer(float x, float y)
 		std::cout << "Error loading Archer texture" << std::endl;
 	}
 	m_sprite.setTexture(m_texture);
-	m_sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
+	m_sprite.setTextureRect(sf::IntRect(0, 0, 16, 23));
 	m_sprite.setOrigin(m_sprite.getGlobalBounds().width / 2, m_sprite.getGlobalBounds().height / 2);
 	m_sprite.setScale(2, 2);
+	fillFrames();
 }
 
 void Archer::update(float deltaTime)
@@ -41,7 +42,18 @@ void Archer::archerAnimations()
 	frameCounter++;
 	if (frameCounter >= frameDelay) {
 		frameCounter = 0;
-		currentFrame = (currentFrame + 1) % 6;
-		m_sprite.setTextureRect(sf::IntRect(currentFrame * frameWidth, 96, frameWidth, frameHeight));
+		m_currentMoveFrame = (m_currentMoveFrame + 1) % m_moveFrames.size();
+		sf::Vector2f frame = m_moveFrames[m_currentMoveFrame];
+		m_sprite.setTextureRect(sf::IntRect(frame.x, frame.y, frameWidth, frameHeight));
 	}
+}
+
+void Archer::fillFrames()
+{
+	m_moveFrames.push_back(sf::Vector2f(14, 162));
+	m_moveFrames.push_back(sf::Vector2f(62, 162));
+	m_moveFrames.push_back(sf::Vector2f(110, 162));
+	m_moveFrames.push_back(sf::Vector2f(158, 162));
+	m_moveFrames.push_back(sf::Vector2f(206, 162));
+	m_moveFrames.push_back(sf::Vector2f(254, 162));
 }

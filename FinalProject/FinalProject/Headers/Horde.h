@@ -4,6 +4,7 @@
 #include "Bullet.h"
 #include "HordeFormationsEnum.h"
 #include "SeekBehaviour.h"
+#include "KeepDistance.h"
 
 
 class Horde

@@ -40,6 +40,17 @@ void Heavy::attack()
 	}
 }
 
+void Heavy::dealDamage()
+{
+    m_health--;
+    if (m_health <= 0) {
+		m_isDead = true;
+	}
+    else {
+        takeDamage = true;
+    }
+}
+
 void Heavy::heavyAnimations()
 {
     frameCounter++;
@@ -51,6 +62,18 @@ void Heavy::heavyAnimations()
             m_sprite.setTextureRect(sf::IntRect(currentFrame * frameWidth, 96, frameWidth, frameHeight));
         }
     }
+    else if (takeDamage)
+    {
+        if (frameCounter >= frameDelay) {
+            frameCounter = 0;
+            m_currentDamageFrame = (m_currentDamageFrame + 1) % m_damageFrames.size();
+            sf::Vector2f frame = m_damageFrames[m_currentDamageFrame];
+            m_sprite.setTextureRect(sf::IntRect(frame.x, frame.y, frameWidth, frameHeight));
+            if (m_currentAttackFrame == 0) {
+                takeDamage = false;
+            }
+        }
+	}
     else
     {
         if (frameCounter >= frameDelay) {
@@ -75,4 +98,9 @@ void Heavy::fillAttackFrames()
 	m_attackFrames.push_back(sf::Vector2f(341, 209));	
 	m_attackFrames.push_back(sf::Vector2f(405, 209));
 	m_attackFrames.push_back(sf::Vector2f(469, 209));
+
+    m_damageFrames.push_back(sf::Vector2f(5, 418));
+    m_damageFrames.push_back(sf::Vector2f(37, 418));
+    m_damageFrames.push_back(sf::Vector2f(69, 418));
+    m_damageFrames.push_back(sf::Vector2f(101, 418));
 }	

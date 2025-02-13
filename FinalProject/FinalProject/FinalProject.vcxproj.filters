@@ -72,10 +72,16 @@
     <ClCompile Include="Source\SceneManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
+    <ClCompile Include="Source\Archer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SeekBehaviour.cpp">
+    <ClCompile Include="Source\Enemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SeekBehaviour.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\KeepDistance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -140,13 +146,19 @@
     <ClInclude Include="Headers\Bow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SeekBehaviour.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Headers\Enemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Headers\Behaviour.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\SeekBehaviour.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Archer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\KeepDistance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

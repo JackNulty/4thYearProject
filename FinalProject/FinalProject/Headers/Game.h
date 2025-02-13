@@ -6,6 +6,7 @@
 #include "EnemyBehavioursEnum.h"
 #include "Horde.h"
 #include "Heavy.h"
+#include "Archer.h"
 
 #ifndef GAME_H
 #define GAME_H
@@ -30,6 +31,7 @@ private:
     Level m_gameWorld;
     Horde m_horde;
 	Heavy m_heavy;
+    Archer m_archer;
 
     void handleEvents();
     void fixedUpdate(float deltaTime);

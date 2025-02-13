@@ -6,9 +6,12 @@ Game::Game(sf::RenderWindow& windowRef)
     m_timeAccumulator(0.0f),
     m_isRunning(true),
     m_horde(enemyCount, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), HordeFormation::Cluster, enemySpacing),
-	m_heavy(700, 100)
+	m_heavy(700, 100),
+    m_archer(700, 300)
 {
 	m_heavy.setBehaviour(std::make_unique<SeekBehaviour>());
+    m_archer.setBehaviour(std::make_unique<KeepDistance>());
+    
 }
 
 void Game::run() 
@@ -59,6 +62,7 @@ void Game::fixedUpdate(float deltaTime)
     m_gameWorld.fixedUpdate(deltaTime);
     m_horde.fixedUpdate(deltaTime, m_player.getPos());
 	m_heavy.fixedUpdate(deltaTime, m_player.getPos());
+    m_archer.fixedUpdate(deltaTime, m_player.getPos());
     handleBulletCollisions();
     handleArrowCollisions();
     playerCollision();
@@ -77,6 +81,7 @@ void Game::update(float deltaTime)
     //std::cout << "Regular Update: " << deltaTime << " seconds\n";
     m_player.update(deltaTime, window.mapPixelToCoords(sf::Mouse::getPosition(window)));
     m_gameWorld.update(deltaTime);
+    m_archer.update(deltaTime);
     m_horde.update(deltaTime);
 	m_heavy.update(deltaTime);
 }
@@ -88,6 +93,7 @@ void Game::render()
     m_player.render(window);
     m_horde.render(window);
 	m_heavy.render(window);
+    m_archer.render(window);
     ResourceManager::getParticleManager().render(window);
     window.display();
 }
@@ -152,6 +158,18 @@ void Game::handleArrowCollisions()
 				grunt++;
 			}
 		}
+
+        if (arrow->getBounds().intersects(m_heavy.getBounds()))
+        {
+            m_heavy.dealDamage();
+            std::cout << "Heavy hit" << std::endl;
+            ParticleManager& particleManager = ResourceManager::getParticleManager();
+            std::shared_ptr<ParticleSystem> system = particleManager.addParticleSystem(
+                "heavy_hit", 10, m_heavy.getPos());
+            system->configure(200.f, 0.4f, 1.f, sf::Color::Red);
+            std::cout << "Added new particle system: heavy_hit\n";
+			arrowHit = true;
+        }
 
 		// remove arrow if it collides
 		if (arrowHit)

@@ -12,6 +12,8 @@ public:
 	void fixedUpdate(float deltaTime, sf::Vector2f playerPos) override;
     void attack() override;
     bool canAttack() const { return m_attackClock.getElapsedTime().asSeconds() > m_attackCooldown; }
+    void dealDamage();
+    bool isDead() const { return m_isDead; }
 
 private:
 
@@ -21,6 +23,12 @@ private:
     int currentFrame = 0;
     int frameWidth = 32;
     int frameHeight = 32;
+
+    int m_health = 5;
+    bool m_isDead = false;
+    bool takeDamage = false;
+    std::vector<sf::Vector2f> m_damageFrames;
+    int m_currentDamageFrame;
 
     sf::Clock m_attackClock;
     float m_attackCooldown = 1.0f;
