@@ -4,7 +4,7 @@
 class Arrow
 {
 public:
-	Arrow(sf::Texture *arrowTexture, sf::Vector2f playerPos, float speed, sf::Vector2f direction, float rotation);
+	Arrow(sf::Vector2f playerPos, float speed, sf::Vector2f direction, float rotation);
 	void update(float deltaTime);
 	void fixedUpdate(float deltaTime);
 	void render(sf::RenderWindow& window);

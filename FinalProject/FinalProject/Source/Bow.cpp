@@ -2,11 +2,11 @@
 
 Bow::Bow()
 {
-	if(!m_bowTexture.loadFromFile("Assets/Weapons/Bow_Stages.png"))
+	if(!bowTexture.loadFromFile("Assets/Weapons/Bow_Stages.png"))
 	{
 		std::cout << "Error loading bow texture" << std::endl;
 	}
-	m_bowSprite.setTexture(m_bowTexture);
+	m_bowSprite.setTexture(bowTexture);
 	m_bowSprite.setTextureRect(sf::IntRect(10, 0, 6, 16));
 	m_bowSprite.setOrigin(m_bowSprite.getGlobalBounds().width / 2, m_bowSprite.getGlobalBounds().height / 2);
 	m_bowSprite.setPosition(100, 100);
@@ -18,7 +18,7 @@ Bow::Bow()
 	m_bowFrames.push_back(sf::IntRect(30, 0, 11, 16));
 
 	//arrow sprite
-	m_arrowSprite.setTexture(m_bowTexture);
+	m_arrowSprite.setTexture(bowTexture);
 	m_arrowSprite.setTextureRect(sf::IntRect(60, 3, 4, 13));
 	m_arrowSprite.setOrigin(m_arrowSprite.getGlobalBounds().width / 2, m_arrowSprite.getGlobalBounds().height / 2);
 	m_arrowSprite.setScale(2, 2);
@@ -131,11 +131,11 @@ void Bow::shootArrow(sf::Vector2f playerPos, sf::Vector2f mousePos)
 	}
 	if (m_arrowVector.size() < MAX_ARROWS)
 	{
-		m_arrowVector.emplace_back(&m_bowTexture, playerPos, arrowSpeed, direction, m_arrowSprite.getRotation());
+		m_arrowVector.emplace_back(playerPos, arrowSpeed, direction, m_arrowSprite.getRotation());
 	}
 	else
 	{
 		m_arrowVector.erase(m_arrowVector.begin());
-		m_arrowVector.emplace_back(&m_bowTexture, playerPos, arrowSpeed, direction, m_arrowSprite.getRotation());
+		m_arrowVector.emplace_back(playerPos, arrowSpeed, direction, m_arrowSprite.getRotation());
 	}
 }

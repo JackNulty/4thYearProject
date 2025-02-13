@@ -20,7 +20,6 @@ private:
 	void shootArrow(sf::Vector2f playerPos, sf::Vector2f mousePos);
 
 	//private vars
-	sf::Texture m_bowTexture;
 	sf::Sprite m_bowSprite;
 	sf::Sprite m_arrowSprite;
 	bool isActive = false;

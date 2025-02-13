@@ -31,7 +31,7 @@ void Heavy::fixedUpdate(float deltaTime, sf::Vector2f playerPos)
     m_acceleration = { 0.0f, 0.0f };
 }
 
-void Heavy::attack()
+void Heavy::attack(sf::Vector2f playerPos)
 {
     if(canAttack())
 	{

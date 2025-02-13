@@ -10,7 +10,7 @@ public:
 	Heavy(float x, float y);
 	void update(float deltaTime) override;
 	void fixedUpdate(float deltaTime, sf::Vector2f playerPos) override;
-    void attack() override;
+    void attack(sf::Vector2f playerPos) override;
     bool canAttack() const { return m_attackClock.getElapsedTime().asSeconds() > m_attackCooldown; }
     void dealDamage();
     bool isDead() const { return m_isDead; }

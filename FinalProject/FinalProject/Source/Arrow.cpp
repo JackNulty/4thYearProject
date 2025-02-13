@@ -1,9 +1,13 @@
 #include "Arrow.h"
 
-Arrow::Arrow(sf::Texture* arrowTexture, sf::Vector2f playerPos, float speed, sf::Vector2f direction, float rotation)
+Arrow::Arrow(sf::Vector2f playerPos, float speed, sf::Vector2f direction, float rotation)
 	:m_speed(speed), m_direction(direction)
 {
-	m_arrowSprite.setTexture(*arrowTexture);
+	if (!bowTexture.loadFromFile("Assets/Weapons/Bow_Stages.png"))
+	{
+		std::cout << "Error loading bow texture" << std::endl;
+	}
+	m_arrowSprite.setTexture(bowTexture);
 	m_arrowSprite.setTextureRect(sf::IntRect(60, 3, 4, 13));
 	m_arrowSprite.setOrigin(m_arrowSprite.getGlobalBounds().width / 2, m_arrowSprite.getGlobalBounds().height / 2);
 	m_arrowSprite.setScale(2.0f, 2.0f);

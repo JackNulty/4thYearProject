@@ -66,6 +66,7 @@ void Game::fixedUpdate(float deltaTime)
     handleBulletCollisions();
     handleArrowCollisions();
     playerCollision();
+    m_archer.attack(m_player.getPos());
     if (m_horde.m_grunts.empty())
     {
         spawnWave();
@@ -94,6 +95,7 @@ void Game::render()
     m_horde.render(window);
 	m_heavy.render(window);
     m_archer.render(window);
+    m_archer.drawArrows(window);
     ResourceManager::getParticleManager().render(window);
     window.display();
 }
@@ -217,7 +219,7 @@ void Game::playerCollision()
 	{
 		if(m_heavy.canAttack())
 		{
-            m_heavy.attack();
+            m_heavy.attack(m_player.getPos());
 			m_player.removeLife();
 		}
 	}
