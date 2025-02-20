@@ -68,11 +68,6 @@ void Archer::drawArrows(sf::RenderWindow& window)
 	}
 }
 
-void Archer::dealDamage()
-{
-	isDead = true;
-}
-
 void Archer::archerAnimations(sf::Vector2f playerPos)
 {
 	frameCounter++;
@@ -83,19 +78,6 @@ void Archer::archerAnimations(sf::Vector2f playerPos)
 			m_currentMoveFrame = (m_currentMoveFrame + 1) % m_moveFrames.size();
 			sf::Vector2f frame = m_moveFrames[m_currentMoveFrame];
 			m_sprite.setTextureRect(sf::IntRect(frame.x, frame.y, frameWidth, frameHeight));
-		}
-	}
-	else if (isDead)
-	{
-		if (frameCounter >= frameDelay) {
-			frameCounter = 0;
-			m_currentDeathFrame = (m_currentDeathFrame + 1) % m_deathFrames.size();
-			sf::Vector2f frame = m_deathFrames[m_currentDeathFrame];
-			m_sprite.setTextureRect(sf::IntRect(frame.x, frame.y, frameWidth, frameHeight));
-			if (m_currentDeathFrame == m_deathFrames.size() - 1)
-			{
-				killFlag = true;
-			}
 		}
 	}
 	else {
@@ -128,11 +110,6 @@ void Archer::fillFrames()
 	m_attackFrames.push_back(sf::Vector2f(160, 358));
 	m_attackFrames.push_back(sf::Vector2f(208, 358));
 	m_attackFrames.push_back(sf::Vector2f(256, 358));
-
-	m_deathFrames.push_back(sf::Vector2f(16, 453));
-	m_deathFrames.push_back(sf::Vector2f(66, 453));
-	m_deathFrames.push_back(sf::Vector2f(114, 453));
-	m_deathFrames.push_back(sf::Vector2f(162, 453));
 }
 
 void Archer::shootArrow(sf::Vector2f targetPos, sf::Vector2f pos)
