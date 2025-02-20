@@ -7,9 +7,10 @@ Particle::Particle(float radius, const sf::Color& colour)
 }
 
 // particle system constructor
-ParticleSystem::ParticleSystem(size_t maxParticles, sf::Vector2f position)
+ParticleSystem::ParticleSystem(size_t maxParticles, sf::Vector2f position, std::string id)
 	: m_maxParticles(maxParticles),
-	m_emitter(position)
+	m_emitter(position),
+	m_id(id)
 {
 }
 
@@ -87,7 +88,16 @@ void ParticleSystem::emitParticles()
             Particle particle(m_particleRadius, m_particleColour);
             particle.shape.setPosition(m_emitter);
 
-            float angle = (std::rand() % 360) * PI / 180.0f;
+			float angle; //= (std::rand() % 360) * PI / 180.0f;
+			if (m_id == "grunt_hit")
+			{
+				angle = (std::rand() % 60 + 210) * PI / 180.0f;
+				particle.velocity.x *= (std::rand() % 2 + 0.5f); // Varying spread
+				particle.velocity.y *= (std::rand() % 2 + 0.5f);
+			}
+			else {
+				angle = (std::rand() % 360) * PI / 180.0f;
+			}
             particle.velocity = { m_particleSpeed * std::cos(angle), m_particleSpeed * std::sin(angle) };
 
             particle.lifetime = m_particleLifetime;

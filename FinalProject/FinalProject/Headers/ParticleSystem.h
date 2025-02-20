@@ -14,7 +14,7 @@ struct Particle
 class ParticleSystem
 {
 public:
-	ParticleSystem(size_t maxParticles, sf::Vector2f position);
+	ParticleSystem(size_t maxParticles, sf::Vector2f position, std::string id);
 	void setEmitter(sf::Vector2f position);
 	void update(float deltaTime);
 	void render(sf::RenderWindow& window);
@@ -30,6 +30,8 @@ private:
 	std::vector<Particle> m_particles;
 	size_t m_maxParticles;
 	sf::Vector2f m_emitter;
+
+	std::string m_id;
 
 	float m_particleSpeed = 100.f;
 	sf::Time m_particleLifetime = sf::seconds(2.f);

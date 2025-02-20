@@ -118,7 +118,7 @@ void Game::handleBulletCollisions()
                 ParticleManager& particleManager = ResourceManager::getParticleManager();
                 std::shared_ptr<ParticleSystem> system = particleManager.addParticleSystem(
                     "grunt_hit", 10, grunt->getPos());
-                system->configure(200.f, 0.4f, 1.f, sf::Color::Red);
+                system->configure(200.f, 0.4f, 2.f, sf::Color::Red);
                 std::cout << "Added new particle system: grunt_hit\n";
                 grunt = m_horde.m_grunts.erase(grunt);
                 bulletHit = true;

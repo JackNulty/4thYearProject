@@ -2,7 +2,7 @@
 
 std::shared_ptr<ParticleSystem> ParticleManager::addParticleSystem(const std::string& id, size_t maxParticles, sf::Vector2f position)
 {
-	auto system = std::make_shared<ParticleSystem>(maxParticles, position);
+	auto system = std::make_shared<ParticleSystem>(maxParticles, position, id);
 	m_particleSystems[id] = system;
     return system;
 }
