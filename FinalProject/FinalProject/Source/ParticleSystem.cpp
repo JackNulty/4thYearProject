@@ -90,10 +90,15 @@ void ParticleSystem::emitParticles()
 
 			float angle; //= (std::rand() % 360) * PI / 180.0f;
 			if (m_id == "grunt_hit")
-			{
+			{ 
 				angle = (std::rand() % 60 + 210) * PI / 180.0f;
 				particle.velocity.x *= (std::rand() % 2 + 0.5f); // Varying spread
 				particle.velocity.y *= (std::rand() % 2 + 0.5f);
+			}
+			else if (m_id == "arrow_fired")
+			{
+				angle = 270 * PI / 180.0f; // Consistent downward motion
+				particle.velocity.x *= 0.1f; // Slight horizontal drift
 			}
 			else {
 				angle = (std::rand() % 360) * PI / 180.0f;
