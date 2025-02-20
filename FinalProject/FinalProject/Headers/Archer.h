@@ -11,8 +11,11 @@ public:
 	void update(float deltaTime) override;
 	void fixedUpdate(float deltaTime, sf::Vector2f playerPos) override;
 	bool canAttack() const { return m_attackClock.getElapsedTime().asSeconds() > m_attackCooldown; }
-    void attack(sf::Vector2f playerPos) override;
+	void attack(sf::Vector2f playerPos) override;
 	void drawArrows(sf::RenderWindow& window);
+	std::vector<Arrow>& getArrowVector() { return m_arrowVector; }
+	bool isDeadCheck() { return killFlag; }
+	void dealDamage();
 
 private:
 	void archerAnimations(sf::Vector2f playerPos);
@@ -28,8 +31,12 @@ private:
 
 	std::vector<sf::Vector2f> m_moveFrames;
 	std::vector<sf::Vector2f> m_attackFrames;
+	std::vector<sf::Vector2f> m_deathFrames;
 	int m_currentMoveFrame = 0;
 	int m_currentAttackFrame = 0;
+	int m_currentDeathFrame = 0;
+	bool isDead = false;
+	bool killFlag = false;
 
 	sf::Clock m_attackClock;
 	float m_attackCooldown = 5.0f;

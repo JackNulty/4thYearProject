@@ -3,7 +3,7 @@
 Archer::Archer(float x, float y)
 	: Enemy(x, y, 2.0f)
 {
-	if(!m_texture.loadFromFile("Assets/Enemies/Archer.png"))
+	if (!m_texture.loadFromFile("Assets/Enemies/Archer.png"))
 	{
 		std::cout << "Error loading Archer texture" << std::endl;
 	}
@@ -16,7 +16,7 @@ Archer::Archer(float x, float y)
 
 void Archer::update(float deltaTime)
 {
-	
+
 }
 
 void Archer::fixedUpdate(float deltaTime, sf::Vector2f playerPos)
@@ -68,6 +68,11 @@ void Archer::drawArrows(sf::RenderWindow& window)
 	}
 }
 
+void Archer::dealDamage()
+{
+	isDead = true;
+}
+
 void Archer::archerAnimations(sf::Vector2f playerPos)
 {
 	frameCounter++;
@@ -78,6 +83,19 @@ void Archer::archerAnimations(sf::Vector2f playerPos)
 			m_currentMoveFrame = (m_currentMoveFrame + 1) % m_moveFrames.size();
 			sf::Vector2f frame = m_moveFrames[m_currentMoveFrame];
 			m_sprite.setTextureRect(sf::IntRect(frame.x, frame.y, frameWidth, frameHeight));
+		}
+	}
+	else if (isDead)
+	{
+		if (frameCounter >= frameDelay) {
+			frameCounter = 0;
+			m_currentDeathFrame = (m_currentDeathFrame + 1) % m_deathFrames.size();
+			sf::Vector2f frame = m_deathFrames[m_currentDeathFrame];
+			m_sprite.setTextureRect(sf::IntRect(frame.x, frame.y, frameWidth, frameHeight));
+			if (m_currentDeathFrame == m_deathFrames.size() - 1)
+			{
+				killFlag = true;
+			}
 		}
 	}
 	else {
@@ -110,6 +128,11 @@ void Archer::fillFrames()
 	m_attackFrames.push_back(sf::Vector2f(160, 358));
 	m_attackFrames.push_back(sf::Vector2f(208, 358));
 	m_attackFrames.push_back(sf::Vector2f(256, 358));
+
+	m_deathFrames.push_back(sf::Vector2f(16, 453));
+	m_deathFrames.push_back(sf::Vector2f(66, 453));
+	m_deathFrames.push_back(sf::Vector2f(114, 453));
+	m_deathFrames.push_back(sf::Vector2f(162, 453));
 }
 
 void Archer::shootArrow(sf::Vector2f targetPos, sf::Vector2f pos)
@@ -127,7 +150,7 @@ void Archer::shootArrow(sf::Vector2f targetPos, sf::Vector2f pos)
 	else
 	{
 		m_arrowVector.erase(m_arrowVector.begin());
-		m_arrowVector.emplace_back(pos, arrowSpeed, direction, calculateArrowRotation(targetPos,pos));
+		m_arrowVector.emplace_back(pos, arrowSpeed, direction, calculateArrowRotation(targetPos, pos));
 	}
 }
 
@@ -145,16 +168,16 @@ float Archer::calculateArrowRotation(sf::Vector2f targetPos, sf::Vector2f pos)
 
 bool Archer::checkPlayerLeftRight(sf::Vector2f playerPos)
 {
-    // Calculate the distance between the player and the archer
-    float distance = std::abs(playerPos.x - m_sprite.getPosition().x);
+	// Calculate the distance between the player and the archer
+	float distance = std::abs(playerPos.x - m_sprite.getPosition().x);
 
-    // Check if the player is to the left or right of the archer
-    if (playerPos.x < m_sprite.getPosition().x)
-    {
-        return true;
-    }
-    else
-    {
+	// Check if the player is to the left or right of the archer
+	if (playerPos.x < m_sprite.getPosition().x)
+	{
+		return true;
+	}
+	else
+	{
 		return false;
-    }
+	}
 }

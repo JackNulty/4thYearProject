@@ -172,6 +172,17 @@ void Game::handleArrowCollisions()
             std::cout << "Added new particle system: heavy_hit\n";
 			arrowHit = true;
         }
+        if (arrow->getBounds().intersects(m_archer.getBounds()))
+        {
+            m_archer.dealDamage();
+            std::cout << "Archer hit" << std::endl;
+            ParticleManager& particleManager = ResourceManager::getParticleManager();
+            std::shared_ptr<ParticleSystem> system = particleManager.addParticleSystem(
+                "archer_hit", 10, m_archer.getPos());
+            system->configure(200.f, 0.4f, 1.f, sf::Color::Red);
+            std::cout << "Added new particle system: archer_hit\n";
+            arrowHit = true;
+        }
 
 		// remove arrow if it collides
 		if (arrowHit)
@@ -223,4 +234,15 @@ void Game::playerCollision()
 			m_player.removeLife();
 		}
 	}
+    for (auto arrow = m_archer.getArrowVector().begin(); arrow != m_archer.getArrowVector().end();)
+    {
+        if (arrow->getBounds().intersects(m_player.getBounds()))
+        {
+            m_player.removeLife();
+            arrow = m_archer.getArrowVector().erase(arrow);
+        }
+        else {
+            arrow++;
+        }
+    }
 }
