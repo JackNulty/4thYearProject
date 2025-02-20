@@ -19,7 +19,7 @@ void Archer::update(float deltaTime)
 
 }
 
-void Archer::fixedUpdate(float deltaTime, sf::Vector2f playerPos)
+void Archer::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::View& cameraView)
 {
 	if (m_behaviour) m_behaviour->update(*this, playerPos);
 	archerAnimations(playerPos);
@@ -41,7 +41,7 @@ void Archer::fixedUpdate(float deltaTime, sf::Vector2f playerPos)
 	for (auto arrow = m_arrowVector.begin(); arrow != m_arrowVector.end();)
 	{
 		arrow->fixedUpdate(deltaTime);
-		if (arrow->checkBounds())
+		if (arrow->checkBounds(cameraView))
 		{
 			arrow = m_arrowVector.erase(arrow);
 		}

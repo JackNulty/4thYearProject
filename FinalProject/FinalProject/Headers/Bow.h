@@ -9,7 +9,7 @@ public:
 	Bow();
 	void render(sf::RenderWindow& window);
 	void update(float deltaTime, sf::Vector2f playerPos);
-	void fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::Vector2f mousePos);
+	void fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::Vector2f mousePos, sf::View& cameraView);
 	std::vector<Arrow>& getArrows();
 
 private:

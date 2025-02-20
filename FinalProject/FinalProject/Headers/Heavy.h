@@ -9,7 +9,7 @@ class Heavy : public Enemy
 public:
 	Heavy(float x, float y);
 	void update(float deltaTime) override;
-	void fixedUpdate(float deltaTime, sf::Vector2f playerPos) override;
+	void fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::View& cameraView) override;
     void attack(sf::Vector2f playerPos) override;
     bool canAttack() const { return m_attackClock.getElapsedTime().asSeconds() > m_attackCooldown; }
     void dealDamage();

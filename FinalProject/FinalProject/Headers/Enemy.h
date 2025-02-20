@@ -6,7 +6,7 @@ class Enemy {
 public:
     Enemy(float x, float y, float speed);
     virtual void update(float deltaTime) = 0;
-    virtual void fixedUpdate(float deltaTime, sf::Vector2f playerPos) = 0;
+    virtual void fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::View& cameraView) = 0;
     virtual void render(sf::RenderWindow& window);
     virtual void attack(sf::Vector2f playerPos) = 0;
 

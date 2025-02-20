@@ -99,13 +99,13 @@ void Horde::update(float deltaTime)
 	}
 }
 
-void Horde::fixedUpdate(float deltaTime, sf::Vector2f playerPos)
+void Horde::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::View& cameraView)
 {
 	if (m_formationClock.getElapsedTime().asSeconds() >= 5.0f)
 	{
 		for (auto& grunt : m_grunts)
 		{
-			grunt.fixedUpdate(deltaTime, playerPos);
+			grunt.fixedUpdate(deltaTime, playerPos, cameraView);
 		}
 	}
 	seperation();

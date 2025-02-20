@@ -52,7 +52,7 @@ void Bow::update(float deltaTime, sf::Vector2f playerPos)
 	}
 }
 
-void Bow::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::Vector2f mousePos)
+void Bow::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::Vector2f mousePos, sf::View& cameraView)
 {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !isAnimating)
 	{
@@ -76,7 +76,7 @@ void Bow::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::Vector2f mous
 	for (auto arrow = m_arrowVector.begin(); arrow != m_arrowVector.end();)
 	{
 		arrow->fixedUpdate(deltaTime);
-		if (arrow->checkBounds())
+		if (arrow->checkBounds(cameraView))
 		{
 			arrow = m_arrowVector.erase(arrow);
 		}

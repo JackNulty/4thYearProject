@@ -8,7 +8,7 @@ public:
 	void update(float deltaTime);
 	void fixedUpdate(float deltaTime);
 	void render(sf::RenderWindow& window);
-	bool checkBounds();
+	bool checkBounds(const sf::View& cameraView);
 	sf::FloatRect getBounds() const;
 
 private:

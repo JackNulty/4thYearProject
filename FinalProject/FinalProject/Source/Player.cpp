@@ -30,18 +30,22 @@ Player::Player()
     m_livesSpriteEmpty.setScale(2, 2);
 }
 
-void Player::update(float deltaTime, sf::Vector2f mousePos)
+void Player::update(float deltaTime, sf::Vector2f mousePos, sf::View& cameraView)
 {
     displayLives();
+    sf::Vector2f viewTopLeft = cameraView.getCenter() - (cameraView.getSize() / 2.0f);
+    m_livesSprite.setPosition(viewTopLeft.x + 20, viewTopLeft.y + 20);
+    m_livesSpriteHalf.setPosition(viewTopLeft.x + 50, viewTopLeft.y + 20);   
+    m_livesSpriteEmpty.setPosition(viewTopLeft.x + 80, viewTopLeft.y + 20);
     m_bow.update(deltaTime, getPos());
 }
 
-void Player::fixedUpdate(float deltaTime, sf::Vector2f mousePos)
+void Player::fixedUpdate(float deltaTime, sf::Vector2f mousePos, sf::View& cameraView)
 {
     playerMovement(deltaTime);
     shootBullet(mousePos);
     playerAnimations();
-    m_bow.fixedUpdate(deltaTime, getPos(), mousePos);
+    m_bow.fixedUpdate(deltaTime, getPos(), mousePos, cameraView);
     // loop through the player bullets depending on size and if it goes out of the screen bounds then delete it
     for (auto bullet = m_bulletVector.begin(); bullet != m_bulletVector.end();)
     {

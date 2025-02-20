@@ -7,11 +7,13 @@ Game::Game(sf::RenderWindow& windowRef)
     m_isRunning(true),
     m_horde(enemyCount, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), HordeFormation::Cluster, enemySpacing),
 	m_heavy(700, 100),
-    m_archer(700, 300)
+    m_archer(700, 300),
+    cameraView(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT))
 {
 	m_heavy.setBehaviour(std::make_unique<SeekBehaviour>());
     m_archer.setBehaviour(std::make_unique<KeepDistance>());
     
+    cameraView.setCenter(m_player.getPos());
 }
 
 void Game::run() 
@@ -58,11 +60,11 @@ void Game::fixedUpdate(float deltaTime)
 {
     //std::cout << "Fixed Update: " << deltaTime << " seconds\n";
     ResourceManager::getParticleManager().update(deltaTime);
-    m_player.fixedUpdate(deltaTime, window.mapPixelToCoords(sf::Mouse::getPosition(window)));
+    m_player.fixedUpdate(deltaTime, window.mapPixelToCoords(sf::Mouse::getPosition(window)), cameraView);
     m_gameWorld.fixedUpdate(deltaTime);
-    m_horde.fixedUpdate(deltaTime, m_player.getPos());
-	m_heavy.fixedUpdate(deltaTime, m_player.getPos());
-    m_archer.fixedUpdate(deltaTime, m_player.getPos());
+    m_horde.fixedUpdate(deltaTime, m_player.getPos(), cameraView);
+	m_heavy.fixedUpdate(deltaTime, m_player.getPos(), cameraView);
+    m_archer.fixedUpdate(deltaTime, m_player.getPos(), cameraView);
     handleBulletCollisions();
     handleArrowCollisions();
     playerCollision();
@@ -80,15 +82,17 @@ void Game::fixedUpdate(float deltaTime)
 void Game::update(float deltaTime) 
 {
     //std::cout << "Regular Update: " << deltaTime << " seconds\n";
-    m_player.update(deltaTime, window.mapPixelToCoords(sf::Mouse::getPosition(window)));
+    m_player.update(deltaTime, window.mapPixelToCoords(sf::Mouse::getPosition(window)), cameraView);
     m_gameWorld.update(deltaTime);
     m_archer.update(deltaTime);
     m_horde.update(deltaTime);
 	m_heavy.update(deltaTime);
+    cameraView.setCenter(m_player.getPos());
 }
 
 void Game::render() 
 {
+    window.setView(cameraView);
     window.clear(sf::Color(210, 180, 140));
     m_gameWorld.render(window);
     m_player.render(window);

@@ -9,7 +9,7 @@ class Archer : public Enemy {
 public:
 	Archer(float x, float y);
 	void update(float deltaTime) override;
-	void fixedUpdate(float deltaTime, sf::Vector2f playerPos) override;
+	void fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::View& cameraView) override;
 	bool canAttack() const { return m_attackClock.getElapsedTime().asSeconds() > m_attackCooldown; }
 	void attack(sf::Vector2f playerPos) override;
 	void drawArrows(sf::RenderWindow& window);

@@ -18,7 +18,7 @@ void Heavy::update(float deltaTime)
 	heavyAnimations();
 }
 
-void Heavy::fixedUpdate(float deltaTime, sf::Vector2f playerPos)
+void Heavy::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::View& cameraView)
 {
     if (m_behaviour) m_behaviour->update(*this, playerPos);
 

@@ -29,10 +29,21 @@ void Arrow::render(sf::RenderWindow& window)
 	window.draw(m_arrowSprite);
 }
 
-bool Arrow::checkBounds()
+bool Arrow::checkBounds(const sf::View& cameraView)
 {
 	sf::Vector2f currentPos = m_arrowSprite.getPosition();
-	return currentPos.x < 0 || currentPos.x > WINDOW_WIDTH || currentPos.y < 0 || currentPos.y > WINDOW_WIDTH;
+	// Get the current view boundaries
+	sf::Vector2f viewCenter = cameraView.getCenter();
+	sf::Vector2f viewSize = cameraView.getSize();
+
+	float left = viewCenter.x - (viewSize.x / 2);
+	float right = viewCenter.x + (viewSize.x / 2);
+	float top = viewCenter.y - (viewSize.y / 2);
+	float bottom = viewCenter.y + (viewSize.y / 2);
+
+	// Check if arrow is outside the current view bounds
+	return currentPos.x < left - 50 || currentPos.x > right + 50 ||
+		currentPos.y < top - 50 || currentPos.y > bottom + 50;
 }
 
 sf::FloatRect Arrow::getBounds() const

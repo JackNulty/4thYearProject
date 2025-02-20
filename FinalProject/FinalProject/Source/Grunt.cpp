@@ -17,7 +17,7 @@ void Grunt::update(float deltaTime) {
     gruntAnimations();
 }
 
-void Grunt::fixedUpdate(float deltaTime, sf::Vector2f playerPos) {
+void Grunt::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::View& cameraView) {
     if (m_behaviour) m_behaviour->update(*this, playerPos);
 
     m_velocity += m_acceleration;

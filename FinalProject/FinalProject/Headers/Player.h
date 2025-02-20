@@ -9,8 +9,8 @@ class Player
 {
 public:
 	Player();
-	void update(float deltaTime, sf::Vector2f mousePos);
-	void fixedUpdate(float deltaTime, sf::Vector2f mousePos);
+	void update(float deltaTime, sf::Vector2f mousePos, sf::View& cameraView );
+	void fixedUpdate(float deltaTime, sf::Vector2f mousePos, sf::View& cameraView);
 	void render(sf::RenderWindow& window);
 	sf::Vector2f getPos(); //  get player position
 	std::vector<Bullet>& getBullets(); // get container of bullets

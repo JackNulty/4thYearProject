@@ -33,6 +33,8 @@ private:
 	Heavy m_heavy;
     Archer m_archer;
 
+    sf::View cameraView; // viewport for following player
+
     void handleEvents();
     void fixedUpdate(float deltaTime);
     void update(float deltaTime);
