@@ -50,7 +50,7 @@ void Player::fixedUpdate(float deltaTime, sf::Vector2f mousePos, sf::View& camer
     for (auto bullet = m_bulletVector.begin(); bullet != m_bulletVector.end();)
     {
         bullet->update(deltaTime);
-        if (bullet->checkBounds())
+        if (bullet->checkBounds(cameraView))
         {
             bullet = m_bulletVector.erase(bullet);
         }
