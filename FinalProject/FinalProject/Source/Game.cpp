@@ -69,7 +69,7 @@ void Game::fixedUpdate(float deltaTime)
     handleArrowCollisions();
     playerCollision();
     m_archer.attack(m_player.getPos());
-    if (m_horde.m_grunts.empty())
+    if (m_horde.m_enemies.empty())
     {
         spawnWave();
         if (m_player.getLives() < 6)
@@ -112,20 +112,20 @@ void Game::handleBulletCollisions()
     {
         bool bulletHit = false;
         // iterator based loop for grunts as the size of horde is varaible
-        for (auto grunt = m_horde.m_grunts.begin(); grunt != m_horde.m_grunts.end();) {
-            if (bullet->getBounds().intersects(grunt->getBounds())) {
+        for (auto enemy = m_horde.m_enemies.begin(); enemy != m_horde.m_enemies.end();) {
+            if (bullet->getBounds().intersects((*enemy)->getBounds())) {
                 std::cout << "Grunt hit" << std::endl;
                 ParticleManager& particleManager = ResourceManager::getParticleManager();
                 std::shared_ptr<ParticleSystem> system = particleManager.addParticleSystem(
-                    "grunt_hit", 25, grunt->getPos());
+                    "grunt_hit", 25, (*enemy)->getPos());
                 system->configure(200.f, 0.4f, 2.f, sf::Color::Red);
                 std::cout << "Added new particle system: grunt_hit\n";
-                grunt = m_horde.m_grunts.erase(grunt);
+                enemy = m_horde.m_enemies.erase(enemy);
                 bulletHit = true;
                 break; 
             }
             else {
-                grunt++;
+                enemy++;
             }
         }
 
@@ -148,20 +148,20 @@ void Game::handleArrowCollisions()
 	{
 		bool arrowHit = false;
 		// iterator based loop for grunts as the size of horde is varaible
-		for (auto grunt = m_horde.m_grunts.begin(); grunt != m_horde.m_grunts.end();) {
-			if (arrow->getBounds().intersects(grunt->getBounds())) {
+		for (auto enemy = m_horde.m_enemies.begin(); enemy != m_horde.m_enemies.end();) {
+			if (arrow->getBounds().intersects((*enemy)->getBounds())) {
 				std::cout << "Grunt hit" << std::endl;
                 ParticleManager& particleManager = ResourceManager::getParticleManager();
                 std::shared_ptr<ParticleSystem> system = particleManager.addParticleSystem(
-                    "grunt_hit", 10, grunt->getPos());
+                    "grunt_hit", 10, (*enemy)->getPos());
                 system->configure(200.f, 0.4f, 1.f, sf::Color::Red);
                 std::cout << "Added new particle system: grunt_hit\n";
-				grunt = m_horde.m_grunts.erase(grunt);
+				enemy = m_horde.m_enemies.erase(enemy);
 				arrowHit = true;
 				break;
 			}
 			else {
-				grunt++;
+				enemy++;
 			}
 		}
 
@@ -219,15 +219,15 @@ void Game::spawnWave()
 
 void Game::playerCollision()
 {
-    // iterator based loop for grunts to check if player collides with grunt
-    for (auto grunt = m_horde.m_grunts.begin(); grunt != m_horde.m_grunts.end();) {
-		if (m_player.getBounds().intersects(grunt->getBounds())) {
+    // iterator based loop for enemies to check if player collides with enemies
+    for (auto enemy = m_horde.m_enemies.begin(); enemy != m_horde.m_enemies.end();) {
+		if (m_player.getBounds().intersects((*enemy)->getBounds())) {
 			std::cout << "Player hit" << std::endl;
             m_player.removeLife();
-            grunt = m_horde.m_grunts.erase(grunt);
+            enemy = m_horde.m_enemies.erase(enemy);
 		}
         else {
-            ++grunt;
+            ++enemy;
         }
 	}
     if(m_heavy.getBounds().intersects(m_player.getBounds()))

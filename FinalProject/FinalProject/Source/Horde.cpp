@@ -7,11 +7,11 @@ Horde::Horde(int maxEnemies, sf::Vector2f centreHorde, HordeFormation startForma
 	positions = generateFormation(maxEnemies, centreHorde, enemySpacing);
 	for (const auto& position : positions)
 	{
-		m_grunts.emplace_back(Grunt(position.x, position.y));
+		m_enemies.emplace_back(std::make_unique<Grunt>(position.x, position.y));
 	}
-	for(auto& grunt : m_grunts)
+	for(auto& enemy : m_enemies)
 	{
-		grunt.setBehaviour(std::make_unique<SeekBehaviour>());
+		enemy->setBehaviour(std::make_unique<SeekBehaviour>());
 	}
 }
 
@@ -92,9 +92,9 @@ void Horde::update(float deltaTime)
 {
 	if (m_formationClock.getElapsedTime().asSeconds() >= 5.0f)
 	{
-		for (auto& grunt : m_grunts)
+		for (auto& enemy : m_enemies)
 		{
-			grunt.update(deltaTime);
+			enemy->update(deltaTime);
 		}
 	}
 }
@@ -103,9 +103,9 @@ void Horde::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::View& camer
 {
 	if (m_formationClock.getElapsedTime().asSeconds() >= 5.0f)
 	{
-		for (auto& grunt : m_grunts)
+		for (auto& enemy : m_enemies)
 		{
-			grunt.fixedUpdate(deltaTime, playerPos, cameraView);
+			enemy->fixedUpdate(deltaTime, playerPos, cameraView);
 		}
 	}
 	seperation();
@@ -113,36 +113,36 @@ void Horde::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::View& camer
 
 void Horde::render(sf::RenderWindow& window)
 {
-	for (auto& grunt : m_grunts)
+	for (auto& enemy : m_enemies)
 	{
-		grunt.render(window);
+		enemy->render(window);
 	}
 }
 
 void Horde::setFormation(HordeFormation type, sf::Vector2f centreHorde, int enemySpacing)
 {
 	m_currentFormation = type;
-	positions = generateFormation(m_grunts.size(), centreHorde, enemySpacing);
-	for (int i = 0; i < m_grunts.size(); i++)
+	positions = generateFormation(m_enemies.size(), centreHorde, enemySpacing);
+	for (int i = 0; i < m_enemies.size(); i++)
 	{
-		m_grunts[i].setPos(positions[i]);
+		m_enemies[i]->setPos(positions[i]);
 	}
 }
 
 void Horde::seperation()
 {
 	// loop through horde or grunts
-	for (int i = 0; i < m_grunts.size(); i++)
+	for (int i = 0; i < m_enemies.size(); i++)
 	{
 		sf::Vector2f seperationForce(0.0f, 0.0f);
 		// loop through horde to check they are not colliding 
-		for (int index = 0; index < m_grunts.size(); index++)
+		for (int index = 0; index < m_enemies.size(); index++)
 		{
 			// if its not itself
 			if (i != index)
 			{
 				// get the vector and distance between the currrent enemy and get the seperation force of them 
-				sf::Vector2f vectorBetween = m_grunts[i].getPos() - m_grunts[index].getPos();
+				sf::Vector2f vectorBetween = m_enemies[i]->getPos() - m_enemies[index]->getPos();
 				float distanceBetween = std::sqrt(vectorBetween.x * vectorBetween.x + vectorBetween.y * vectorBetween.y);
 				if (distanceBetween < 30.0f && distanceBetween > 0.0f)
 				{
@@ -154,7 +154,7 @@ void Horde::seperation()
 		// normalise seperation force and multiply
 		seperationForce = normalize(seperationForce) * 2.0f;
 		// add seperation force to each enemies velocity
-		m_grunts[i].m_velocity += seperationForce;
+		m_enemies[i]->m_velocity += seperationForce;
 	}
 }
 

@@ -60,6 +60,11 @@ void Archer::attack(sf::Vector2f playerPos)
 	}
 }
 
+sf::FloatRect Archer::getBounds() const
+{
+	return m_sprite.getGlobalBounds();
+}
+
 void Archer::drawArrows(sf::RenderWindow& window)
 {
 	for (auto arrow : m_arrowVector)

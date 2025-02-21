@@ -10,9 +10,9 @@ public:
     virtual void render(sf::RenderWindow& window);
     virtual void attack(sf::Vector2f playerPos) = 0;
 
-    sf::FloatRect getBounds() const;
-    sf::Vector2f getPos() const;
-    void setPos(sf::Vector2f pos);
+    virtual sf::FloatRect getBounds() const = 0;
+    virtual sf::Vector2f getPos() const = 0;
+    virtual void setPos(sf::Vector2f pos) = 0;
     void setBehaviour(std::unique_ptr<Behaviour> newBehaviour);
     sf::Vector2f m_velocity;
 

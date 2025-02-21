@@ -40,6 +40,11 @@ void Heavy::attack(sf::Vector2f playerPos)
 	}
 }
 
+sf::FloatRect Heavy::getBounds() const
+{
+	return m_sprite.getGlobalBounds();
+}
+
 void Heavy::dealDamage()
 {
     m_health--;

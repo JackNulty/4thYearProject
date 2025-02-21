@@ -33,6 +33,11 @@ void Grunt::attack(sf::Vector2f playerPos)
 {
 }
 
+sf::FloatRect Grunt::getBounds() const
+{
+    return m_sprite.getGlobalBounds();
+}
+
 void Grunt::gruntAnimations() {
     frameCounter++;
     if (frameCounter >= frameDelay) {

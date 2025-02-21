@@ -5,13 +5,14 @@
 #include "HordeFormationsEnum.h"
 #include "SeekBehaviour.h"
 #include "KeepDistance.h"
+#include "Enemy.h"
 
 
 class Horde
 {
 public:
 	Horde(int maxEnemies, sf::Vector2f centreHorde, HordeFormation startFormation, int enemySpacing);
-	std::vector<Grunt> m_grunts;
+	std::vector<std::unique_ptr<Enemy>> m_enemies;
 	sf::Clock m_formationClock;
 	std::vector<sf::Vector2f> generateFormation(int maxEnemies, sf::Vector2f centreHorde, int enemySpacing);
 	void update(float deltaTime);

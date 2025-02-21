@@ -12,6 +12,9 @@ public:
 	void fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::View& cameraView) override;
 	bool canAttack() const { return m_attackClock.getElapsedTime().asSeconds() > m_attackCooldown; }
 	void attack(sf::Vector2f playerPos) override;
+	sf::FloatRect getBounds() const override;
+	sf::Vector2f getPos() const { return m_sprite.getPosition(); }
+	void setPos(sf::Vector2f pos) { m_sprite.setPosition(pos); }
 	void drawArrows(sf::RenderWindow& window);
 	std::vector<Arrow>& getArrowVector() { return m_arrowVector; }
 	bool isDeadCheck() { return killFlag; }

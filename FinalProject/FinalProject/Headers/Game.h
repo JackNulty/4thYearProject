@@ -7,6 +7,7 @@
 #include "Horde.h"
 #include "Heavy.h"
 #include "Archer.h"
+#include "Enemy.h"
 
 #ifndef GAME_H
 #define GAME_H
