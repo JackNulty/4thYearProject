@@ -6,6 +6,7 @@
 #include "SeekBehaviour.h"
 #include "KeepDistance.h"
 #include "Enemy.h"
+#include "Archer.h"
 
 
 class Horde

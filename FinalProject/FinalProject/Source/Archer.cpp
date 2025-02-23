@@ -8,7 +8,7 @@ Archer::Archer(float x, float y)
 		std::cout << "Error loading Archer texture" << std::endl;
 	}
 	m_sprite.setTexture(m_texture);
-	m_sprite.setTextureRect(sf::IntRect(0, 0, 24, 24));
+	m_sprite.setTextureRect(sf::IntRect(14, 20, 24, 24));
 	m_sprite.setOrigin(m_sprite.getGlobalBounds().width / 2, m_sprite.getGlobalBounds().height / 2);
 	m_sprite.setScale(2, 2);
 	fillFrames();
