@@ -7,6 +7,7 @@
 #include "KeepDistance.h"
 #include "Enemy.h"
 #include "Archer.h"
+#include "Heavy.h"
 
 
 class Horde

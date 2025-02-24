@@ -7,11 +7,11 @@ Horde::Horde(int maxEnemies, sf::Vector2f centreHorde, HordeFormation startForma
 	positions = generateFormation(maxEnemies, centreHorde, enemySpacing);
 	for (const auto& position : positions)
 	{
-		m_enemies.emplace_back(std::make_unique<Archer>(position.x, position.y));
+		m_enemies.emplace_back(std::make_unique<Heavy>(position.x, position.y));
 	}
 	for(auto& enemy : m_enemies)
 	{
-		enemy->setBehaviour(std::make_unique<KeepDistance>());
+		enemy->setBehaviour(std::make_unique<SeekBehaviour>());
 	}
 }
 
