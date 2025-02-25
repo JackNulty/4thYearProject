@@ -7,7 +7,7 @@ Horde::Horde(int maxEnemies, sf::Vector2f centreHorde, HordeFormation startForma
 	positions = generateFormation(maxEnemies, centreHorde, enemySpacing);
 	for (const auto& position : positions)
 	{
-		m_enemies.emplace_back(std::make_unique<Heavy>(position.x, position.y));
+		m_enemies.emplace_back(std::make_unique<Grunt>(position.x, position.y));
 	}
 	assignLeader();
 }
@@ -100,9 +100,21 @@ void Horde::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::View& camer
 {
 	if (m_formationClock.getElapsedTime().asSeconds() >= 5.0f)
 	{
-		for (auto& enemy : m_enemies)
-		{
-			enemy->fixedUpdate(deltaTime, playerPos, cameraView);
+        if (m_leader.expired()) return;
+
+        std::shared_ptr<Enemy> leader = m_leader.lock();
+
+        float distanceToPlayer = std::sqrt(
+        std::pow(leader->getPos().x - playerPos.x, 2) +
+        std::pow(leader->getPos().y - playerPos.y, 2)
+        );
+
+        if (distanceToPlayer < 20.0f) {  // Formation trigger distance
+        setFormation(HordeFormation::Circle, leader->getPos(), 40);
+        }
+
+		for (auto& enemy : m_enemies) {
+			enemy->fixedUpdate(deltaTime,playerPos,cameraView);
 		}
 	}
 	seperation();
@@ -128,7 +140,22 @@ void Horde::setFormation(HordeFormation type, sf::Vector2f centreHorde, int enem
 
 void Horde::setLeader()
 {
-	assignLeader();
+	if (m_enemies.empty()) {
+		m_leader.reset();
+		return;
+	}
+
+	m_leader = m_enemies.front();
+
+	for (auto& enemy : m_enemies) {
+		if (enemy == m_leader.lock()) {
+			enemy->setBehaviour(std::make_unique<SeekBehaviour>());
+		}
+		else {
+			enemy->setBehaviour(std::make_unique<FollowLeaderBehaviour>(m_leader));
+		}
+	}
+
 }
 
 void Horde::assignLeader()
