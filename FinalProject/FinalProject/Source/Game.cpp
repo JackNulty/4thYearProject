@@ -120,6 +120,10 @@ void Game::handleBulletCollisions()
                     "grunt_hit", 25, (*enemy)->getPos());
                 system->configure(200.f, 0.4f, 2.f, sf::Color::Red);
                 std::cout << "Added new particle system: grunt_hit\n";
+                // If the enemy is the leader assign a new leader
+                if (enemy->get() == m_horde.getLeader().lock().get()) {
+                    m_horde.setLeader();  // Change leader
+                }
                 enemy = m_horde.m_enemies.erase(enemy);
                 bulletHit = true;
                 break; 
@@ -156,6 +160,10 @@ void Game::handleArrowCollisions()
                     "grunt_hit", 10, (*enemy)->getPos());
                 system->configure(200.f, 0.4f, 1.f, sf::Color::Red);
                 std::cout << "Added new particle system: grunt_hit\n";
+                // If the enemy is the leader assign a new leader
+                if (enemy->get() == m_horde.getLeader().lock().get()) {
+                    m_horde.setLeader();  // Change leader
+                }
 				enemy = m_horde.m_enemies.erase(enemy);
 				arrowHit = true;
 				break;
@@ -224,6 +232,10 @@ void Game::playerCollision()
 		if (m_player.getBounds().intersects((*enemy)->getBounds())) {
 			std::cout << "Player hit" << std::endl;
             m_player.removeLife();
+            // If the enemy is the leader assign a new leader
+            if (enemy->get() == m_horde.getLeader().lock().get()) {
+                m_horde.setLeader();  // Change leader
+            }
             enemy = m_horde.m_enemies.erase(enemy);
 		}
         else {

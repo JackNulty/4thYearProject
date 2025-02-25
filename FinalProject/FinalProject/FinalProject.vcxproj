@@ -135,6 +135,7 @@
     <ClCompile Include="Source\Bullet.cpp" />
     <ClCompile Include="Source\Enemy.cpp" />
     <ClCompile Include="Source\EnemyBehaviours.cpp" />
+    <ClCompile Include="Source\FollowLeaderBehaviour.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\GameplayScene.cpp" />
     <ClCompile Include="Source\globals.cpp" />
@@ -153,6 +154,7 @@
     <ClCompile Include="Source\SeekBehaviour.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FollowLeaderBehaviour.h" />
     <ClInclude Include="Headers\Archer.h" />
     <ClInclude Include="Headers\Behaviour.h" />
     <ClInclude Include="Headers\Bullet.h" />

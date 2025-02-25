@@ -9,10 +9,7 @@ Horde::Horde(int maxEnemies, sf::Vector2f centreHorde, HordeFormation startForma
 	{
 		m_enemies.emplace_back(std::make_unique<Heavy>(position.x, position.y));
 	}
-	for(auto& enemy : m_enemies)
-	{
-		enemy->setBehaviour(std::make_unique<SeekBehaviour>());
-	}
+	assignLeader();
 }
 
 std::vector<sf::Vector2f> Horde::generateFormation(int maxEnemies, sf::Vector2f centreHorde, int enemySpacing)
@@ -126,6 +123,30 @@ void Horde::setFormation(HordeFormation type, sf::Vector2f centreHorde, int enem
 	for (int i = 0; i < m_enemies.size(); i++)
 	{
 		m_enemies[i]->setPos(positions[i]);
+	}
+}
+
+void Horde::setLeader()
+{
+	assignLeader();
+}
+
+void Horde::assignLeader()
+{
+	if (m_enemies.empty()) {
+		m_leader.reset();
+		return;
+	}
+
+	m_leader = m_enemies.front();
+
+	for (auto& enemy : m_enemies) {
+		if (enemy == m_leader.lock()) {
+			enemy->setBehaviour(std::make_unique<SeekBehaviour>());
+		}
+		else {
+			enemy->setBehaviour(std::make_unique<FollowLeaderBehaviour>(m_leader));
+		}
 	}
 }
 
