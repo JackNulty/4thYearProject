@@ -69,12 +69,13 @@ void Player::fixedUpdate(float deltaTime, sf::Vector2f mousePos, sf::View& camer
     }
 }
 
-void Player::render(sf::RenderWindow& window)
+void Player::render(sf::RenderWindow& window, sf::View& cameraViewRef)
 {
 	window.draw(m_playerSprite);
     window.draw(m_livesSprite);
     window.draw(m_livesSpriteHalf);
     window.draw(m_livesSpriteEmpty);
+    m_weaponInventory.render(window, cameraViewRef);
     for (auto& weapon : m_weaponInventory.m_weapons)
 	{
 		weapon->render(window);

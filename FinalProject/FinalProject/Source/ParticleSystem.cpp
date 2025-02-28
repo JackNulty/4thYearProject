@@ -47,7 +47,7 @@ void ParticleSystem::update(float deltaTime)
 	if (m_particles.empty())
 	{
 		m_active = false; // Deactivate the system when empty
-		std::cout << "Particle system is now empty and deactivated.\n";
+		//std::cout << "Particle system is now empty and deactivated.\n";
 	}
 }
 
@@ -69,7 +69,7 @@ void ParticleSystem::configure(float speed, float lifetime, float radius, const 
 
 bool ParticleSystem::isEmpty() const
 {
-	std::cout << "Checking if particle system is empty: " << m_particles.empty() << "\n";
+	//std::cout << "Checking if particle system is empty: " << m_particles.empty() << "\n";
 	return m_particles.empty();
 }
 

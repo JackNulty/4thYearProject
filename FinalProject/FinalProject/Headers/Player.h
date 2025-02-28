@@ -11,9 +11,9 @@ class Player
 {
 public:
 	Player();
-	void update(float deltaTime, sf::Vector2f mousePos, sf::View& cameraView );
-	void fixedUpdate(float deltaTime, sf::Vector2f mousePos, sf::View& cameraView);
-	void render(sf::RenderWindow& window);
+	void update(float deltaTime, sf::Vector2f mousePos, sf::View& cameraViewRef );
+	void fixedUpdate(float deltaTime, sf::Vector2f mousePos, sf::View& cameraViewRef);
+	void render(sf::RenderWindow& window, sf::View& cameraViewRef);
 	sf::Vector2f getPos(); //  get player position
 	std::vector<Bullet>& getBullets(); // get container of bullets
 	sf::FloatRect getBounds() const; // get bounds of player
@@ -51,7 +51,5 @@ private:
 	sf::Sprite m_livesSprite; // sprite for player lives
 	sf::Sprite m_livesSpriteHalf; // sprite for player lives
 	sf::Sprite m_livesSpriteEmpty; // sprite for player lives
-	
-
 };
 
