@@ -4,6 +4,8 @@
 #include "Bow.h"
 
 #include "ResourceManager.h"
+#include "Weapon.h"
+#include "../WeaponInventory.h"
 
 class Player
 {
@@ -20,7 +22,7 @@ public:
 	void addLife(); // add player life
 
 	Bow m_bow; // bow object
-
+	WeaponInventory m_weaponInventory; // weapon inventory
 
 private:
 
@@ -50,5 +52,6 @@ private:
 	sf::Sprite m_livesSpriteHalf; // sprite for player lives
 	sf::Sprite m_livesSpriteEmpty; // sprite for player lives
 	
+
 };
 

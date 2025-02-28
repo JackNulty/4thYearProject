@@ -146,7 +146,9 @@ void Game::handleBulletCollisions()
 
 void Game::handleArrowCollisions()
 {
-    auto& arrows = m_player.m_bow.getArrows();
+    auto* selectedWeapon = m_player.m_weaponInventory.getSelectedWeapon();
+    Bow* bow = dynamic_cast<Bow*>(selectedWeapon);
+    auto& arrows = bow->getArrows();
 	// iterator based loop for grunts as the size of horde is varaible
 	for (auto arrow = arrows.begin(); arrow != arrows.end();)
 	{

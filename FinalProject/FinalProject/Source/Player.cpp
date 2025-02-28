@@ -28,6 +28,7 @@ Player::Player()
     m_livesSpriteEmpty.setTextureRect(sf::IntRect(32, 0, 16, 16));
     m_livesSpriteEmpty.setPosition(70, 10);
     m_livesSpriteEmpty.setScale(2, 2);
+    m_weaponInventory.addWeapon(std::make_unique<Bow>());
 }
 
 void Player::update(float deltaTime, sf::Vector2f mousePos, sf::View& cameraView)
@@ -37,7 +38,11 @@ void Player::update(float deltaTime, sf::Vector2f mousePos, sf::View& cameraView
     m_livesSprite.setPosition(viewTopLeft.x + 20, viewTopLeft.y + 20);
     m_livesSpriteHalf.setPosition(viewTopLeft.x + 50, viewTopLeft.y + 20);   
     m_livesSpriteEmpty.setPosition(viewTopLeft.x + 80, viewTopLeft.y + 20);
-    m_bow.update(deltaTime, getPos());
+    for(auto& weapon : m_weaponInventory.m_weapons)
+    {
+        weapon->update(deltaTime, getPos());
+    }
+    //m_bow.update(deltaTime, getPos());
 }
 
 void Player::fixedUpdate(float deltaTime, sf::Vector2f mousePos, sf::View& cameraView)
@@ -45,7 +50,11 @@ void Player::fixedUpdate(float deltaTime, sf::Vector2f mousePos, sf::View& camer
     playerMovement(deltaTime);
     shootBullet(mousePos);
     playerAnimations();
-    m_bow.fixedUpdate(deltaTime, getPos(), mousePos, cameraView);
+    for (auto& weapon : m_weaponInventory.m_weapons)
+    {
+        weapon->fixedUpdate(deltaTime, getPos(), mousePos, cameraView);
+    }
+    //m_bow.fixedUpdate(deltaTime, getPos(), mousePos, cameraView);
     // loop through the player bullets depending on size and if it goes out of the screen bounds then delete it
     for (auto bullet = m_bulletVector.begin(); bullet != m_bulletVector.end();)
     {
@@ -66,7 +75,11 @@ void Player::render(sf::RenderWindow& window)
     window.draw(m_livesSprite);
     window.draw(m_livesSpriteHalf);
     window.draw(m_livesSpriteEmpty);
-    m_bow.render(window);
+    for (auto& weapon : m_weaponInventory.m_weapons)
+	{
+		weapon->render(window);
+	}
+    //m_bow.render(window);
     for (Bullet& bullet : m_bulletVector)
     {
         bullet.draw(window);

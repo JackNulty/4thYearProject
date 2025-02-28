@@ -153,6 +153,7 @@
     <ClCompile Include="Source\SceneManager.cpp" />
     <ClCompile Include="Source\SeekBehaviour.cpp" />
     <ClCompile Include="Weapon.cpp" />
+    <ClCompile Include="WeaponInventory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FollowLeaderBehaviour.h" />
@@ -181,7 +182,8 @@
     <ClInclude Include="Headers\Arrow.h" />
     <ClInclude Include="Headers\Bow.h" />
     <ClInclude Include="Headers\SeekBehaviour.h" />
-    <ClInclude Include="Weapon.h" />
+    <ClInclude Include="Headers\Weapon.h" />
+    <ClInclude Include="WeaponInventory.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
