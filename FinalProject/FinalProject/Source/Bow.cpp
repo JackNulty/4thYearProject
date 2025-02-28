@@ -69,7 +69,7 @@ void Bow::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::Vector2f mous
 	rotateAroundPlayer(playerPos, mousePos);
 	if (!isAnimating && shootArrowFlag)
 	{
-		shootArrow(playerPos, mousePos);
+		fire(playerPos, mousePos);
 		shootArrowFlag = false;
 	}
 
@@ -121,7 +121,7 @@ void Bow::rotateAroundPlayer(sf::Vector2f playerPos, sf::Vector2f mousePos)
 	m_arrowSprite.setRotation(angle + 270);
 }
 
-void Bow::shootArrow(sf::Vector2f playerPos, sf::Vector2f mousePos)
+void Bow::fire(sf::Vector2f playerPos, sf::Vector2f mousePos)
 {
 	sf::Vector2f direction = mousePos - playerPos;
 	float magnitude = getMagnitude(direction);

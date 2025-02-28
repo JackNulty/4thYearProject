@@ -1,15 +1,16 @@
 #pragma once
 #include "globals.h"
 #include "Arrow.h"
+#include "Weapon.h"
 
 
-class Bow
+class Bow : public Weapon
 {
 public:
 	Bow();
-	void render(sf::RenderWindow& window);
-	void update(float deltaTime, sf::Vector2f playerPos);
-	void fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::Vector2f mousePos, sf::View& cameraView);
+	void render(sf::RenderWindow& window) override;
+	void update(float deltaTime, sf::Vector2f playerPos) override;
+	void fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::Vector2f mousePos, sf::View& cameraView) override;
 	std::vector<Arrow>& getArrows();
 
 private:
@@ -17,7 +18,7 @@ private:
 	//private functions
 	void animateBow();
 	void rotateAroundPlayer(sf::Vector2f playerPos, sf::Vector2f mousePos);
-	void shootArrow(sf::Vector2f playerPos, sf::Vector2f mousePos);
+	void fire(sf::Vector2f playerPos, sf::Vector2f mousePos) override;
 
 	//private vars
 	sf::Sprite m_bowSprite;
