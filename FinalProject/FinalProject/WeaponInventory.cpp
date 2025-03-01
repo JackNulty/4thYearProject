@@ -2,15 +2,25 @@
 
 WeaponInventory::WeaponInventory()
 {
-	m_hotbarBackground.setSize(sf::Vector2f(200, 50));
-	m_hotbarBackground.setFillColor(sf::Color::Black);
-	m_hotbarBackground.setOutlineColor(sf::Color::White);
-	m_hotbarBackground.setOutlineThickness(2);
-	m_hotbarBackground.setPosition(10, 10);
+	if (!uiFrameTexture.loadFromFile("ASSETS/UI/UI_Frames.png"))
+	{
+		std::cout << "Error: Failed to load texture!" << std::endl;
+	}
+	sf::IntRect slotRect = { 295, 7, 34, 34 };
+	for (int i = 0; i < MAX_WEAPONS; i++) {
+		sf::Sprite hotbarSprite(uiFrameTexture);
+		hotbarSprite.setScale(2.0f, 2.0f);
+		hotbarSprite.setTextureRect(slotRect);
+		m_hotbarSprites.push_back(hotbarSprite);
+	}
 }
 
 void WeaponInventory::addWeapon(std::unique_ptr<Weapon> weapon)
 {
+	if (m_weapons.size() >= MAX_WEAPONS)
+	{
+		return;
+	}
 	m_weapons.push_back(std::move(weapon));
 }
 
@@ -42,22 +52,36 @@ void WeaponInventory::render(sf::RenderWindow& window, const sf::View& cameraVie
 
 	float hotbarX = viewCenter.x - (viewSize.x / 2) + 50;  // 50px offset from left
 	float hotbarY = viewCenter.y + (viewSize.y / 2) - 70;  // 70px offset from bottom
-	m_hotbarBackground.setPosition(hotbarX, hotbarY);
+	float slotSpacing = 80;
 
-	window.draw(m_hotbarBackground);
-	for (int i = 0; i < m_weapons.size(); i++)
-	{
-		sf::Sprite weaponSprite = m_weapons[i]->getSprite();
-		weaponSprite.setScale(2, 2);
-		weaponSprite.setPosition(hotbarX + 10 + i * 60, hotbarY + 10);
-		std::cout << weaponSprite.getPosition().x << " " << weaponSprite.getPosition().y << std::endl;
-		window.draw(weaponSprite);
-		if(i == selectedWeapon)
-		{
-			sf::RectangleShape highlight(sf::Vector2f(50, 50));
-			highlight.setPosition(hotbarX + 10 + i * 60, hotbarY + 10);
+	for (size_t i = 0; i < m_hotbarSprites.size(); i++) {
+		sf::Sprite& slot = m_hotbarSprites[i];
+
+		// Position slots across the bottom of the screen
+		slot.setPosition(hotbarX + (i * slotSpacing), hotbarY);
+		window.draw(slot);
+
+		// Draw the weapon in the center of the slot if available
+		if (i < m_weapons.size()) {
+			sf::Sprite weaponSprite = m_weapons[i]->getSprite();
+			weaponSprite.setScale(0.5f, 0.5f);
+
+			// Center the weapon sprite within the slot
+			sf::FloatRect slotBounds = slot.getGlobalBounds();
+			sf::FloatRect weaponBounds = weaponSprite.getGlobalBounds();
+			float weaponX = slotBounds.left + (slotBounds.width / 2) - (weaponBounds.width / 2);
+			float weaponY = slotBounds.top + (slotBounds.height / 2) - (weaponBounds.height / 2);
+			weaponSprite.setPosition(weaponX, weaponY);
+
+			window.draw(weaponSprite);
+		}
+
+		// Highlight the selected slot
+		if (i == selectedWeapon) {
+			sf::RectangleShape highlight(sf::Vector2f(slot.getGlobalBounds().width, slot.getGlobalBounds().height));
+			highlight.setPosition(slot.getPosition());
 			highlight.setOutlineThickness(3);
-			highlight.setOutlineColor(sf::Color::Yellow);
+			highlight.setOutlineColor(sf::Color::Red);
 			highlight.setFillColor(sf::Color::Transparent);
 			window.draw(highlight);
 		}

@@ -14,4 +14,8 @@ public:
 	void render(sf::RenderWindow& window, const sf::View& cameraView);
 private:
 	sf::RectangleShape m_hotbarBackground;
+	const int MAX_WEAPONS = 5;
+	std::vector<sf::Sprite> m_hotbarSprites;
+
+
 };
