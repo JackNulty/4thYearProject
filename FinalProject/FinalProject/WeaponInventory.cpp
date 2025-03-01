@@ -50,8 +50,8 @@ void WeaponInventory::render(sf::RenderWindow& window, const sf::View& cameraVie
 	sf::Vector2f viewCenter = cameraView.getCenter();
 	sf::Vector2f viewSize = cameraView.getSize();
 
-	float hotbarX = viewCenter.x - (viewSize.x / 2) + 50;  // 50px offset from left
-	float hotbarY = viewCenter.y + (viewSize.y / 2) - 70;  // 70px offset from bottom
+	float hotbarX = viewCenter.x - (viewSize.x / 2) + 50;  
+	float hotbarY = viewCenter.y + (viewSize.y / 2) - 70;  
 	float slotSpacing = 80;
 
 	for (size_t i = 0; i < m_hotbarSprites.size(); i++) {
@@ -64,19 +64,19 @@ void WeaponInventory::render(sf::RenderWindow& window, const sf::View& cameraVie
 		// Draw the weapon in the center of the slot if available
 		if (i < m_weapons.size()) {
 			sf::Sprite weaponSprite = m_weapons[i]->getSprite();
-			weaponSprite.setScale(0.5f, 0.5f);
+			weaponSprite.setScale(3.f, 3.f);
 
 			// Center the weapon sprite within the slot
 			sf::FloatRect slotBounds = slot.getGlobalBounds();
 			sf::FloatRect weaponBounds = weaponSprite.getGlobalBounds();
-			float weaponX = slotBounds.left + (slotBounds.width / 2) - (weaponBounds.width / 2);
-			float weaponY = slotBounds.top + (slotBounds.height / 2) - (weaponBounds.height / 2);
-			weaponSprite.setPosition(weaponX, weaponY);
+            float weaponX = slotBounds.left + (slotBounds.width / 2) - (weaponBounds.width / 2);
+            float weaponY = slotBounds.top + (slotBounds.height / 2) - (weaponBounds.height / 2);
+            weaponSprite.setPosition(weaponX + 17, weaponY + 47); 
 
 			window.draw(weaponSprite);
 		}
 
-		// Highlight the selected slot
+		// Highlight selected slot
 		if (i == selectedWeapon) {
 			sf::RectangleShape highlight(sf::Vector2f(slot.getGlobalBounds().width, slot.getGlobalBounds().height));
 			highlight.setPosition(slot.getPosition());

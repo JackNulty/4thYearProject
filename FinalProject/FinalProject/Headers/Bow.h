@@ -12,6 +12,7 @@ public:
 	void update(float deltaTime, sf::Vector2f playerPos) override;
 	void fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::Vector2f mousePos, sf::View& cameraView) override;
 	std::vector<Arrow>& getArrows();
+	sf::Sprite getSprite() override;
 
 private:
 
@@ -38,5 +39,8 @@ private:
 	const int arrowSpeed = 1000;
 	const int arrowRotation = 0;
 	bool shootArrowFlag = false;
+
+	//bow picture
+	sf::Sprite m_bowIcon;
 
 };

@@ -9,7 +9,7 @@ public:
 	virtual void fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::Vector2f mousePos, sf::View& cameraView)= 0;
 	virtual void render(sf::RenderWindow& window) = 0;
 	virtual void fire(sf::Vector2f playerPos, sf::Vector2f mousePos) = 0;
-    sf::Sprite getSprite() {return m_sprite;}
+	virtual sf::Sprite getSprite() = 0;
 
 private:
 	sf::Sprite m_sprite;

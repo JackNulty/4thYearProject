@@ -12,6 +12,12 @@ Bow::Bow()
 	m_bowSprite.setPosition(100, 100);
 	m_bowSprite.setScale(2, 2);
 
+	//bow icon
+	m_bowIcon.setTexture(bowTexture);
+	m_bowIcon.setTextureRect(sf::IntRect(10, 0, 6, 16));
+	m_bowIcon.setScale(5, 5);
+	m_bowIcon.setOrigin(m_bowSprite.getGlobalBounds().width / 2, m_bowSprite.getGlobalBounds().height / 2);
+
 	//bow animation frames
 	m_bowFrames.push_back(sf::IntRect(10, 0, 6, 16));
 	m_bowFrames.push_back(sf::IntRect(17, 0, 12, 16));
@@ -89,6 +95,11 @@ void Bow::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::Vector2f mous
 std::vector<Arrow>& Bow::getArrows()
 {
 	return m_arrowVector;
+}
+
+sf::Sprite Bow::getSprite()
+{
+	return m_bowIcon;
 }
 
 void Bow::animateBow()
