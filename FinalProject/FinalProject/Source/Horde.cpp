@@ -100,7 +100,10 @@ void Horde::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::View& camer
 {
 	if (m_formationClock.getElapsedTime().asSeconds() >= 5.0f)
 	{
-        if (m_leader.expired()) return;
+		if (m_leader.expired()) {
+			std::cout << "Leader expired." << std::endl;
+			return;
+		}
 
         std::shared_ptr<Enemy> leader = m_leader.lock();
 
@@ -110,11 +113,12 @@ void Horde::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::View& camer
         );
 
         if (distanceToPlayer < 20.0f) {  // Formation trigger distance
-        setFormation(HordeFormation::Circle, leader->getPos(), 40);
+			setFormation(HordeFormation::Circle, leader->getPos(), 40);
         }
 
 		for (auto& enemy : m_enemies) {
 			enemy->fixedUpdate(deltaTime,playerPos,cameraView);
+			std::cout << "Enemy position: " << enemy->getPos().x << ", " << enemy->getPos().y << std::endl;
 		}
 	}
 	seperation();
@@ -140,22 +144,7 @@ void Horde::setFormation(HordeFormation type, sf::Vector2f centreHorde, int enem
 
 void Horde::setLeader()
 {
-	if (m_enemies.empty()) {
-		m_leader.reset();
-		return;
-	}
-
-	m_leader = m_enemies.front();
-
-	for (auto& enemy : m_enemies) {
-		if (enemy == m_leader.lock()) {
-			enemy->setBehaviour(std::make_unique<SeekBehaviour>());
-		}
-		else {
-			enemy->setBehaviour(std::make_unique<FollowLeaderBehaviour>(m_leader));
-		}
-	}
-
+	assignLeader();
 }
 
 void Horde::assignLeader()
@@ -165,15 +154,24 @@ void Horde::assignLeader()
 		return;
 	}
 
-	m_leader = m_enemies.front();
+	m_leader = m_enemies[2];
+	std::cout << "New leader assigned." << std::endl;
 
 	for (auto& enemy : m_enemies) {
 		if (enemy == m_leader.lock()) {
 			enemy->setBehaviour(std::make_unique<SeekBehaviour>());
+			std::cout << "Leader behavior set to SeekBehaviour." << std::endl;
 		}
 		else {
 			enemy->setBehaviour(std::make_unique<FollowLeaderBehaviour>(m_leader));
+			std::cout << "Follower behavior set to FollowLeaderBehaviour." << std::endl;
 		}
+	}
+	if (m_leader.expired()) {
+		std::cout << "New leader is expired immediately after assignment." << std::endl;
+	}
+	else {
+		std::cout << "New leader is valid." << std::endl;
 	}
 }
 
