@@ -101,7 +101,7 @@ void Horde::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::View& camer
 	if (m_formationClock.getElapsedTime().asSeconds() >= 5.0f)
 	{
 		if (m_leader.expired()) {
-			std::cout << "Leader expired." << std::endl;
+			//std::cout << "Leader expired." << std::endl;
 			return;
 		}
 
@@ -118,7 +118,7 @@ void Horde::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::View& camer
 
 		for (auto& enemy : m_enemies) {
 			enemy->fixedUpdate(deltaTime,playerPos,cameraView);
-			std::cout << "Enemy position: " << enemy->getPos().x << ", " << enemy->getPos().y << std::endl;
+			//std::cout << "Enemy position: " << enemy->getPos().x << ", " << enemy->getPos().y << std::endl;
 		}
 	}
 	seperation();
@@ -155,23 +155,17 @@ void Horde::assignLeader()
 	}
 
 	m_leader = m_enemies[2];
-	std::cout << "New leader assigned." << std::endl;
+	//std::cout << "New leader assigned." << std::endl;
 
 	for (auto& enemy : m_enemies) {
 		if (enemy == m_leader.lock()) {
 			enemy->setBehaviour(std::make_unique<SeekBehaviour>());
-			std::cout << "Leader behavior set to SeekBehaviour." << std::endl;
+			//std::cout << "Leader behavior set to SeekBehaviour." << std::endl;
 		}
 		else {
 			enemy->setBehaviour(std::make_unique<FollowLeaderBehaviour>(m_leader));
-			std::cout << "Follower behavior set to FollowLeaderBehaviour." << std::endl;
+			//std::cout << "Follower behavior set to FollowLeaderBehaviour." << std::endl;
 		}
-	}
-	if (m_leader.expired()) {
-		std::cout << "New leader is expired immediately after assignment." << std::endl;
-	}
-	else {
-		std::cout << "New leader is valid." << std::endl;
 	}
 }
 
