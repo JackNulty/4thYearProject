@@ -151,6 +151,11 @@ void Game::handleArrowCollisions()
     // use dynamic cast to get the selected weapon to get its unique ammo type
     auto* selectedWeapon = m_player.m_weaponInventory.getSelectedWeapon();
     Bow* bow = dynamic_cast<Bow*>(selectedWeapon);
+    if (!bow)
+    {
+        std::cout << "No bow equipped skipping arrow collision checks.\n";
+        return; 
+    }
     auto& arrows = bow->getArrows();
 	// iterator based loop for grunts as the size of horde is varaible
 	for (auto arrow = arrows.begin(); arrow != arrows.end();)

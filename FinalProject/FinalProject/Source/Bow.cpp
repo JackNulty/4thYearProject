@@ -9,7 +9,7 @@ Bow::Bow()
 	m_bowSprite.setTexture(bowTexture);
 	m_bowSprite.setTextureRect(sf::IntRect(10, 0, 6, 16));
 	m_bowSprite.setOrigin(m_bowSprite.getGlobalBounds().width / 2, m_bowSprite.getGlobalBounds().height / 2);
-	m_bowSprite.setPosition(100, 100);
+	m_bowSprite.setPosition(10000, 10000);
 	m_bowSprite.setScale(2, 2);
 
 	//bow icon

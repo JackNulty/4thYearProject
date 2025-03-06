@@ -154,7 +154,7 @@ void Horde::assignLeader()
 		return;
 	}
 
-	m_leader = m_enemies[2];
+	m_leader = m_enemies.front();
 	//std::cout << "New leader assigned." << std::endl;
 
 	for (auto& enemy : m_enemies) {

@@ -29,18 +29,26 @@ Player::Player()
     m_livesSpriteEmpty.setPosition(70, 10);
     m_livesSpriteEmpty.setScale(2, 2);
     m_weaponInventory.addWeapon(std::make_unique<Bow>());
+    m_weaponInventory.addWeapon(std::make_unique<Sword>());
 }
 
 void Player::update(float deltaTime, sf::Vector2f mousePos, sf::View& cameraView)
 {
+    handleWeaponSwitch();
     displayLives();
     sf::Vector2f viewTopLeft = cameraView.getCenter() - (cameraView.getSize() / 2.0f);
     m_livesSprite.setPosition(viewTopLeft.x + 20, viewTopLeft.y + 20);
     m_livesSpriteHalf.setPosition(viewTopLeft.x + 50, viewTopLeft.y + 20);   
     m_livesSpriteEmpty.setPosition(viewTopLeft.x + 80, viewTopLeft.y + 20);
-    for(auto& weapon : m_weaponInventory.m_weapons)
+    if (!m_weaponInventory.m_weapons.empty())
     {
-        weapon->update(deltaTime, getPos());
+        for (auto& weapon : m_weaponInventory.m_weapons)
+        {
+            if (weapon) // Ensure the pointer is valid
+            {
+                weapon->update(deltaTime, getPos());
+            }
+        }
     }
     //m_bow.update(deltaTime, getPos());
 }
@@ -50,9 +58,26 @@ void Player::fixedUpdate(float deltaTime, sf::Vector2f mousePos, sf::View& camer
     playerMovement(deltaTime);
     shootBullet(mousePos);
     playerAnimations();
-    for (auto& weapon : m_weaponInventory.m_weapons)
+    if (!m_weaponInventory.m_weapons.empty() && m_weaponInventory.selectedWeapon < m_weaponInventory.m_weapons.size())
     {
-        weapon->fixedUpdate(deltaTime, getPos(), mousePos, cameraView);
+        for (size_t i = 0; i < m_weaponInventory.m_weapons.size(); ++i)
+        {
+            if (i == m_weaponInventory.selectedWeapon)
+            {
+                if (m_weaponInventory.m_weapons[i]) 
+                {
+                    m_weaponInventory.m_weapons[i]->setActive(true);
+                    m_weaponInventory.m_weapons[i]->fixedUpdate(deltaTime, getPos(), mousePos, cameraView);
+                }
+            }
+            else
+            {
+                if (m_weaponInventory.m_weapons[i])
+                {
+                    m_weaponInventory.m_weapons[i]->setActive(false);
+                }
+            }
+        }
     }
     //m_bow.fixedUpdate(deltaTime, getPos(), mousePos, cameraView);
     // loop through the player bullets depending on size and if it goes out of the screen bounds then delete it
@@ -78,7 +103,8 @@ void Player::render(sf::RenderWindow& window, sf::View& cameraViewRef)
     m_weaponInventory.render(window, cameraViewRef);
     for (auto& weapon : m_weaponInventory.m_weapons)
 	{
-		weapon->render(window);
+        if(weapon->isActive)
+		    weapon->render(window);
 	}
     //m_bow.render(window);
     for (Bullet& bullet : m_bulletVector)
@@ -265,6 +291,41 @@ void Player::displayLives()
         m_livesSprite.setTextureRect(sf::IntRect(0, 0, 16, 16));
         m_livesSpriteHalf.setTextureRect(sf::IntRect(0, 0, 16, 16));
         m_livesSpriteEmpty.setTextureRect(sf::IntRect(0, 0, 16, 16));
+    }
+}
+
+void Player::handleWeaponSwitch()
+{
+    int newWeaponIndex = m_weaponInventory.selectedWeapon; 
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
+    {
+        newWeaponIndex = 0;
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
+    {
+        newWeaponIndex = 1;
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
+    {
+        newWeaponIndex = 2;
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4))
+    {
+        newWeaponIndex = 3;
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5))
+    {
+        newWeaponIndex = 4;
+    }
+
+    if (newWeaponIndex < m_weaponInventory.m_weapons.size())
+    {
+        m_weaponInventory.selectedWeapon = newWeaponIndex;
+    }
+    else
+    {
+        std::cout << "Invalid weapon selection: " << newWeaponIndex << std::endl;
     }
 }
 

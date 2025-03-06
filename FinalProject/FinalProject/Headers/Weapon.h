@@ -10,6 +10,9 @@ public:
 	virtual void render(sf::RenderWindow& window) = 0;
 	virtual void fire(sf::Vector2f playerPos, sf::Vector2f mousePos) = 0;
 	virtual sf::Sprite getSprite() = 0;
+	virtual void setActive(bool active) = 0;
+
+	bool isActive = false;
 
 private:
 	sf::Sprite m_sprite;

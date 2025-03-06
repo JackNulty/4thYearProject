@@ -2,6 +2,7 @@
 #include "globals.h"
 #include "Bullet.h"
 #include "Bow.h"
+#include "../Sword.h"
 
 #include "ResourceManager.h"
 #include "Weapon.h"
@@ -31,6 +32,7 @@ private:
 	void shootBullet(sf::Vector2f mousePos); // func for shooting bullet 
 	void playerAnimations(); // func for player animations
 	void displayLives(); // func for displaying player lives
+	void handleWeaponSwitch(); // func for handling weapon switch
 
 	//private vars
 	sf::Texture m_playerTexture; // player texture

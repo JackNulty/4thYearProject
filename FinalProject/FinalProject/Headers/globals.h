@@ -36,3 +36,5 @@ static sf::Texture heavyTexture;
 static sf::Texture archerTexture;
 static sf::Texture bowTexture;
 static sf::Texture uiFrameTexture;
+static sf::Texture iconsTexture;
+static sf::Texture swordAttackTexture;
