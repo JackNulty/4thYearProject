@@ -17,6 +17,15 @@ Sword::Sword()
 	m_swordIcon.setOrigin(m_swordIcon.getGlobalBounds().width / 2, m_swordIcon.getGlobalBounds().height / 2);
 
 	//sword animation frames
+	m_swordFrames.push_back(sf::IntRect(0, 0, 32, 32));
+	m_swordFrames.push_back(sf::IntRect(32, 0, 32, 32));
+	m_swordFrames.push_back(sf::IntRect(64, 0, 32, 32));
+
+	//sword attack
+	m_swordAttack.setTexture(swordAttackTexture);
+	m_swordAttack.setTextureRect(sf::IntRect(0, 0, 32, 32));
+	m_swordAttack.setOrigin(m_swordAttack.getGlobalBounds().width / 2, m_swordAttack.getGlobalBounds().height / 2);
+	m_swordAttack.setScale(2, 2);
 
 	//sword 
 	m_swordSprite.setTexture(iconsTexture);
@@ -46,18 +55,31 @@ void Sword::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::Vector2f mo
 		isAnimating = true;
 		currentFrame = 0;
 		frameCounter = 0;
+		swordAttackFlag = true;
 	}
 	if (isAnimating)
 	{
 		swordAnimation();
 	}
 	rotateAroundPlayer(playerPos, mousePos);
+	m_swordAttack.setPosition(playerPos);
+	m_swordAttack.setRotation(m_swordSprite.getRotation());
+
+	if (!isAnimating && swordAttackFlag)
+	{
+		fire(playerPos, mousePos);
+		swordAttackFlag = false;
+	}
 }
 
 void Sword::render(sf::RenderWindow& window)
 {
 	window.draw(m_swordSprite);
 	window.draw(m_swordIcon);
+	if (isAnimating)
+	{
+		window.draw(m_swordAttack);
+	}
 }
 
 void Sword::fire(sf::Vector2f playerPos, sf::Vector2f mousePos)
@@ -71,6 +93,18 @@ sf::Sprite Sword::getSprite()
 
 void Sword::swordAnimation()
 {
+	frameCounter++;
+	if (frameCounter >= frameDelay)
+	{
+		frameCounter = 0;
+		currentFrame++;
+		if (currentFrame >= m_swordFrames.size())
+		{
+			currentFrame = 0;
+			isAnimating = false;
+		}
+		m_swordAttack.setTextureRect(m_swordFrames[currentFrame]);
+	}
 }
 
 void Sword::rotateAroundPlayer(sf::Vector2f playerPos, sf::Vector2f mousePos)
@@ -82,5 +116,5 @@ void Sword::rotateAroundPlayer(sf::Vector2f playerPos, sf::Vector2f mousePos)
 		direction /= magnitude;
 	}
 	float angle = std::atan2(direction.y, direction.x) * 180 / PI;
-	m_swordSprite.setRotation(angle);
+	m_swordSprite.setRotation(angle + 30);
 }

@@ -20,10 +20,12 @@ private:
 
 	sf::Sprite m_swordSprite;
 	bool isAnimating = false;
-	const int frameDelay = 25; // delay for each frame of animation
+	bool swordAttackFlag = false;
+	const int frameDelay = 15; // delay for each frame of animation
 	int frameCounter = 0; // counter for frame delay
 	int currentFrame = 0; // current frame of animation
 	std::vector<sf::IntRect> m_swordFrames;
 
 	sf::Sprite m_swordIcon;
+	sf::Sprite m_swordAttack;
 };
