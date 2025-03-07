@@ -16,7 +16,7 @@ Bow::Bow()
 	m_bowIcon.setTexture(bowTexture);
 	m_bowIcon.setTextureRect(sf::IntRect(10, 0, 6, 16));
 	m_bowIcon.setScale(5, 5);
-	m_bowIcon.setOrigin(m_bowSprite.getGlobalBounds().width / 2, m_bowSprite.getGlobalBounds().height / 2);
+	//m_bowIcon.setOrigin(m_bowSprite.getGlobalBounds().width / 2, m_bowSprite.getGlobalBounds().height / 2);
 
 	//bow animation frames
 	m_bowFrames.push_back(sf::IntRect(10, 0, 6, 16));

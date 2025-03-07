@@ -7,7 +7,7 @@ Horde::Horde(int maxEnemies, sf::Vector2f centreHorde, HordeFormation startForma
 	positions = generateFormation(maxEnemies, centreHorde, enemySpacing);
 	for (const auto& position : positions)
 	{
-		m_enemies.emplace_back(std::make_unique<Grunt>(position.x, position.y));
+		m_enemies.emplace_back(std::make_unique<Archer>(position.x, position.y));
 	}
 	assignLeader();
 }

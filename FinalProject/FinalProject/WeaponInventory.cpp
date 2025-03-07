@@ -71,7 +71,7 @@ void WeaponInventory::render(sf::RenderWindow& window, const sf::View& cameraVie
 			sf::FloatRect weaponBounds = weaponSprite.getGlobalBounds();
             float weaponX = slotBounds.left + (slotBounds.width / 2) - (weaponBounds.width / 2);
             float weaponY = slotBounds.top + (slotBounds.height / 2) - (weaponBounds.height / 2);
-            weaponSprite.setPosition(weaponX + 17, weaponY + 47); 
+            weaponSprite.setPosition(weaponX, weaponY ); 
 
 			window.draw(weaponSprite);
 		}

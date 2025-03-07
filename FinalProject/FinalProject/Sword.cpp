@@ -12,9 +12,9 @@ Sword::Sword()
 	}
 	//icon
 	m_swordIcon.setTexture(iconsTexture);
-	m_swordIcon.setTextureRect(sf::IntRect(65, 0, 14, 14));
-	m_swordIcon.setScale(5, 5);
-	m_swordIcon.setOrigin(m_swordIcon.getGlobalBounds().width / 2, m_swordIcon.getGlobalBounds().height / 2);
+	m_swordIcon.setTextureRect(sf::IntRect(65, 0, 16, 16));
+	m_swordIcon.setScale(3, 3);
+	//m_swordIcon.setOrigin(m_swordIcon.getGlobalBounds().width / 2, m_swordIcon.getGlobalBounds().height / 2);
 
 	//sword animation frames
 	m_swordFrames.push_back(sf::IntRect(0, 0, 32, 32));
@@ -63,7 +63,7 @@ void Sword::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::Vector2f mo
 	}
 	rotateAroundPlayer(playerPos, mousePos);
 	m_swordAttack.setPosition(playerPos);
-	m_swordAttack.setRotation(m_swordSprite.getRotation());
+	m_swordAttack.setRotation(m_swordSprite.getRotation() - 120);
 
 	if (!isAnimating && swordAttackFlag)
 	{
@@ -75,7 +75,6 @@ void Sword::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::Vector2f mo
 void Sword::render(sf::RenderWindow& window)
 {
 	window.draw(m_swordSprite);
-	window.draw(m_swordIcon);
 	if (isAnimating)
 	{
 		window.draw(m_swordAttack);
@@ -88,7 +87,7 @@ void Sword::fire(sf::Vector2f playerPos, sf::Vector2f mousePos)
 
 sf::Sprite Sword::getSprite()
 {
-	return m_swordSprite;
+	return m_swordIcon;
 }
 
 void Sword::swordAnimation()
