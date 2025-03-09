@@ -5,10 +5,25 @@ Horde::Horde(int maxEnemies, sf::Vector2f centreHorde, HordeFormation startForma
 {
 	m_currentFormation = startFormation;
 	positions = generateFormation(maxEnemies, centreHorde, enemySpacing);
-	for (const auto& position : positions)
-	{
-		m_enemies.emplace_back(std::make_unique<Archer>(position.x, position.y));
-	}
+    std::vector<int> types = enemyTypes(maxEnemies);
+    for (size_t i = 0; i < positions.size(); ++i)
+    {
+		switch (types[i])
+		{
+			case 0:
+				m_enemies.emplace_back(std::make_unique<Archer>(positions[i].x, positions[i].y));
+			break;
+			case 1:
+				m_enemies.emplace_back(std::make_unique<Grunt>(positions[i].x, positions[i].y));
+			break;
+			case 2:
+				m_enemies.emplace_back(std::make_unique<Heavy>(positions[i].x, positions[i].y));
+			break;
+			default:
+				m_enemies.emplace_back(std::make_unique<Archer>(positions[i].x, positions[i].y));
+			break;
+		}
+    }
 	assignLeader();
 }
 
@@ -196,5 +211,17 @@ void Horde::seperation()
 		// add seperation force to each enemies velocity
 		m_enemies[i]->m_velocity += seperationForce;
 	}
+}
+
+std::vector<int> Horde::enemyTypes(int MAX_ENEMIES)
+{
+    std::vector<int> types;
+    types.reserve(MAX_ENEMIES);
+    for (int i = 0; i < MAX_ENEMIES; ++i)
+    {
+        int type = rand() % 3;
+        types.push_back(type);
+    }
+    return types;
 }
 

@@ -29,6 +29,7 @@ public:
 private:
 	std::vector<sf::Vector2f> positions;
 	void seperation();
+	std::vector<int> enemyTypes(int MAX_ENEMIES);
 	float radius = 100.0f;
 	std::weak_ptr<Enemy> m_leader;
 	void assignLeader();
