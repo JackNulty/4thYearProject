@@ -77,6 +77,16 @@ void Game::fixedUpdate(float deltaTime)
             m_player.addLife();
         }
     }
+    for (auto enemy = m_horde.m_enemies.begin(); enemy != m_horde.m_enemies.end();) {
+		if ((*enemy)->isDead())
+		{
+			enemy = m_horde.m_enemies.erase(enemy);
+		}
+		else
+		{
+			enemy++;
+		}
+    }
 }
 
 void Game::update(float deltaTime) 
