@@ -75,7 +75,7 @@ void Archer::drawArrows(sf::RenderWindow& window)
 
 void Archer::dealDamage()
 {
-	isDead = true;
+	m_isDead = true;
 }
 
 void Archer::archerAnimations(sf::Vector2f playerPos)
@@ -90,7 +90,7 @@ void Archer::archerAnimations(sf::Vector2f playerPos)
 			m_sprite.setTextureRect(sf::IntRect(frame.x, frame.y, frameWidth, frameHeight));
 		}
 	}
-	else if (isDead)
+	else if (m_isDead)
 	{
 		if (frameCounter >= frameDelay) {
 			frameCounter = 0;

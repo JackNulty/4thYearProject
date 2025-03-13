@@ -15,8 +15,8 @@ public:
     sf::Vector2f getPos() const { return m_sprite.getPosition(); }
     void setPos(sf::Vector2f pos) { m_sprite.setPosition(pos); }
     bool canAttack() const { return m_attackClock.getElapsedTime().asSeconds() > m_attackCooldown; }
-    void dealDamage();
-    bool isDead() const { return m_isDead; }
+    void dealDamage() override;
+    bool isDead() const override { return m_isDead; }
 
 private:
 

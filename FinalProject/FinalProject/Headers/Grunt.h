@@ -11,6 +11,8 @@ public:
 	sf::FloatRect getBounds() const override;
     sf::Vector2f getPos() const { return m_sprite.getPosition(); }
     void setPos(sf::Vector2f pos) { m_sprite.setPosition(pos); }
+    void dealDamage() override;
+    bool isDead() const override { return m_isDead; }
 
 private:
     void gruntAnimations();
@@ -19,5 +21,6 @@ private:
     int currentFrame = 0;
     int frameWidth = 32;
     int frameHeight = 32;
+    bool m_isDead = false;
 };
 

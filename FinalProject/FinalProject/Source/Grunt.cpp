@@ -38,6 +38,11 @@ sf::FloatRect Grunt::getBounds() const
     return m_sprite.getGlobalBounds();
 }
 
+void Grunt::dealDamage()
+{
+    m_isDead = true;
+}
+
 void Grunt::gruntAnimations() {
     frameCounter++;
     if (frameCounter >= frameDelay) {

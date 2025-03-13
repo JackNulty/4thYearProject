@@ -9,6 +9,8 @@ public:
     virtual void fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::View& cameraView) = 0;
     virtual void render(sf::RenderWindow& window);
     virtual void attack(sf::Vector2f playerPos) = 0;
+    virtual void dealDamage() = 0;
+    virtual bool isDead() const = 0;
 
     virtual sf::FloatRect getBounds() const = 0;
     virtual sf::Vector2f getPos() const = 0;

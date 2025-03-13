@@ -63,8 +63,8 @@ void Game::fixedUpdate(float deltaTime)
     m_player.fixedUpdate(deltaTime, window.mapPixelToCoords(sf::Mouse::getPosition(window)), cameraView);
     m_gameWorld.fixedUpdate(deltaTime);
     m_horde.fixedUpdate(deltaTime, m_player.getPos(), cameraView);
-	m_heavy.fixedUpdate(deltaTime, m_player.getPos(), cameraView);
-    m_archer.fixedUpdate(deltaTime, m_player.getPos(), cameraView);
+	//m_heavy.fixedUpdate(deltaTime, m_player.getPos(), cameraView);
+    //m_archer.fixedUpdate(deltaTime, m_player.getPos(), cameraView);
     handleBulletCollisions();
     handleArrowCollisions();
     playerCollision();
@@ -84,9 +84,9 @@ void Game::update(float deltaTime)
     //std::cout << "Regular Update: " << deltaTime << " seconds\n";
     m_player.update(deltaTime, window.mapPixelToCoords(sf::Mouse::getPosition(window)), cameraView);
     m_gameWorld.update(deltaTime);
-    m_archer.update(deltaTime);
+    //m_archer.update(deltaTime);
     m_horde.update(deltaTime);
-	m_heavy.update(deltaTime);
+	//m_heavy.update(deltaTime);
     cameraView.setCenter(m_player.getPos());
 }
 
@@ -97,9 +97,9 @@ void Game::render()
     m_gameWorld.render(window);
     m_player.render(window, cameraView);
     m_horde.render(window);
-	m_heavy.render(window);
-    m_archer.render(window);
-    m_archer.drawArrows(window);
+	//m_heavy.render(window);
+    //m_archer.render(window);
+    //m_archer.drawArrows(window);
     ResourceManager::getParticleManager().render(window);
     window.display();
 }
@@ -115,20 +115,31 @@ void Game::handleBulletCollisions()
         for (auto enemy = m_horde.m_enemies.begin(); enemy != m_horde.m_enemies.end();) {
             if (bullet->getBounds().intersects((*enemy)->getBounds())) {
                 std::cout << "Grunt hit" << std::endl;
+
+                (*enemy)->dealDamage();
+
                 ParticleManager& particleManager = ResourceManager::getParticleManager();
                 std::shared_ptr<ParticleSystem> system = particleManager.addParticleSystem(
                     "grunt_hit", 25, (*enemy)->getPos());
                 system->configure(200.f, 0.4f, 2.f, sf::Color::Red);
                 std::cout << "Added new particle system: grunt_hit\n";
-                // If the enemy is the leader assign a new leader
-                bool wasLeader = (enemy->get() == m_horde.getLeader().lock().get());
-                enemy = m_horde.m_enemies.erase(enemy);
-                if (wasLeader)
+
+                if ((*enemy)->isDead())
                 {
-                    m_horde.setLeader();  // Change leader
+                    // If the enemy is the leader assign a new leader
+                    bool wasLeader = (enemy->get() == m_horde.getLeader().lock().get());
+                    enemy = m_horde.m_enemies.erase(enemy);
+
+                    if (wasLeader) {
+                        m_horde.setLeader();
+                    }
+                }
+                else
+                {
+                    enemy++;
                 }
                 bulletHit = true;
-                break; 
+                break;
             }
             else {
                 enemy++;
@@ -165,20 +176,31 @@ void Game::handleArrowCollisions()
 		for (auto enemy = m_horde.m_enemies.begin(); enemy != m_horde.m_enemies.end();) {
 			if (arrow->getBounds().intersects((*enemy)->getBounds())) {
 				std::cout << "Grunt hit" << std::endl;
+
+                (*enemy)->dealDamage();
+
                 ParticleManager& particleManager = ResourceManager::getParticleManager();
                 std::shared_ptr<ParticleSystem> system = particleManager.addParticleSystem(
                     "grunt_hit", 10, (*enemy)->getPos());
                 system->configure(200.f, 0.4f, 1.f, sf::Color::Red);
                 std::cout << "Added new particle system: grunt_hit\n";
-                // If the enemy is the leader assign a new leader
-                bool wasLeader = (enemy->get() == m_horde.getLeader().lock().get());
-                enemy = m_horde.m_enemies.erase(enemy);
-                if (wasLeader)
+
+                if ((*enemy)->isDead())
                 {
-                    m_horde.setLeader();  // Change leader
+                    // If the enemy is the leader assign a new leader
+                    bool wasLeader = (enemy->get() == m_horde.getLeader().lock().get());
+                    enemy = m_horde.m_enemies.erase(enemy);
+
+                    if (wasLeader) {
+                        m_horde.setLeader();
+                    }
                 }
-				arrowHit = true;
-				break;
+                else
+                {
+                    enemy++;
+                }
+                arrowHit = true;
+                break;
 			}
 			else {
 				enemy++;
@@ -220,40 +242,18 @@ void Game::handleArrowCollisions()
 
 }
 
-void Game::spawnWave()
-{
-    waveNum++;
-    // increase enemies by 10% every wave
-    int newEnemyCount = enemyCount * std::pow(1.1, waveNum - 1);
-    std::cout << "Wave " << waveNum << "now spawning " << newEnemyCount << " enemies in next wave" << std::endl;
-    HordeFormation Formation;
-    // cycle through formations 
-    if (waveNum % 3 == 0)
-        Formation = HordeFormation::Circle;
-    else if (waveNum % 3 == 2)
-        Formation = HordeFormation::Grid;
-    else
-        Formation = HordeFormation::Cluster;
-    m_horde = Horde(newEnemyCount, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), Formation, enemySpacing);
-}
-
 void Game::playerCollision()
 {
     // iterator based loop for enemies to check if player collides with enemies
     for (auto enemy = m_horde.m_enemies.begin(); enemy != m_horde.m_enemies.end();) {
-		if (m_player.getBounds().intersects((*enemy)->getBounds())) {
-			std::cout << "Player hit" << std::endl;
-            m_player.removeLife();
-            // If the enemy is the leader assign a new leader
-            bool wasLeader = (enemy->get() == m_horde.getLeader().lock().get());
-            enemy = m_horde.m_enemies.erase(enemy);
-            if (wasLeader)
-            {
-                m_horde.setLeader();  // Change leader
-            }
-		}
-        else {
-            ++enemy;
+        if (m_player.getBounds().intersects((*enemy)->getBounds()))
+        {
+            (*enemy)->attack(m_player.getPos()); 
+            enemy++;
+        }
+        else
+        {
+            enemy++;
         }
 	}
     if(m_heavy.getBounds().intersects(m_player.getBounds()))
@@ -275,4 +275,21 @@ void Game::playerCollision()
             arrow++;
         }
     }
+}
+
+void Game::spawnWave()
+{
+    waveNum++;
+    // increase enemies by 10% every wave
+    int newEnemyCount = enemyCount * std::pow(1.1, waveNum - 1);
+    std::cout << "Wave " << waveNum << "now spawning " << newEnemyCount << " enemies in next wave" << std::endl;
+    HordeFormation Formation;
+    // cycle through formations 
+    if (waveNum % 3 == 0)
+        Formation = HordeFormation::Circle;
+    else if (waveNum % 3 == 2)
+        Formation = HordeFormation::Grid;
+    else
+        Formation = HordeFormation::Cluster;
+    m_horde = Horde(newEnemyCount, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), Formation, enemySpacing);
 }

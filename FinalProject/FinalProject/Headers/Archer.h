@@ -17,8 +17,8 @@ public:
 	void setPos(sf::Vector2f pos) { m_sprite.setPosition(pos); }
 	void drawArrows(sf::RenderWindow& window);
 	std::vector<Arrow>& getArrowVector() { return m_arrowVector; }
-	bool isDeadCheck() { return killFlag; }
-	void dealDamage();
+	bool isDead() const override { return killFlag; }
+	void dealDamage() override;
 
 private:
 	void archerAnimations(sf::Vector2f playerPos);
@@ -38,7 +38,7 @@ private:
 	int m_currentMoveFrame = 0;
 	int m_currentAttackFrame = 0;
 	int m_currentDeathFrame = 0;
-	bool isDead = false;
+	bool m_isDead = false;
 	bool killFlag = false;
 
 	sf::Clock m_attackClock;
