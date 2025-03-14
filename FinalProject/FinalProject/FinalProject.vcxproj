@@ -184,6 +184,7 @@
     <ClInclude Include="Headers\Bow.h" />
     <ClInclude Include="Headers\SeekBehaviour.h" />
     <ClInclude Include="Headers\Weapon.h" />
+    <ClInclude Include="PlayerPosition.h" />
     <ClInclude Include="Sword.h" />
     <ClInclude Include="WeaponInventory.h" />
   </ItemGroup>

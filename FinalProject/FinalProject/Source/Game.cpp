@@ -101,7 +101,7 @@ void Game::update(float deltaTime)
     m_player.update(deltaTime, window.mapPixelToCoords(sf::Mouse::getPosition(window)), cameraView);
     m_gameWorld.update(deltaTime);
     //m_archer.update(deltaTime);
-    m_horde.update(deltaTime);
+    m_horde.update(deltaTime, m_player.getPos());
 	//m_heavy.update(deltaTime);
     cameraView.setCenter(m_player.getPos());
 }

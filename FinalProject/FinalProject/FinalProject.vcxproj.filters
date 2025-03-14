@@ -185,5 +185,8 @@
     <ClInclude Include="Sword.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerPosition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

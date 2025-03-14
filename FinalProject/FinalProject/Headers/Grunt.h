@@ -5,7 +5,7 @@
 class Grunt : public Enemy {
 public:
     Grunt(float x, float y);
-    void update(float deltaTime) override;
+    void update(float deltaTime, sf::Vector2f playerPos) override;
     void fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::View& cameraView) override;
     void attack(sf::Vector2f playerPos) override;
 	sf::FloatRect getBounds() const override;

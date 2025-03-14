@@ -13,7 +13,7 @@ Grunt::Grunt(float x, float y)
     m_sprite.setScale(2, 2);
 }
 
-void Grunt::update(float deltaTime) {
+void Grunt::update(float deltaTime, sf::Vector2f playerPos) {
     gruntAnimations();
 }
 

@@ -13,9 +13,9 @@ Heavy::Heavy(float x, float y)
 	fillAttackFrames();
 }
 
-void Heavy::update(float deltaTime)
+void Heavy::update(float deltaTime, sf::Vector2f playerPos)
 {
-	heavyAnimations();
+	heavyAnimations(playerPos);
 }
 
 void Heavy::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::View& cameraView)
@@ -37,6 +37,27 @@ void Heavy::attack(sf::Vector2f playerPos)
 	{
 		isAttacking = true;
 		m_attackClock.restart();
+        PlayerPosition playerDirection = checkPLayerPosition(playerPos);
+
+        switch (playerDirection)
+        {
+        case PlayerPosition::Left:
+            m_sprite.setScale(-3, 3);
+			m_currentAttackFrameVector = m_attackFramesLR;
+            break;
+        case PlayerPosition::Right:
+            m_sprite.setScale(3, 3);
+			m_currentAttackFrameVector = m_attackFramesLR;
+            break;
+        case PlayerPosition::Above:
+            m_sprite.setScale(3, 3);
+			m_currentAttackFrameVector = m_attackFramesUp;
+            break;
+        case PlayerPosition::Below:
+            m_sprite.setScale(3, 3);
+			m_currentAttackFrameVector = m_attackFramesDown;
+            break;
+        }
 	}
 }
 
@@ -56,15 +77,34 @@ void Heavy::dealDamage()
     }
 }
 
-void Heavy::heavyAnimations()
+void Heavy::heavyAnimations(sf::Vector2f playerPos)
 {
     frameCounter++;
     if (!isAttacking)
     {
+        PlayerPosition playerDirection = checkPLayerPosition(playerPos);
         if (frameCounter >= frameDelay) {
             frameCounter = 0;
             currentFrame = (currentFrame + 1) % 6;
-            m_sprite.setTextureRect(sf::IntRect(currentFrame * frameWidth, 96, frameWidth, frameHeight));
+
+            int textureY = 128;
+
+            switch (playerDirection) {
+            case PlayerPosition::Left:
+                m_sprite.setScale(-3, 3);
+                break;
+            case PlayerPosition::Right:
+                m_sprite.setScale(3, 3);
+                break;
+            case PlayerPosition::Above:
+                textureY = 66;  
+                break;
+            case PlayerPosition::Below:
+                textureY = 96;  
+                break;
+            }
+
+            m_sprite.setTextureRect(sf::IntRect(currentFrame * frameWidth, textureY, frameWidth, frameHeight));
         }
     }
     else if (takeDamage)
@@ -83,8 +123,8 @@ void Heavy::heavyAnimations()
     {
         if (frameCounter >= frameDelay) {
             frameCounter = 0;
-            m_currentAttackFrame = (m_currentAttackFrame + 1) % m_attackFrames.size();
-            sf::Vector2f frame = m_attackFrames[m_currentAttackFrame];
+            m_currentAttackFrame = (m_currentAttackFrame + 1) % m_attackFramesLR.size();
+            sf::Vector2f frame = m_currentAttackFrameVector[m_currentAttackFrame];
             m_sprite.setTextureRect(sf::IntRect(frame.x, frame.y, frameWidth, frameHeight));
             if (m_currentAttackFrame == 0) {
                 isAttacking = false;
@@ -93,16 +133,57 @@ void Heavy::heavyAnimations()
     }
 }
 
+PlayerPosition Heavy::checkPLayerPosition(sf::Vector2f playerPos)
+{
+    sf::Vector2f heavyPos = m_sprite.getPosition();
+
+    float xDifference = playerPos.x - heavyPos.x;
+    float yDifference = playerPos.y - heavyPos.y;
+
+    if (std::abs(xDifference) > std::abs(yDifference)) {
+        // Player is more to the left or right
+        if (xDifference < 0)
+            return PlayerPosition::Left;
+        else
+            return PlayerPosition::Right;
+    }
+    else {
+        // Player is more above or below
+        if (xDifference < 0)
+            return PlayerPosition::Above;
+        else
+            return PlayerPosition::Below;
+    }
+}
+
 void Heavy::fillAttackFrames()
 {
-	m_attackFrames.push_back(sf::Vector2f(18, 209));
-	m_attackFrames.push_back(sf::Vector2f(83, 209));
-	m_attackFrames.push_back(sf::Vector2f(149, 209));
-	m_attackFrames.push_back(sf::Vector2f(213, 209));
-	m_attackFrames.push_back(sf::Vector2f(277, 209));
-	m_attackFrames.push_back(sf::Vector2f(341, 209));	
-	m_attackFrames.push_back(sf::Vector2f(405, 209));
-	m_attackFrames.push_back(sf::Vector2f(469, 209));
+	m_attackFramesLR.push_back(sf::Vector2f(18, 275));
+	m_attackFramesLR.push_back(sf::Vector2f(83, 275));
+	m_attackFramesLR.push_back(sf::Vector2f(149, 275));
+	m_attackFramesLR.push_back(sf::Vector2f(213, 275));
+	m_attackFramesLR.push_back(sf::Vector2f(277, 275));
+	m_attackFramesLR.push_back(sf::Vector2f(341, 275));
+	m_attackFramesLR.push_back(sf::Vector2f(405, 275));
+	m_attackFramesLR.push_back(sf::Vector2f(469, 275));
+
+	m_attackFramesUp.push_back(sf::Vector2f(18, 209));
+	m_attackFramesUp.push_back(sf::Vector2f(83, 209));
+	m_attackFramesUp.push_back(sf::Vector2f(149, 209));
+	m_attackFramesUp.push_back(sf::Vector2f(213, 209));
+	m_attackFramesUp.push_back(sf::Vector2f(277, 209));
+	m_attackFramesUp.push_back(sf::Vector2f(341, 209));
+	m_attackFramesUp.push_back(sf::Vector2f(405, 209));
+	m_attackFramesUp.push_back(sf::Vector2f(469, 209));
+
+	m_attackFramesDown.push_back(sf::Vector2f(18, 337));
+	m_attackFramesDown.push_back(sf::Vector2f(83, 337));
+	m_attackFramesDown.push_back(sf::Vector2f(149, 337));
+	m_attackFramesDown.push_back(sf::Vector2f(213, 337));
+	m_attackFramesDown.push_back(sf::Vector2f(277, 337));
+	m_attackFramesDown.push_back(sf::Vector2f(341, 337));
+	m_attackFramesDown.push_back(sf::Vector2f(405, 337));  
+	m_attackFramesDown.push_back(sf::Vector2f(469, 337));
 
     m_damageFrames.push_back(sf::Vector2f(5, 418));
     m_damageFrames.push_back(sf::Vector2f(37, 418));

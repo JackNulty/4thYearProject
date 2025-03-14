@@ -14,7 +14,7 @@ Archer::Archer(float x, float y)
 	fillFrames();
 }
 
-void Archer::update(float deltaTime)
+void Archer::update(float deltaTime, sf::Vector2f playerPos)
 {
 
 }

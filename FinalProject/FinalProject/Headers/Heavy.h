@@ -8,7 +8,7 @@ class Heavy : public Enemy
 {
 public:
 	Heavy(float x, float y);
-	void update(float deltaTime) override;
+	void update(float deltaTime, sf::Vector2f playerPos) override;
 	void fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::View& cameraView) override;
     void attack(sf::Vector2f playerPos) override;
     sf::FloatRect getBounds() const override;
@@ -20,7 +20,7 @@ public:
 
 private:
 
-    void heavyAnimations();
+    void heavyAnimations(sf::Vector2f playerPos);
     int frameDelay = 415;
     int frameCounter = 0;
     int currentFrame = 0;
@@ -33,9 +33,14 @@ private:
     std::vector<sf::Vector2f> m_damageFrames;
     int m_currentDamageFrame;
 
+	PlayerPosition checkPLayerPosition(sf::Vector2f playerPos);
+
     sf::Clock m_attackClock;
     float m_attackCooldown = 1.0f;
-    std::vector<sf::Vector2f> m_attackFrames;
+    std::vector<sf::Vector2f> m_attackFramesLR;
+	std::vector<sf::Vector2f> m_attackFramesUp;
+	std::vector<sf::Vector2f> m_attackFramesDown;
+	std::vector<sf::Vector2f> m_currentAttackFrameVector;
     int m_currentAttackFrame;
     void fillAttackFrames();
 

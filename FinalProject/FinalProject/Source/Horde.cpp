@@ -100,13 +100,13 @@ std::vector<sf::Vector2f> Horde::generateFormation(int maxEnemies, sf::Vector2f 
 
 }
 
-void Horde::update(float deltaTime)
+void Horde::update(float deltaTime, sf::Vector2f playerPos)
 {
 	if (m_formationClock.getElapsedTime().asSeconds() >= 5.0f)
 	{
 		for (auto& enemy : m_enemies)
 		{
-			enemy->update(deltaTime);
+			enemy->update(deltaTime, playerPos);
 		}
 	}
 }
@@ -199,7 +199,7 @@ void Horde::seperation()
 				// get the vector and distance between the currrent enemy and get the seperation force of them 
 				sf::Vector2f vectorBetween = m_enemies[i]->getPos() - m_enemies[index]->getPos();
 				float distanceBetween = std::sqrt(vectorBetween.x * vectorBetween.x + vectorBetween.y * vectorBetween.y);
-				if (distanceBetween < 30.0f && distanceBetween > 0.0f)
+				if (distanceBetween < 80.0f && distanceBetween > 0.0f)
 				{
 					seperationForce += vectorBetween / distanceBetween;
 				}
