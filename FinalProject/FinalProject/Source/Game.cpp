@@ -78,10 +78,16 @@ void Game::fixedUpdate(float deltaTime)
         }
     }
     for (auto enemy = m_horde.m_enemies.begin(); enemy != m_horde.m_enemies.end();) {
-		if ((*enemy)->isDead())
-		{
-			enemy = m_horde.m_enemies.erase(enemy);
-		}
+        auto leader = m_horde.getLeader().lock();
+        if ((*enemy)->isDead())
+        {
+            bool wasLeader = (leader && enemy->get() == leader.get());
+            enemy = m_horde.m_enemies.erase(enemy);
+
+            if (wasLeader) {
+                m_horde.setLeader();
+            }
+        }
 		else
 		{
 			enemy++;
@@ -134,19 +140,15 @@ void Game::handleBulletCollisions()
                 system->configure(200.f, 0.4f, 2.f, sf::Color::Red);
                 std::cout << "Added new particle system: grunt_hit\n";
 
+                auto leader = m_horde.getLeader().lock();
                 if ((*enemy)->isDead())
                 {
-                    // If the enemy is the leader assign a new leader
-                    bool wasLeader = (enemy->get() == m_horde.getLeader().lock().get());
+                    bool wasLeader = (leader && enemy->get() == leader.get());
                     enemy = m_horde.m_enemies.erase(enemy);
 
                     if (wasLeader) {
                         m_horde.setLeader();
                     }
-                }
-                else
-                {
-                    enemy++;
                 }
                 bulletHit = true;
                 break;
@@ -195,10 +197,10 @@ void Game::handleArrowCollisions()
                 system->configure(200.f, 0.4f, 1.f, sf::Color::Red);
                 std::cout << "Added new particle system: grunt_hit\n";
 
+                auto leader = m_horde.getLeader().lock();
                 if ((*enemy)->isDead())
                 {
-                    // If the enemy is the leader assign a new leader
-                    bool wasLeader = (enemy->get() == m_horde.getLeader().lock().get());
+                    bool wasLeader = (leader && enemy->get() == leader.get());
                     enemy = m_horde.m_enemies.erase(enemy);
 
                     if (wasLeader) {
