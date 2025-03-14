@@ -81,7 +81,7 @@ void Archer::dealDamage()
 void Archer::archerAnimations(sf::Vector2f playerPos)
 {
 	frameCounter++;
-	if (!isAttacking)
+	if (!isAttacking && !m_isDead)
 	{
 		if (frameCounter >= frameDelay) {
 			frameCounter = 0;
