@@ -149,4 +149,9 @@ void Bow::fire(sf::Vector2f playerPos, sf::Vector2f mousePos)
 		m_arrowVector.erase(m_arrowVector.begin());
 		m_arrowVector.emplace_back(playerPos, arrowSpeed, direction, m_arrowSprite.getRotation());
 	}
+	ParticleManager& particleManager = ResourceManager::getParticleManager();
+	std::shared_ptr<ParticleSystem> system = particleManager.addParticleSystem(
+		"arrow_fired", 25, playerPos);
+	system->configure(200.f, 0.4f, 2.f, sf::Color::Red);
+	std::cout << "Added new particle system: arrow_fired\n";
 }

@@ -2,6 +2,7 @@
 #include "globals.h"
 #include "Arrow.h"
 #include "Weapon.h"
+#include "ResourceManager.h"
 
 
 class Bow : public Weapon

@@ -97,8 +97,8 @@ void ParticleSystem::emitParticles()
 			}
 			else if (m_id == "arrow_fired")
 			{
-				angle = 270 * PI / 180.0f; // Consistent downward motion
-				particle.velocity.x *= 0.1f; // Slight horizontal drift
+				angle = 270 * PI / 180.0f;
+				particle.velocity.x *= 0.1f; 
 			}
 			else {
 				angle = (std::rand() % 360) * PI / 180.0f;
