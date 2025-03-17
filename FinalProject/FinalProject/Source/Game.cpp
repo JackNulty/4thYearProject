@@ -261,6 +261,7 @@ void Game::playerCollision()
         if (m_player.getBounds().intersects((*enemy)->getBounds()))
         {
             (*enemy)->attack(m_player.getPos()); 
+            m_player.removeLife();
             enemy++;
         }
         else
