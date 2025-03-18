@@ -42,6 +42,7 @@ private:
     void render();
     void handleBulletCollisions();
     void handleArrowCollisions();
+    void handleSwordCollisions();
     void spawnWave();
     void playerCollision();
 };

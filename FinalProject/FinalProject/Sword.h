@@ -13,6 +13,8 @@ public:
 	void fire(sf::Vector2f playerPos, sf::Vector2f mousePos) override;
 	sf::Sprite getSprite() override;
 	void setActive(bool active) override { isActive = active; }
+	bool getAttackFlag() { return swordAttackFlag; }
+	sf::FloatRect getBounds() {return m_swordAttack.getGlobalBounds();}
 
 private:
 	void swordAnimation();

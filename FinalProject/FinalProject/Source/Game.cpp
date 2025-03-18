@@ -67,6 +67,7 @@ void Game::fixedUpdate(float deltaTime)
     //m_archer.fixedUpdate(deltaTime, m_player.getPos(), cameraView);
     handleBulletCollisions();
     handleArrowCollisions();
+    handleSwordCollisions();
     playerCollision();
     m_archer.attack(m_player.getPos());
     if (m_horde.m_enemies.empty())
@@ -257,6 +258,52 @@ void Game::handleArrowCollisions()
 		}
 	}
 
+}
+
+void Game::handleSwordCollisions()
+{
+    //use dynamic cast to get the selected weapon to get its unique type
+    auto* selectedWeapon = m_player.m_weaponInventory.getSelectedWeapon();
+    Sword* sword = dynamic_cast<Sword*>(selectedWeapon);
+    if(!sword)
+	{
+		std::cout << "No sword equipped skipping sword collision checks.\n";
+		return;
+	}
+    for (auto enemy = m_horde.m_enemies.begin(); enemy != m_horde.m_enemies.end();)
+	{
+		if (sword->getBounds().intersects((*enemy)->getBounds()) && sword->getAttackFlag())
+		{
+			std::cout << "Grunt hit" << std::endl;
+
+			(*enemy)->dealDamage();
+
+			ParticleManager& particleManager = ResourceManager::getParticleManager();
+			std::shared_ptr<ParticleSystem> system = particleManager.addParticleSystem(
+				"grunt_hit", 10, (*enemy)->getPos());
+			system->configure(200.f, 0.4f, 1.f, sf::Color::Red);
+			std::cout << "Added new particle system: grunt_hit\n";
+
+			auto leader = m_horde.getLeader().lock();
+			if ((*enemy)->isDead())
+			{
+				bool wasLeader = (leader && enemy->get() == leader.get());
+				enemy = m_horde.m_enemies.erase(enemy);
+
+				if (wasLeader) {
+					m_horde.setLeader();
+				}
+			}
+			else
+			{
+				enemy++;
+			}
+		}
+		else
+		{
+			enemy++;
+		}
+	}
 }
 
 void Game::playerCollision()
