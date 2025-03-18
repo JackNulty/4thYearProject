@@ -3,6 +3,13 @@
 #include "Behaviour.h"
 #include "PlayerPosition.h"
 
+enum class EnemyType
+{
+	Archer,
+	Grunt,
+	Heavy
+};
+
 class Enemy {
 public:
     Enemy(float x, float y, float speed);
@@ -12,6 +19,7 @@ public:
     virtual void attack(sf::Vector2f playerPos) = 0;
     virtual void dealDamage() = 0;
     virtual bool isDead() const = 0;
+    virtual EnemyType getType() const = 0;
 
     virtual sf::FloatRect getBounds() const = 0;
     virtual sf::Vector2f getPos() const = 0;

@@ -79,6 +79,11 @@ void Game::fixedUpdate(float deltaTime)
     }
     for (auto enemy = m_horde.m_enemies.begin(); enemy != m_horde.m_enemies.end();) {
         auto leader = m_horde.getLeader().lock();
+        if((*enemy)->getType() == EnemyType::Archer)
+		{
+			auto archer = dynamic_cast<Archer*>(enemy->get());
+			archer->attack(m_player.getPos());
+		}
         if ((*enemy)->isDead())
         {
             bool wasLeader = (leader && enemy->get() == leader.get());
@@ -258,6 +263,21 @@ void Game::playerCollision()
 {
     // iterator based loop for enemies to check if player collides with enemies
     for (auto enemy = m_horde.m_enemies.begin(); enemy != m_horde.m_enemies.end();) {
+        if ((*enemy)->getType() == EnemyType::Archer)
+        {
+            auto archer = dynamic_cast<Archer*>(enemy->get());
+            for(auto arrow = archer->getArrowVector().begin(); arrow != archer->getArrowVector().end();)
+			{
+				if (arrow->getBounds().intersects(m_player.getBounds()))
+				{
+					m_player.removeLife();
+					arrow = archer->getArrowVector().erase(arrow);
+				}
+				else {
+					arrow++;
+				}
+			}
+        }
         if (m_player.getBounds().intersects((*enemy)->getBounds()))
         {
             (*enemy)->attack(m_player.getPos()); 

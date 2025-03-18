@@ -17,6 +17,7 @@ public:
     bool canAttack() const { return m_attackClock.getElapsedTime().asSeconds() > m_attackCooldown; }
     void dealDamage() override;
     bool isDead() const override { return m_isDead; }
+    EnemyType getType() const override { return EnemyType::Heavy; }
 
 private:
 

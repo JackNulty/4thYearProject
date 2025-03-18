@@ -19,6 +19,7 @@ public:
 	std::vector<Arrow>& getArrowVector() { return m_arrowVector; }
 	bool isDead() const override { return killFlag; }
 	void dealDamage() override;
+	EnemyType getType() const override { return EnemyType::Archer; }
 
 private:
 	void archerAnimations(sf::Vector2f playerPos);

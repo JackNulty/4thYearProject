@@ -13,6 +13,7 @@ public:
     void setPos(sf::Vector2f pos) { m_sprite.setPosition(pos); }
     void dealDamage() override;
     bool isDead() const override { return m_isDead; }
+    EnemyType getType() const override { return EnemyType::Grunt; }
 
 private:
     void gruntAnimations();

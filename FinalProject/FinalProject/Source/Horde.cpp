@@ -143,6 +143,11 @@ void Horde::render(sf::RenderWindow& window)
 {
 	for (auto& enemy : m_enemies)
 	{
+		if(enemy->getType() == EnemyType::Archer)
+		{
+			Archer* archer = dynamic_cast<Archer*>(enemy.get());
+			archer->drawArrows(window);
+		}
 		enemy->render(window);
 	}
 }
