@@ -119,6 +119,17 @@ void Heavy::heavyAnimations(sf::Vector2f playerPos)
             }
         }
 	}
+    else if(m_isDead)
+	{
+		if (frameCounter >= frameDelay) {
+			frameCounter = 0;
+			m_sprite.setTextureRect(sf::IntRect(m_deathFrames[m_currentDeathFrame].x, m_deathFrames[m_currentDeathFrame].y, frameWidth, frameHeight));
+			m_currentDeathFrame++;
+			if (m_currentDeathFrame >= m_deathFrames.size()) {
+				m_killFlag = true;
+			}
+		}
+	}
     else
     {
         if (frameCounter >= frameDelay) {
@@ -189,4 +200,9 @@ void Heavy::fillAttackFrames()
     m_damageFrames.push_back(sf::Vector2f(37, 418));
     m_damageFrames.push_back(sf::Vector2f(69, 418));
     m_damageFrames.push_back(sf::Vector2f(101, 418));
+
+    m_deathFrames.push_back(sf::Vector2f(5, 386));
+    m_deathFrames.push_back(sf::Vector2f(39, 386));
+    m_deathFrames.push_back(sf::Vector2f(71, 386));
+    m_deathFrames.push_back(sf::Vector2f(102, 386));
 }	

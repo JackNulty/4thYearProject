@@ -16,7 +16,7 @@ public:
     void setPos(sf::Vector2f pos) { m_sprite.setPosition(pos); }
     bool canAttack() const { return m_attackClock.getElapsedTime().asSeconds() > m_attackCooldown; }
     void dealDamage() override;
-    bool isDead() const override { return m_isDead; }
+    bool isDead() const override { return m_killFlag; }
     EnemyType getType() const override { return EnemyType::Heavy; }
 
 private:
@@ -30,6 +30,7 @@ private:
 
     int m_health = 5;
     bool m_isDead = false;
+    bool m_killFlag = false;
     bool takeDamage = false;
     std::vector<sf::Vector2f> m_damageFrames;
     int m_currentDamageFrame;
@@ -42,7 +43,9 @@ private:
 	std::vector<sf::Vector2f> m_attackFramesUp;
 	std::vector<sf::Vector2f> m_attackFramesDown;
 	std::vector<sf::Vector2f> m_currentAttackFrameVector;
+    std::vector<sf::Vector2f> m_deathFrames;
     int m_currentAttackFrame;
+    int m_currentDeathFrame;
     void fillAttackFrames();
 
     bool isAttacking = false;

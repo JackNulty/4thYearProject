@@ -11,6 +11,7 @@ Grunt::Grunt(float x, float y)
     m_sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
     m_sprite.setOrigin(m_sprite.getGlobalBounds().width / 2, m_sprite.getGlobalBounds().height / 2);
     m_sprite.setScale(2, 2);
+    fillFrames();
 }
 
 void Grunt::update(float deltaTime, sf::Vector2f playerPos) {
@@ -45,9 +46,30 @@ void Grunt::dealDamage()
 
 void Grunt::gruntAnimations() {
     frameCounter++;
-    if (frameCounter >= frameDelay) {
-        frameCounter = 0;
-        currentFrame = (currentFrame + 1) % 6;
-        m_sprite.setTextureRect(sf::IntRect(currentFrame * frameWidth, 96, frameWidth, frameHeight));
+    if (m_isDead)
+    {
+        if (frameCounter >= frameDelay) {
+            frameCounter = 0;
+            m_sprite.setTextureRect(sf::IntRect(m_deathFrames[m_currentDeathFrame].x, m_deathFrames[m_currentDeathFrame].y, frameWidth, frameHeight));
+            m_currentDeathFrame++;
+            if (m_currentDeathFrame >= m_deathFrames.size()) {
+                m_killFlag = true;
+            }
+        }
+	}
+    else {
+        if (frameCounter >= frameDelay) {
+            frameCounter = 0;
+            currentFrame = (currentFrame + 1) % 6;
+            m_sprite.setTextureRect(sf::IntRect(currentFrame * frameWidth, 96, frameWidth, frameHeight));
+        }
     }
+}
+
+void Grunt::fillFrames()
+{
+    for (int i = 0; i < 4; i++)
+	{
+		m_deathFrames.push_back(sf::Vector2f(i * frameWidth, 192));
+	}
 }
