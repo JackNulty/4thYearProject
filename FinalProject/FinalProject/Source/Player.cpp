@@ -56,7 +56,7 @@ void Player::update(float deltaTime, sf::Vector2f mousePos, sf::View& cameraView
 void Player::fixedUpdate(float deltaTime, sf::Vector2f mousePos, sf::View& cameraView)
 {
     playerMovement(deltaTime);
-    shootBullet(mousePos);
+    //shootBullet(mousePos);
     playerAnimations();
     if (!m_weaponInventory.m_weapons.empty() && m_weaponInventory.selectedWeapon < m_weaponInventory.m_weapons.size())
     {
