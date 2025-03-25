@@ -52,6 +52,12 @@ void Shuriken::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::Vector2f
 	else {
 		m_shurikenSprite.setPosition(playerPos);
 	}
+
+	if (cooldownTimer > 0)
+	{
+		cooldownTimer -= deltaTime; 
+		if (cooldownTimer < 0) cooldownTimer = 0;
+	}
 }
 
 sf::Sprite Shuriken::getSprite()
@@ -97,6 +103,7 @@ bool Shuriken::checkBounds(const sf::View& cameraView)
 void Shuriken::fire(sf::Vector2f playerPos, sf::Vector2f mousePos)
 {
 	shootShurikenFlag = true;
+	hitCount = 0;
 	m_shurikenSprite.setPosition(playerPos);
 
 	sf::Vector2f direction = mousePos - playerPos;
@@ -107,4 +114,25 @@ void Shuriken::fire(sf::Vector2f playerPos, sf::Vector2f mousePos)
 	}
 
 	velocity = direction * 500.0f;
+}
+
+void Shuriken::ricochet(sf::Vector2f newTarget)
+{
+	if(hitCount < MAXHITCOUNT)
+	{
+		cooldownTimer = ricochetCooldown;
+
+		sf::Vector2f currentPos = m_shurikenSprite.getPosition();
+		sf::Vector2f direction = newTarget - currentPos;
+		float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+		if (length != 0)
+		{
+			direction /= length;
+		}
+		velocity = direction * 500.0f;
+		hitCount++;
+	}
+	else {
+		reset();
+	}
 }

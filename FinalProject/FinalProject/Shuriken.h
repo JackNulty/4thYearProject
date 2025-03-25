@@ -11,12 +11,16 @@ public:
 	void fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::Vector2f mousePos, sf::View& cameraView) override;
 
 	void fire(sf::Vector2f playerPos, sf::Vector2f mousePos) override;
+	void ricochet(sf::Vector2f newTarget);
 
 	sf::Sprite getSprite() override;
 	void setActive(bool active) override { isActive = active; }
 	bool getAttackFlag() { return shootShurikenFlag; }
 	sf::FloatRect getBounds() { return m_shurikenSprite.getGlobalBounds(); }
 	void reset() { shootShurikenFlag = false; }
+
+	float ricochetCooldown = 0.2f;
+	float cooldownTimer = 0.0f;
 
 private:
 	void animateShuriken();
@@ -33,4 +37,7 @@ private:
 	std::vector<sf::IntRect> m_shurikenFrames;
 
 	sf::Vector2f velocity;
+	int hitCount = 0;
+	const int MAXHITCOUNT = 3;
+	
 };

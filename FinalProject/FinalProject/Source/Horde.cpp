@@ -204,7 +204,7 @@ void Horde::seperation()
 				// get the vector and distance between the currrent enemy and get the seperation force of them 
 				sf::Vector2f vectorBetween = m_enemies[i]->getPos() - m_enemies[index]->getPos();
 				float distanceBetween = std::sqrt(vectorBetween.x * vectorBetween.x + vectorBetween.y * vectorBetween.y);
-				if (distanceBetween < 80.0f && distanceBetween > 0.0f)
+				if (distanceBetween < 150.0f && distanceBetween > 0.0f)
 				{
 					seperationForce += vectorBetween / distanceBetween;
 				}

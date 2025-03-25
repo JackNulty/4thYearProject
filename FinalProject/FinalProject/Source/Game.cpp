@@ -317,35 +317,62 @@ void Game::handleShurikenCollisions()
 		std::cout << "No shuriken equipped skipping shuriken collision checks.\n";
 		return;
 	}
+
+    if (shuriken->cooldownTimer > 0)
+    {
+        return; // dont check for collisions if shuriken is on cooldown
+    }
 	for (auto enemy = m_horde.m_enemies.begin(); enemy != m_horde.m_enemies.end();)
 	{
 		if (shuriken->getBounds().intersects((*enemy)->getBounds()) && shuriken->getAttackFlag())
 		{
 			std::cout << "Grunt hit" << std::endl;
+            sf::Vector2f enemyPosition = (*enemy)->getPos();
 
-			(*enemy)->dealDamage();
+            (*enemy)->dealDamage();
 
-			ParticleManager& particleManager = ResourceManager::getParticleManager();
-			std::shared_ptr<ParticleSystem> system = particleManager.addParticleSystem(
-				"grunt_hit", 10, (*enemy)->getPos());
-			system->configure(200.f, 0.4f, 1.f, sf::Color::Red);
-			std::cout << "Added new particle system: grunt_hit\n";
+            ParticleManager& particleManager = ResourceManager::getParticleManager();
+            std::shared_ptr<ParticleSystem> system = particleManager.addParticleSystem(
+                "grunt_hit", 10, (*enemy)->getPos());
+            system->configure(200.f, 0.4f, 1.f, sf::Color::Red);
+            std::cout << "Added new particle system: grunt_hit\n";
 
-			auto leader = m_horde.getLeader().lock();
-			if ((*enemy)->isDead())
-			{
-				bool wasLeader = (leader && enemy->get() == leader.get());
-				enemy = m_horde.m_enemies.erase(enemy);
+            sf::Vector2f newTarget;
+            bool foundTarget = false;
+            for (auto& potentialTarget : m_horde.m_enemies)
+            {
+                if (potentialTarget.get() != (*enemy).get())
+                {
+                    newTarget = potentialTarget->getPos();
+                    foundTarget = true;
+                    break;
+                }
+            }
 
-				if (wasLeader) {
-					m_horde.setLeader();
-				}
-			}
-			else
-			{
-				enemy++;
-			}
-            selectedWeapon->reset();
+            auto leader = m_horde.getLeader().lock();
+            if ((*enemy)->isDead())
+            {
+                bool wasLeader = (leader && enemy->get() == leader.get());
+                enemy = m_horde.m_enemies.erase(enemy);
+
+                if (wasLeader) {
+                    m_horde.setLeader();
+                }
+            }
+            else
+            {
+                enemy++;
+            }
+
+            //ricochet shuriken
+            if (foundTarget)
+            {
+                shuriken->ricochet(newTarget);
+            }
+            else {
+                selectedWeapon->reset();
+            }
+            break;
 		}
 		else
 		{
