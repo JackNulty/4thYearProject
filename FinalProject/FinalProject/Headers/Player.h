@@ -3,6 +3,7 @@
 #include "Bullet.h"
 #include "Bow.h"
 #include "../Sword.h"
+#include "../Shuriken.h"
 
 #include "ResourceManager.h"
 #include "Weapon.h"

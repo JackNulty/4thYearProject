@@ -129,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Shuriken.cpp" />
     <ClCompile Include="Source\Archer.cpp" />
     <ClCompile Include="Source\Arrow.cpp" />
     <ClCompile Include="Source\Bow.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="Headers\SeekBehaviour.h" />
     <ClInclude Include="Headers\Weapon.h" />
     <ClInclude Include="PlayerPosition.h" />
+    <ClInclude Include="Shuriken.h" />
     <ClInclude Include="Sword.h" />
     <ClInclude Include="WeaponInventory.h" />
   </ItemGroup>

@@ -38,3 +38,4 @@ static sf::Texture bowTexture;
 static sf::Texture uiFrameTexture;
 static sf::Texture iconsTexture;
 static sf::Texture swordAttackTexture;
+static sf::Texture shurikenTexture;
