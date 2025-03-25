@@ -15,6 +15,7 @@ public:
 	std::vector<Arrow>& getArrows();
 	sf::Sprite getSprite() override;
 	void setActive(bool active) override { isActive = active; }
+	void reset() override { isAnimating = false; }
 
 private:
 

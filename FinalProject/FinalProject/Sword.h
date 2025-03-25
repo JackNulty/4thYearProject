@@ -15,6 +15,7 @@ public:
 	void setActive(bool active) override { isActive = active; }
 	bool getAttackFlag() { return swordAttackFlag; }
 	sf::FloatRect getBounds() {return m_swordAttack.getGlobalBounds();}
+	void reset() { swordAttackFlag = false; }
 
 private:
 	void swordAnimation();
