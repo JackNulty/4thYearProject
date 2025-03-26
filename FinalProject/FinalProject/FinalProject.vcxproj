@@ -154,6 +154,7 @@
     <ClCompile Include="Source\SceneManager.cpp" />
     <ClCompile Include="Source\SeekBehaviour.cpp" />
     <ClCompile Include="Sword.cpp" />
+    <ClCompile Include="Thief.cpp" />
     <ClCompile Include="Weapon.cpp" />
     <ClCompile Include="WeaponInventory.cpp" />
   </ItemGroup>
@@ -188,6 +189,7 @@
     <ClInclude Include="PlayerPosition.h" />
     <ClInclude Include="Shuriken.h" />
     <ClInclude Include="Sword.h" />
+    <ClInclude Include="Thief.h" />
     <ClInclude Include="WeaponInventory.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

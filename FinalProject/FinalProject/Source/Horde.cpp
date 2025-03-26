@@ -23,6 +23,7 @@ Horde::Horde(int maxEnemies, sf::Vector2f centreHorde, HordeFormation startForma
 				m_enemies.emplace_back(std::make_unique<Archer>(positions[i].x, positions[i].y));
 			break;
 		}
+		//m_enemies.emplace_back(std::make_unique<Thief>(positions[i].x, positions[i].y));
     }
 	assignLeader();
 }

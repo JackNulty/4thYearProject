@@ -7,7 +7,8 @@ enum class EnemyType
 {
 	Archer,
 	Grunt,
-	Heavy
+	Heavy,
+    Thief
 };
 
 class Enemy {

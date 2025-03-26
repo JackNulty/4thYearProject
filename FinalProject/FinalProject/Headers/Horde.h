@@ -9,6 +9,7 @@
 #include "Enemy.h"
 #include "Archer.h"
 #include "Heavy.h"
+#include "../Thief.h"
 
 
 class Horde
