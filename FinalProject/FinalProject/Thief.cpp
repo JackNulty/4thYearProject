@@ -6,10 +6,10 @@ Thief::Thief(float x, float y)
 	if (!thiefTexture.loadFromFile("ASSETS/Enemies/Goblin_Thief.png")) {
 		std::cout << "Error: Failed to load texture!" << std::endl;
 	}
-	m_thiefSprite.setTexture(thiefTexture);
-	m_thiefSprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
-	m_thiefSprite.setOrigin(m_thiefSprite.getGlobalBounds().width / 2, m_thiefSprite.getGlobalBounds().height / 2);
-	m_thiefSprite.setScale(2, 2);
+	m_sprite.setTexture(thiefTexture);
+	m_sprite.setTextureRect(sf::IntRect(9, 102, 18, 18));
+	m_sprite.setOrigin(m_sprite.getGlobalBounds().width / 2, m_sprite.getGlobalBounds().height / 2);
+	m_sprite.setScale(2, 2);
 	fillFrames();
 }
 
@@ -27,18 +27,23 @@ void Thief::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::View& camer
 		m_velocity = (m_velocity / std::hypot(m_velocity.x, m_velocity.y)) * maxSpeed;
 	}
 
-	m_thiefSprite.move(m_velocity);
+	m_sprite.move(m_velocity);
 	m_acceleration = { 0.0f, 0.0f };
 
 }
 
 void Thief::attack(sf::Vector2f playerPos)
 {
+	if (canAttack())
+	{
+		isAttacking = true;
+		m_attackClock.restart();
+	}
 }
 
 sf::FloatRect Thief::getBounds() const
 {
-	return m_thiefSprite.getGlobalBounds();
+	return m_sprite.getGlobalBounds();
 }
 
 void Thief::dealDamage()
@@ -48,6 +53,41 @@ void Thief::dealDamage()
 
 void Thief::thiefAnimations(sf::Vector2f playerPos)
 {
+	frameCounter++;
+	if (!isAttacking && !m_isDead)
+	{
+		if (frameCounter >= frameDelay) {
+			frameCounter = 0;
+			m_currentMoveFrame = (m_currentMoveFrame + 1) % m_frames.size();
+			sf::IntRect frame = m_frames[m_currentMoveFrame];
+			m_sprite.setTextureRect(frame);
+		}
+	}
+	else if (m_isDead)
+	{
+		if (frameCounter >= frameDelay) {
+			frameCounter = 0;
+			m_currentDeathFrame = (m_currentDeathFrame + 1) % m_deathFrames.size();
+			sf::IntRect frame = m_deathFrames[m_currentDeathFrame];
+			m_sprite.setTextureRect(frame);
+			if (m_currentDeathFrame == m_deathFrames.size() - 1)
+			{
+				m_killFlag = true;
+			}
+		}
+	}
+	else {
+		if (frameCounter >= frameDelay) {
+			frameCounter = 0;
+			m_currentAttackFrame = (m_currentAttackFrame + 1) % m_attackFramesDown.size();
+			sf::IntRect frame = m_attackFramesDown[m_currentAttackFrame];
+			m_sprite.setTextureRect(frame);
+			if (m_currentAttackFrame == m_attackFramesDown.size() - 1)
+			{
+				isAttacking = false;
+			}
+		}
+	}
 }
 
 void Thief::fillFrames()

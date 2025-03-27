@@ -19,6 +19,9 @@ Horde::Horde(int maxEnemies, sf::Vector2f centreHorde, HordeFormation startForma
 			case 2:
 				m_enemies.emplace_back(std::make_unique<Heavy>(positions[i].x, positions[i].y));
 			break;
+			case 3:
+				m_enemies.emplace_back(std::make_unique<Thief>(positions[i].x, positions[i].y));
+			break;
 			default:
 				m_enemies.emplace_back(std::make_unique<Archer>(positions[i].x, positions[i].y));
 			break;
@@ -225,7 +228,7 @@ std::vector<int> Horde::enemyTypes(int MAX_ENEMIES)
     types.reserve(MAX_ENEMIES);
     for (int i = 0; i < MAX_ENEMIES; ++i)
     {
-        int type = rand() % 3;
+        int type = rand() % 4;
         types.push_back(type);
     }
     return types;

@@ -15,6 +15,7 @@ public:
 	EnemyType getType() const override { return EnemyType::Thief; }
 	sf::Vector2f getPos() const { return m_sprite.getPosition(); }
 	void setPos(sf::Vector2f pos) { m_sprite.setPosition(pos); }
+	bool canAttack() const { return m_attackClock.getElapsedTime().asSeconds() > m_attackCooldown; }
 
 private:
 	void thiefAnimations(sf::Vector2f playerPos);
@@ -25,6 +26,9 @@ private:
 
 	bool m_isDead = false;
 	bool m_killFlag = false;
+	bool isAttacking = false;
+	sf::Clock m_attackClock;
+	float m_attackCooldown = 2.0f;
 	std::vector <sf::IntRect> m_frames;
 	std::vector<sf::IntRect> m_framesDown;
 	std::vector<sf::IntRect> m_framesLR;
@@ -33,7 +37,9 @@ private:
 	std::vector<sf::IntRect> m_attackFramesLR;
 	std::vector<sf::IntRect> m_attackFramesUp;
 	int m_currentDeathFrame = 0;
-	int frameDelay = 315;
+	int m_currentMoveFrame = 0;
+	int m_currentAttackFrame = 0;
+	int frameDelay = 415;
 	int frameCounter = 0;
 	int currentFrame = 0;
 	int frameWidth = 32;
