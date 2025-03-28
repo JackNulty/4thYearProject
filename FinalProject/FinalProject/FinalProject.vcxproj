@@ -129,6 +129,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AmbushBehaviour.cpp" />
+    <ClCompile Include="FleeBehaviour.cpp" />
     <ClCompile Include="Shuriken.cpp" />
     <ClCompile Include="Source\Archer.cpp" />
     <ClCompile Include="Source\Arrow.cpp" />
@@ -159,13 +161,15 @@
     <ClCompile Include="WeaponInventory.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FollowLeaderBehaviour.h" />
+    <ClInclude Include="AmbushBehaviour.h" />
+    <ClInclude Include="FleeBehaviour.h" />
     <ClInclude Include="Headers\Archer.h" />
     <ClInclude Include="Headers\Behaviour.h" />
     <ClInclude Include="Headers\Bullet.h" />
     <ClInclude Include="Headers\Enemy.h" />
     <ClInclude Include="Headers\EnemyBehaviours.h" />
     <ClInclude Include="Headers\EnemyBehavioursEnum.h" />
+    <ClInclude Include="Headers\FollowLeaderBehaviour.h" />
     <ClInclude Include="Headers\Game.h" />
     <ClInclude Include="Headers\GameplayScene.h" />
     <ClInclude Include="Headers\globals.h" />

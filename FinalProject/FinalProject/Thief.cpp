@@ -85,6 +85,7 @@ void Thief::thiefAnimations(sf::Vector2f playerPos)
 			if (m_currentAttackFrame == m_attackFramesDown.size() - 1)
 			{
 				isAttacking = false;
+				setBehaviour(std::make_unique<FleeBehaviour>());
 			}
 		}
 	}

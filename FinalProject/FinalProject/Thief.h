@@ -1,6 +1,8 @@
 #pragma once
 #include "globals.h"
 #include "Enemy.h"
+#include "../FleeBehaviour.h"
+#include "../AmbushBehaviour.h"
 
 class Thief : public Enemy
 {
