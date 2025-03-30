@@ -30,6 +30,14 @@ void Thief::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::View& camer
 	m_sprite.move(m_velocity);
 	m_acceleration = { 0.0f, 0.0f };
 
+    if (dynamic_cast<FleeBehaviour*>(m_behaviour.get()))
+    {
+        float distance = std::hypot(playerPos.x - m_sprite.getPosition().x, playerPos.y - m_sprite.getPosition().y);
+        if (distance > 1000.0f) {
+            setBehaviour(std::make_unique<AmbushBehaviour>());
+        }
+    }
+
 }
 
 void Thief::attack(sf::Vector2f playerPos)

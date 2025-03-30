@@ -183,11 +183,26 @@ void Horde::assignLeader()
 
 	for (auto& enemy : m_enemies) {
 		if (enemy == m_leader.lock()) {
-			enemy->setBehaviour(std::make_unique<SeekBehaviour>());
+			if (enemy->getType() == EnemyType::Thief)
+			{
+				enemy->setBehaviour(std::make_unique<AmbushBehaviour>());
+			}
+			else {
+				enemy->setBehaviour(std::make_unique<SeekBehaviour>());
+			}
+			//enemy->setBehaviour(std::make_unique<SeekBehaviour>());
 			//std::cout << "Leader behavior set to SeekBehaviour." << std::endl;
 		}
 		else {
-			enemy->setBehaviour(std::make_unique<FollowLeaderBehaviour>(m_leader));
+			if (enemy->getType() == EnemyType::Thief)
+			{
+				enemy->setBehaviour(std::make_unique<AmbushBehaviour>());
+			}
+			else
+			{
+				enemy->setBehaviour(std::make_unique<FollowLeaderBehaviour>(m_leader));
+			}
+			//enemy->setBehaviour(std::make_unique<FollowLeaderBehaviour>(m_leader));
 			//std::cout << "Follower behavior set to FollowLeaderBehaviour." << std::endl;
 		}
 	}
