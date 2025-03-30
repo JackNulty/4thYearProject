@@ -118,8 +118,8 @@ void Game::render()
     window.setView(cameraView);
     window.clear(sf::Color(210, 180, 140));
     m_gameWorld.render(window);
-    m_player.render(window, cameraView);
     m_horde.render(window);
+    m_player.render(window, cameraView);
 	//m_heavy.render(window);
     //m_archer.render(window);
     //m_archer.drawArrows(window);
