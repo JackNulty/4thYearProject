@@ -1,6 +1,6 @@
 #include "globals.h"
 
-sf::Vector2f normalize(const sf::Vector2f& vec)
+sf::Vector2f normalise(const sf::Vector2f& vec)
 {
     float length = std::sqrt(vec.x * vec.x + vec.y * vec.y);
     if (length != 0)

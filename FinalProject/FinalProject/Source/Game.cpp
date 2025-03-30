@@ -100,6 +100,7 @@ void Game::fixedUpdate(float deltaTime)
 			enemy++;
 		}
     }
+    cameraUpdate(deltaTime);
 }
 
 void Game::update(float deltaTime) 
@@ -110,7 +111,7 @@ void Game::update(float deltaTime)
     //m_archer.update(deltaTime);
     m_horde.update(deltaTime, m_player.getPos());
 	//m_heavy.update(deltaTime);
-    cameraView.setCenter(m_player.getPos());
+	
 }
 
 void Game::render() 
@@ -125,6 +126,37 @@ void Game::render()
     //m_archer.drawArrows(window);
     ResourceManager::getParticleManager().render(window);
     window.display();
+}
+
+void Game::cameraUpdate(float deltaTime)
+{
+    // Apply camera offset during knockback
+    //update knockback
+    if (m_player.m_isKnockbackActive)
+    {
+        cameraView.move(-m_player.m_knockbackVelocity * deltaTime);
+
+        float friction = 1.0f;
+        m_player.m_knockbackVelocity *= std::exp(-friction * deltaTime);
+
+        sf::Vector2f targetPosition = m_player.getPos();
+        float returnSpeed = 3.5f;
+        //give camera offest during knockback
+        cameraView.setCenter(cameraView.getCenter() + (targetPosition - cameraView.getCenter()) * (1.0f - std::exp(-returnSpeed * deltaTime)));
+        if (std::hypot(m_player.m_knockbackVelocity.x, m_player.m_knockbackVelocity.y) < 2.5f)
+        {
+            m_player.m_knockbackVelocity = { 0.0f, 0.0f };
+            m_player.m_isKnockbackActive = false;
+            m_player.m_knockbackCooldown = 2.0f;
+        }
+    }
+    else {
+        cameraView.setCenter(m_player.getPos());
+    }
+    if (m_player.m_knockbackCooldown > 0)
+    {
+        m_player.m_knockbackCooldown -= deltaTime;
+    }
 }
 
 void Game::handleBulletCollisions()
@@ -183,7 +215,7 @@ void Game::handleArrowCollisions()
     Bow* bow = dynamic_cast<Bow*>(selectedWeapon);
     if (!bow)
     {
-        std::cout << "No bow equipped skipping arrow collision checks.\n";
+        //std::cout << "No bow equipped skipping arrow collision checks.\n";
         return; 
     }
     auto& arrows = bow->getArrows();
@@ -268,7 +300,7 @@ void Game::handleSwordCollisions()
     Sword* sword = dynamic_cast<Sword*>(selectedWeapon);
     if(!sword)
 	{
-		std::cout << "No sword equipped skipping sword collision checks.\n";
+		//std::cout << "No sword equipped skipping sword collision checks.\n";
 		return;
 	}
     for (auto enemy = m_horde.m_enemies.begin(); enemy != m_horde.m_enemies.end();)
@@ -314,7 +346,7 @@ void Game::handleShurikenCollisions()
 	Shuriken* shuriken = dynamic_cast<Shuriken*>(selectedWeapon);
 	if (!shuriken)
 	{
-		std::cout << "No shuriken equipped skipping shuriken collision checks.\n";
+		//std::cout << "No shuriken equipped skipping shuriken collision checks.\n";
 		return;
 	}
 
@@ -404,6 +436,7 @@ void Game::playerCollision()
         if (m_player.getBounds().intersects((*enemy)->getBounds()))
         {
             (*enemy)->attack(m_player.getPos()); 
+			m_player.knockback(100, m_player.getPos() - (*enemy)->getPos());
             m_player.removeLife();
             enemy++;
         }

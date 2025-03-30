@@ -4,7 +4,7 @@ sf::Vector2f EnemyBehaviours::calculateSeek(const sf::Vector2f& currentPosition,
 {
     // get direction 
     sf::Vector2f direction = targetPosition - currentPosition;
-    sf::Vector2f desiredVelocity = normalize(direction) * maxSpeed;
+    sf::Vector2f desiredVelocity = normalise(direction) * maxSpeed;
 
     //calculate steering 
     sf::Vector2f steering = desiredVelocity - currentVelocity;

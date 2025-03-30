@@ -40,6 +40,7 @@ private:
     void fixedUpdate(float deltaTime);
     void update(float deltaTime);
     void render();
+	void cameraUpdate(float deltaTime);
     void handleBulletCollisions();
     void handleArrowCollisions();
     void handleSwordCollisions();

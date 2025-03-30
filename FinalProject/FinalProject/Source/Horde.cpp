@@ -131,9 +131,9 @@ void Horde::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::View& camer
         std::pow(leader->getPos().y - playerPos.y, 2)
         );
 
-        if (distanceToPlayer < 20.0f) {  // Formation trigger distance
-			setFormation(HordeFormation::Circle, leader->getPos(), 40);
-        }
+   //     if (distanceToPlayer < 20.0f) {  // Formation trigger distance
+			//setFormation(HordeFormation::Circle, leader->getPos(), 40);
+   //     }
 
 		for (auto& enemy : m_enemies) {
 			enemy->fixedUpdate(deltaTime,playerPos,cameraView);
@@ -223,7 +223,7 @@ void Horde::seperation()
 				// get the vector and distance between the currrent enemy and get the seperation force of them 
 				sf::Vector2f vectorBetween = m_enemies[i]->getPos() - m_enemies[index]->getPos();
 				float distanceBetween = std::sqrt(vectorBetween.x * vectorBetween.x + vectorBetween.y * vectorBetween.y);
-				if (distanceBetween < 150.0f && distanceBetween > 0.0f)
+				if (distanceBetween < 50.0f && distanceBetween > 0.0f)
 				{
 					seperationForce += vectorBetween / distanceBetween;
 				}
@@ -231,7 +231,7 @@ void Horde::seperation()
 
 		}
 		// normalise seperation force and multiply
-		seperationForce = normalize(seperationForce) * 2.0f;
+		seperationForce = normalise(seperationForce) * 2.0f;
 		// add seperation force to each enemies velocity
 		m_enemies[i]->m_velocity += seperationForce;
 	}

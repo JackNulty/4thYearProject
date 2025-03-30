@@ -52,6 +52,8 @@ void Player::update(float deltaTime, sf::Vector2f mousePos, sf::View& cameraView
         }
     }
     //m_bow.update(deltaTime, getPos());
+
+    
 }
 
 void Player::fixedUpdate(float deltaTime, sf::Vector2f mousePos, sf::View& cameraView)
@@ -93,6 +95,8 @@ void Player::fixedUpdate(float deltaTime, sf::Vector2f mousePos, sf::View& camer
             ++bullet;
         }
     }
+
+    
 }
 
 void Player::render(sf::RenderWindow& window, sf::View& cameraViewRef)
@@ -142,6 +146,22 @@ void Player::removeLife()
 void Player::addLife()
 {
     lives++;
+}
+
+void Player::knockback(int strenght, sf::Vector2f direction)
+{
+    if (m_isKnockbackActive || m_knockbackCooldown > 0)
+    {
+        return; // Prevent knockback spamming
+    }
+
+    float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+    if (length == 0) {
+        return;
+    }
+    direction /= length;
+    m_knockbackVelocity = direction * static_cast<float>(strenght);
+    m_isKnockbackActive = true;
 }
 
 void Player::playerMovement(float deltaTime)
