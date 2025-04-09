@@ -51,9 +51,12 @@ void Player::update(float deltaTime, sf::Vector2f mousePos, sf::View& cameraView
             }
         }
     }
-    //m_bow.update(deltaTime, getPos());
 
-    
+    // Decrement the life loss cooldown timer
+    if (m_lifeLossCooldown > 0.0f)
+    {
+        m_lifeLossCooldown -= deltaTime;
+    }
 }
 
 void Player::fixedUpdate(float deltaTime, sf::Vector2f mousePos, sf::View& cameraView)
@@ -140,7 +143,11 @@ int Player::getLives()
 
 void Player::removeLife()
 {
-    lives--;
+    if (m_lifeLossCooldown <= 0.0f)
+    {
+        lives--;
+        m_lifeLossCooldown = 1.0f; // Set cooldown to 1 second
+    }
 }
 
 void Player::addLife()

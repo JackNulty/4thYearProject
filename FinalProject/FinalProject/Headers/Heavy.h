@@ -28,7 +28,7 @@ private:
     int frameWidth = 32;
     int frameHeight = 32;
 
-    int m_health = 5;
+    int m_health = 3;
     bool m_isDead = false;
     bool m_killFlag = false;
     bool takeDamage = false;

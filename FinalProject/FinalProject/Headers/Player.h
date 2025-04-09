@@ -60,5 +60,6 @@ private:
 	sf::Sprite m_livesSprite; // sprite for player lives
 	sf::Sprite m_livesSpriteHalf; // sprite for player lives
 	sf::Sprite m_livesSpriteEmpty; // sprite for player lives
+	float m_lifeLossCooldown = 0.0f; // cooldown for life loss
 };
 
