@@ -88,7 +88,7 @@ std::vector<sf::Vector2f> Horde::generateFormation(int maxEnemies, sf::Vector2f 
 					sf::Vector2f vectorBetween = newEnemyPosition - existingPos;
 					float distanceBetween = std::sqrt(vectorBetween.x * vectorBetween.x + vectorBetween.y * vectorBetween.y);
 
-					if (distanceBetween < enemySpacing) { // Minimum distance
+					if (distanceBetween < enemySpacing) { // Minimum distancew
 						validPosition = false;
 						break;
 					}

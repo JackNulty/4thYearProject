@@ -100,7 +100,8 @@ void Game::fixedUpdate(float deltaTime)
 			enemy++;
 		}
     }
-    cameraUpdate(deltaTime);
+    //cameraUpdate(deltaTime);
+    cameraView.setCenter(m_player.getPos());
 }
 
 void Game::update(float deltaTime) 
