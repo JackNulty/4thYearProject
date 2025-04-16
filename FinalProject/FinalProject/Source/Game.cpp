@@ -100,8 +100,8 @@ void Game::fixedUpdate(float deltaTime)
 			enemy++;
 		}
     }
-    //cameraUpdate(deltaTime);
-    cameraView.setCenter(m_player.getPos());
+    cameraUpdate(deltaTime);
+    //cameraView.setCenter(m_player.getPos());
 }
 
 void Game::update(float deltaTime) 
@@ -131,32 +131,24 @@ void Game::render()
 
 void Game::cameraUpdate(float deltaTime)
 {
-    // Apply camera offset during knockback
-    //update knockback
-    if (m_player.m_isKnockbackActive)
-    {
-        cameraView.move(-m_player.m_knockbackVelocity * deltaTime);
-
-        float friction = 1.0f;
-        m_player.m_knockbackVelocity *= std::exp(-friction * deltaTime);
-
-        sf::Vector2f targetPosition = m_player.getPos();
-        float returnSpeed = 3.5f;
-        //give camera offest during knockback
-        cameraView.setCenter(cameraView.getCenter() + (targetPosition - cameraView.getCenter()) * (1.0f - std::exp(-returnSpeed * deltaTime)));
-        if (std::hypot(m_player.m_knockbackVelocity.x, m_player.m_knockbackVelocity.y) < 2.5f)
-        {
-            m_player.m_knockbackVelocity = { 0.0f, 0.0f };
-            m_player.m_isKnockbackActive = false;
-            m_player.m_knockbackCooldown = 2.0f;
-        }
-    }
+	if (m_player.isShaking)
+	{
+		m_player.shakeTimer += deltaTime;
+		if (m_player.shakeTimer >= m_player.shakeDuration)
+		{
+			m_player.isShaking = false;
+			m_player.shakeTimer = 0.0f;
+			cameraView.setCenter(m_player.getPos());
+		}
+		else
+		{
+			float offsetX = (rand() % static_cast<int>(m_player.shakeMagnitude)) - (m_player.shakeMagnitude / 2);
+			float offsetY = (rand() % static_cast<int>(m_player.shakeMagnitude)) - (m_player.shakeMagnitude / 2);
+			cameraView.setCenter(m_player.getPos().x + offsetX, m_player.getPos().y + offsetY);
+		}
+	}
     else {
-        cameraView.setCenter(m_player.getPos());
-    }
-    if (m_player.m_knockbackCooldown > 0)
-    {
-        m_player.m_knockbackCooldown -= deltaTime;
+		cameraView.setCenter(m_player.getPos());
     }
 }
 
@@ -437,7 +429,6 @@ void Game::playerCollision()
         if (m_player.getBounds().intersects((*enemy)->getBounds()))
         {
             (*enemy)->attack(m_player.getPos()); 
-			m_player.knockback(100, m_player.getPos() - (*enemy)->getPos());
             m_player.removeLife();
             enemy++;
         }

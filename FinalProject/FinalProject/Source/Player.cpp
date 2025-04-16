@@ -146,29 +146,16 @@ void Player::removeLife()
     if (m_lifeLossCooldown <= 0.0f)
     {
         lives--;
-        m_lifeLossCooldown = 1.0f; // Set cooldown to 1 second
+        m_lifeLossCooldown = 1.0f; 
+		isShaking = true; 
+		shakeDuration = 0.3f; 
+		shakeTimer = 0.0f; 
     }
 }
 
 void Player::addLife()
 {
     lives++;
-}
-
-void Player::knockback(int strenght, sf::Vector2f direction)
-{
-    if (m_isKnockbackActive || m_knockbackCooldown > 0)
-    {
-        return; // Prevent knockback spamming
-    }
-
-    float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
-    if (length == 0) {
-        return;
-    }
-    direction /= length;
-    m_knockbackVelocity = direction * static_cast<float>(strenght);
-    m_isKnockbackActive = true;
 }
 
 void Player::playerMovement(float deltaTime)

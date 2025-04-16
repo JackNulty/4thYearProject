@@ -22,12 +22,10 @@ public:
 	int getLives(); // get player lives
 	void removeLife(); // remove player life
 	void addLife(); // add player life
-	void knockback(int strenght, sf::Vector2f direction); // knockback player
-	sf::Vector2f getKnockbackVelocity() const { return m_knockbackVelocity; }
-	bool m_isKnockbackActive = false; // bool for knockback
-	float m_knockbackCooldown = 0.0f; // cooldown for knockback
-	sf::Vector2f m_knockbackVelocity; // velocity for knockback
-
+	bool isShaking = false; // check if screen is shaking
+	float shakeDuration = 0.0f; // duration of shake
+	float shakeTimer = 0.0f; // timer for shake
+	float shakeMagnitude = 5.0f; // magnitude of shake
 
 	Bow m_bow; // bow object
 	WeaponInventory m_weaponInventory; // weapon inventory
