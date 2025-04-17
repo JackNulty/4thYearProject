@@ -64,6 +64,7 @@ void Player::fixedUpdate(float deltaTime, sf::Vector2f mousePos, sf::View& camer
     playerMovement(deltaTime);
     //shootBullet(mousePos);
     playerAnimations();
+	updateHitEffects();
     if (!m_weaponInventory.m_weapons.empty() && m_weaponInventory.selectedWeapon < m_weaponInventory.m_weapons.size())
     {
         for (size_t i = 0; i < m_weaponInventory.m_weapons.size(); ++i)
@@ -119,6 +120,11 @@ void Player::render(sf::RenderWindow& window, sf::View& cameraViewRef)
     {
         bullet.draw(window);
     }
+	for (auto& hitEffect : m_hitEffects)
+	{
+		hitEffect.update();
+		window.draw(hitEffect.sprite);
+	}
 }
 
 sf::Vector2f Player::getPos()
@@ -150,6 +156,7 @@ void Player::removeLife()
 		isShaking = true; 
 		shakeDuration = 0.3f; 
 		shakeTimer = 0.0f; 
+		m_hitEffects.emplace_back(heartTexture, m_playerSprite.getPosition());
     }
 }
 
@@ -342,5 +349,21 @@ void Player::handleWeaponSwitch()
     {
         std::cout << "Invalid weapon selection: " << newWeaponIndex << std::endl;
     }
+}
+
+void Player::updateHitEffects()
+{
+	for (auto it = m_hitEffects.begin(); it != m_hitEffects.end();)
+	{
+		it->update();
+		if (it->isFinished())
+		{
+			it = m_hitEffects.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
 }
 

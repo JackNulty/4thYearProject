@@ -8,6 +8,7 @@
 #include "ResourceManager.h"
 #include "Weapon.h"
 #include "../WeaponInventory.h"
+#include "../PlayerHitEffect.h"
 
 class Player
 {
@@ -38,6 +39,7 @@ private:
 	void playerAnimations(); // func for player animations
 	void displayLives(); // func for displaying player lives
 	void handleWeaponSwitch(); // func for handling weapon switch
+	void updateHitEffects(); // func for updating hit effects
 
 	//private vars
 	sf::Texture m_playerTexture; // player texture
@@ -59,5 +61,6 @@ private:
 	sf::Sprite m_livesSpriteHalf; // sprite for player lives
 	sf::Sprite m_livesSpriteEmpty; // sprite for player lives
 	float m_lifeLossCooldown = 0.0f; // cooldown for life loss
+	std::vector<PlayerHitEffect> m_hitEffects; // vector of hit effects
 };
 

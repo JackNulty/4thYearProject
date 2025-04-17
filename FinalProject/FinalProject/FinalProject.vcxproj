@@ -131,6 +131,7 @@
   <ItemGroup>
     <ClCompile Include="AmbushBehaviour.cpp" />
     <ClCompile Include="FleeBehaviour.cpp" />
+    <ClCompile Include="PlayerHitEffect.cpp" />
     <ClCompile Include="Shuriken.cpp" />
     <ClCompile Include="Source\Archer.cpp" />
     <ClCompile Include="Source\Arrow.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="Headers\Bow.h" />
     <ClInclude Include="Headers\SeekBehaviour.h" />
     <ClInclude Include="Headers\Weapon.h" />
+    <ClInclude Include="PlayerHitEffect.h" />
     <ClInclude Include="PlayerPosition.h" />
     <ClInclude Include="Shuriken.h" />
     <ClInclude Include="Sword.h" />
