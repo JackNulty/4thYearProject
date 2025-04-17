@@ -35,6 +35,7 @@ private:
     Archer m_archer;
 
     sf::View cameraView; // viewport for following player
+    sf::Sprite m_cursorSprite;
 
     void handleEvents();
     void fixedUpdate(float deltaTime);

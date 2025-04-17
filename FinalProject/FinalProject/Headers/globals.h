@@ -41,3 +41,4 @@ static sf::Texture iconsTexture;
 static sf::Texture swordAttackTexture;
 static sf::Texture shurikenTexture;
 static sf::Texture thiefTexture;
+static sf::Texture cursorTexture;

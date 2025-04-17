@@ -10,6 +10,14 @@ Game::Game(sf::RenderWindow& windowRef)
     m_archer(700, 300),
     cameraView(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT))
 {
+    if (!cursorTexture.loadFromFile("ASSETS/UI/Arrow4.png"))
+    {
+        std::cout << "Error loading cursor texture\n";
+    }
+    window.setMouseCursorVisible(false);
+    m_cursorSprite.setTexture(cursorTexture);
+	m_cursorSprite.setOrigin(m_cursorSprite.getGlobalBounds().width / 2, m_cursorSprite.getGlobalBounds().height / 2);
+
 	m_heavy.setBehaviour(std::make_unique<SeekBehaviour>());
     m_archer.setBehaviour(std::make_unique<KeepDistance>());
     
@@ -112,7 +120,8 @@ void Game::update(float deltaTime)
     //m_archer.update(deltaTime);
     m_horde.update(deltaTime, m_player.getPos());
 	//m_heavy.update(deltaTime);
-	
+	m_cursorSprite.setPosition(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
+	m_cursorSprite.setScale(0.5f, 0.5f);
 }
 
 void Game::render() 
@@ -126,6 +135,7 @@ void Game::render()
     //m_archer.render(window);
     //m_archer.drawArrows(window);
     ResourceManager::getParticleManager().render(window);
+	window.draw(m_cursorSprite);
     window.display();
 }
 

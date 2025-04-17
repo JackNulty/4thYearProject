@@ -12,6 +12,15 @@ int main() {
     SceneManager::getInstance().addScene("Gameplay", std::make_unique<GameplayScene>(window));
     //Start on main menu
     SceneManager::getInstance().changeScene("MainMenu");
+    sf::Sprite m_cursorSprite;
+	if (!cursorTexture.loadFromFile("ASSETS/UI/Arrow4.png"))
+	{
+		std::cout << "Error loading cursor texture\n";
+	}
+    window.setMouseCursorVisible(false);
+	m_cursorSprite.setTexture(cursorTexture);
+	m_cursorSprite.setOrigin(m_cursorSprite.getGlobalBounds().width / 2, m_cursorSprite.getGlobalBounds().height / 2);
+	m_cursorSprite.setScale(0.5f, 0.5f);
 
     sf::Clock clock;
     while (window.isOpen()) 
@@ -31,11 +40,14 @@ int main() {
         if (Scene* scene = SceneManager::getInstance().getCurrentScene()) {
             scene->update(deltaTime);
         }
+		// Update cursor position
+		m_cursorSprite.setPosition(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
 
         window.clear(); 
         if (Scene* scene = SceneManager::getInstance().getCurrentScene()) {
             scene->draw(window);
         }
+		window.draw(m_cursorSprite);
         window.display();
     }
 
