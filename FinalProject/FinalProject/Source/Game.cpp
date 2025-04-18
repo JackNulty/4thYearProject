@@ -10,6 +10,14 @@ Game::Game(sf::RenderWindow& windowRef)
     m_archer(700, 300),
     cameraView(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT))
 {
+	if (!mapTexture.loadFromFile("ASSETS/UI/map.png"))
+	{
+		std::cout << "Error loading map texture\n";
+	}
+	m_mapSprite.setTexture(mapTexture);
+	m_mapSprite.setPosition(0, 0);
+	m_mapSprite.setOrigin(m_mapSprite.getGlobalBounds().width / 2, m_mapSprite.getGlobalBounds().height / 2);
+	m_mapSprite.setScale(2.f, 2.f);
     if (!cursorTexture.loadFromFile("ASSETS/UI/Arrow4.png"))
     {
         std::cout << "Error loading cursor texture\n";
@@ -128,6 +136,7 @@ void Game::render()
 {
     window.setView(cameraView);
     window.clear(sf::Color(210, 180, 140));
+    window.draw(m_mapSprite);
     m_gameWorld.render(window);
     m_horde.render(window);
     m_player.render(window, cameraView);

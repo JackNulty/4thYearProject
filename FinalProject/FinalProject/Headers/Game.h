@@ -36,6 +36,7 @@ private:
 
     sf::View cameraView; // viewport for following player
     sf::Sprite m_cursorSprite;
+	sf::Sprite m_mapSprite;
 
     void handleEvents();
     void fixedUpdate(float deltaTime);
