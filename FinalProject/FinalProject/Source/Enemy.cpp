@@ -16,3 +16,11 @@ void Enemy::setBehaviour(std::unique_ptr<Behaviour> newBehaviour)
 {
 	m_behaviour = std::move(newBehaviour);
 }
+
+std::unique_ptr<Behaviour> Enemy::cloneBehaviour() const
+{
+	if (m_behaviour)
+		return m_behaviour->clone();
+	else
+		return nullptr;
+}

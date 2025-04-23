@@ -28,6 +28,10 @@ public:
     void setBehaviour(std::unique_ptr<Behaviour> newBehaviour);
     sf::Vector2f m_velocity;
 
+    std::unique_ptr<Behaviour> cloneBehaviour() const;
+    Behaviour* getBehaviour() { return m_behaviour.get(); }
+
+
 protected:
     sf::Sprite m_sprite;
     sf::Texture m_texture;

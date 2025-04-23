@@ -20,3 +20,8 @@ void AmbushBehaviour::update(Enemy& enemy, const sf::Vector2f& playerPos)
         }
     }
 }
+
+std::unique_ptr<Behaviour> AmbushBehaviour::clone() const
+{
+	return std::make_unique<AmbushBehaviour>(*this);
+}

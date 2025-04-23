@@ -12,3 +12,8 @@ void FollowLeaderBehaviour::update(Enemy& enemy, const sf::Vector2f& playerPos)
 		enemy.m_velocity += direction * 0.3f;
 	}
 }
+
+std::unique_ptr<Behaviour> FollowLeaderBehaviour::clone() const
+{
+	return std::make_unique<FollowLeaderBehaviour>(m_leader);
+}

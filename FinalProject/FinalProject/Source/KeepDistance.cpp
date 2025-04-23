@@ -12,7 +12,7 @@ void KeepDistance::update(Enemy& enemy, const sf::Vector2f& playerPos)
     // Check if the enemy is too close to the player
     if (length < 200.0f && length != 0)
     {
-        // Normalize the direction vector
+        // Normalise the direction vector
         dir /= length;
 
         // Increase the enemies velocity in the direction away from the player
@@ -33,4 +33,9 @@ void KeepDistance::update(Enemy& enemy, const sf::Vector2f& playerPos)
         // Slow down the enemies velocity
         enemy.m_velocity *= 0.9f;
     }
+}
+
+std::unique_ptr<Behaviour> KeepDistance::clone() const
+{
+	return std::make_unique<KeepDistance>(*this);
 }

@@ -8,3 +8,8 @@ void SeekBehaviour::update(Enemy& enemy, const sf::Vector2f& playerPos)
     if (length != 0) dir /= length;
     enemy.m_velocity += dir * 0.5f;
 }
+
+std::unique_ptr<Behaviour> SeekBehaviour::clone() const
+{
+	return std::make_unique<SeekBehaviour>(*this);
+}

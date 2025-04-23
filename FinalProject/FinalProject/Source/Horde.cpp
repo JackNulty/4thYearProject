@@ -4,6 +4,13 @@
 Horde::Horde(int maxEnemies, sf::Vector2f centreHorde, HordeFormation startFormation, int enemySpacing)
 {
 	m_currentFormation = startFormation;
+	if (startFormation == HordeFormation::Circle)
+	{
+		m_circleFormation = true;
+		m_circleState = CircleState::MovingToPositions;
+		m_currentRadius = 300.0f;
+		m_targetRadius = 50.0f;
+	}
 	positions = generateFormation(maxEnemies, centreHorde, enemySpacing);
     std::vector<int> types = enemyTypes(maxEnemies);
     for (size_t i = 0; i < positions.size(); ++i)
@@ -141,6 +148,51 @@ void Horde::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::View& camer
 		}
 	}
 	seperation();
+	if (m_circleFormation)
+	{
+		if (m_circleState == CircleState::MovingToPositions)
+		{
+			updateCircleFormation(playerPos, deltaTime);
+			bool checkHordeInPlace = true;
+			for (int i = 0; i < m_enemies.size(); i++)
+			{
+				float distance = std::sqrt(
+					std::pow(m_enemies[i]->getPos().x - m_circleTargets[i].x, 2) +
+					std::pow(m_enemies[i]->getPos().y - m_circleTargets[i].y, 2)
+				);
+				if (distance > 30.0f)
+				{
+					checkHordeInPlace = false;
+				}
+				auto* behaviour = dynamic_cast<CirclePointBehaviour*>(m_enemies[i]->getBehaviour());
+				if (behaviour)
+				{
+					behaviour->setTarget(m_circleTargets[i]);
+				}
+				else {
+					auto newBehaviour = std::make_unique<CirclePointBehaviour>(m_circleTargets[i]);
+					newBehaviour->setTarget(m_circleTargets[i]);
+					m_enemies[i]->setBehaviour(std::move(newBehaviour));
+				}
+			}
+			if (checkHordeInPlace)
+			{
+				m_circleState = CircleState::ClosingIn;
+			}
+		}
+		else if (m_circleState == CircleState::ClosingIn)
+		{
+			updateCircleFormation(playerPos, deltaTime);
+			for (int i = 0; i < m_enemies.size(); i++)
+			{
+				auto* behaviour = dynamic_cast<CirclePointBehaviour*>(m_enemies[i]->getBehaviour());
+				if (behaviour)
+				{
+					behaviour->setTarget(m_circleTargets[i]);
+				}
+			}
+		}
+	}
 }
 
 void Horde::render(sf::RenderWindow& window)
@@ -205,6 +257,35 @@ void Horde::assignLeader()
 			//enemy->setBehaviour(std::make_unique<FollowLeaderBehaviour>(m_leader));
 			//std::cout << "Follower behavior set to FollowLeaderBehaviour." << std::endl;
 		}
+	}
+}
+
+void Horde::updateCircleFormation(sf::Vector2f playerPos, float deltaTime)
+{
+	if (m_circleState == CircleState::ClosingIn)
+	{
+		std::cout << "Shrinking radius: " << m_currentRadius << std::endl;
+
+		float shrinkSpeed = 20.5f;
+		if (m_currentRadius > m_targetRadius)
+		{
+			m_currentRadius -= shrinkSpeed * deltaTime;
+			if (m_currentRadius < m_targetRadius)
+			{
+				m_currentRadius = m_targetRadius;
+			}
+		}
+	}
+
+	m_circleTargets.clear();
+	int count = m_enemies.size();
+	float angleDivder = 2 * PI / count;
+	for (int i = 0; i < count; i++)
+	{
+		float angle = i * angleDivder;
+		float x = playerPos.x + std::cos(angle) * m_currentRadius;
+		float y = playerPos.y + std::sin(angle) * m_currentRadius;
+		m_circleTargets.emplace_back(x, y);
 	}
 }
 

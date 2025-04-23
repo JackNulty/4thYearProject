@@ -1,4 +1,5 @@
 #include "FleeBehaviour.h"
+#include "Enemy.h"
 
 void FleeBehaviour::update(Enemy& enemy, const sf::Vector2f& playerPos)
 {
@@ -8,4 +9,9 @@ void FleeBehaviour::update(Enemy& enemy, const sf::Vector2f& playerPos)
         direction /= length;
         enemy.m_velocity += direction * 1.0f;
     }
+}
+
+std::unique_ptr<Behaviour> FleeBehaviour::clone() const
+{
+	return std::make_unique<FleeBehaviour>(*this);
 }

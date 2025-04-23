@@ -130,6 +130,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AmbushBehaviour.cpp" />
+    <ClCompile Include="CirclePointBehaviour.cpp" />
     <ClCompile Include="FleeBehaviour.cpp" />
     <ClCompile Include="PlayerHitEffect.cpp" />
     <ClCompile Include="Shuriken.cpp" />
@@ -163,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AmbushBehaviour.h" />
+    <ClInclude Include="CirclePointBehaviour.h" />
     <ClInclude Include="FleeBehaviour.h" />
     <ClInclude Include="Headers\Archer.h" />
     <ClInclude Include="Headers\Behaviour.h" />
