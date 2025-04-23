@@ -46,6 +46,8 @@ private:
     std::vector<sf::Vector2f> m_deathFrames;
     int m_currentAttackFrame;
     int m_currentDeathFrame;
+    int m_damageFrameDuration = 4;
+    int m_damageFrameCounter = 0;
     void fillAttackFrames();
 
     bool isAttacking = false;

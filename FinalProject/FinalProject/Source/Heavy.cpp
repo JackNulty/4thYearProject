@@ -80,7 +80,51 @@ void Heavy::dealDamage()
 void Heavy::heavyAnimations(sf::Vector2f playerPos)
 {
     frameCounter++;
-    if (!isAttacking)
+
+    // prioritise death animation
+    if (m_isDead)
+    {
+        if (frameCounter >= frameDelay) {
+            frameCounter = 0;
+            if (m_currentDeathFrame < m_deathFrames.size()) {
+                m_sprite.setTextureRect(sf::IntRect(
+                    m_deathFrames[m_currentDeathFrame].x,
+                    m_deathFrames[m_currentDeathFrame].y,
+                    frameWidth,
+                    frameHeight
+                ));
+                m_currentDeathFrame++;
+            }
+            if (m_currentDeathFrame >= m_deathFrames.size()) {
+                m_killFlag = true;
+            }
+        }
+        return;
+    }
+
+    if (takeDamage)
+    {
+        if (frameCounter >= frameDelay) {
+            frameCounter = 0;
+
+            m_sprite.setTextureRect(sf::IntRect(
+                m_damageFrames[m_currentDamageFrame % m_damageFrames.size()].x,
+                m_damageFrames[m_currentDamageFrame % m_damageFrames.size()].y,
+                frameWidth,
+                frameHeight
+            ));
+
+            m_currentDamageFrame++;
+            m_damageFrameCounter++;
+
+            if (m_damageFrameCounter >= m_damageFrameDuration) {
+                takeDamage = false;
+                m_currentDamageFrame = 0;
+                m_damageFrameCounter = 0;
+            }
+        }
+    }
+    else if (!isAttacking)
     {
         PlayerPosition playerDirection = checkPLayerPosition(playerPos);
         if (frameCounter >= frameDelay) {
@@ -97,40 +141,17 @@ void Heavy::heavyAnimations(sf::Vector2f playerPos)
                 m_sprite.setScale(3, 3);
                 break;
             case PlayerPosition::Above:
-                textureY = 66;  
+                textureY = 66;
                 break;
             case PlayerPosition::Below:
-                textureY = 96;  
+                textureY = 96;
                 break;
             }
 
             m_sprite.setTextureRect(sf::IntRect(currentFrame * frameWidth, textureY, frameWidth, frameHeight));
         }
     }
-    else if (takeDamage)
-    {
-        if (frameCounter >= frameDelay) {
-            frameCounter = 0;
-            m_currentDamageFrame = (m_currentDamageFrame + 1) % m_damageFrames.size();
-            sf::Vector2f frame = m_damageFrames[m_currentDamageFrame];
-            m_sprite.setTextureRect(sf::IntRect(frame.x, frame.y, frameWidth, frameHeight));
-            if (m_currentAttackFrame == 0) {
-                takeDamage = false;
-            }
-        }
-	}
-    else if(m_isDead)
-	{
-		if (frameCounter >= frameDelay) {
-			frameCounter = 0;
-			m_sprite.setTextureRect(sf::IntRect(m_deathFrames[m_currentDeathFrame].x, m_deathFrames[m_currentDeathFrame].y, frameWidth, frameHeight));
-			m_currentDeathFrame++;
-			if (m_currentDeathFrame >= m_deathFrames.size()) {
-				m_killFlag = true;
-			}
-		}
-	}
-    else
+    else // isAttacking
     {
         if (frameCounter >= frameDelay) {
             frameCounter = 0;
@@ -143,6 +164,7 @@ void Heavy::heavyAnimations(sf::Vector2f playerPos)
         }
     }
 }
+
 
 PlayerPosition Heavy::checkPLayerPosition(sf::Vector2f playerPos)
 {
