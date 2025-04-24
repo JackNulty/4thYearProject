@@ -137,11 +137,6 @@ void Horde::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::View& camer
         std::pow(leader->getPos().x - playerPos.x, 2) +
         std::pow(leader->getPos().y - playerPos.y, 2)
         );
-
-   //     if (distanceToPlayer < 20.0f) {  // Formation trigger distance
-			//setFormation(HordeFormation::Circle, leader->getPos(), 40);
-   //     }
-
 		for (auto& enemy : m_enemies) {
 			enemy->fixedUpdate(deltaTime,playerPos,cameraView);
 			//std::cout << "Enemy position: " << enemy->getPos().x << ", " << enemy->getPos().y << std::endl;
@@ -231,7 +226,6 @@ void Horde::assignLeader()
 	}
 
 	m_leader = m_enemies.front();
-	//std::cout << "New leader assigned." << std::endl;
 
 	for (auto& enemy : m_enemies) {
 		if (enemy == m_leader.lock()) {
@@ -242,8 +236,6 @@ void Horde::assignLeader()
 			else {
 				enemy->setBehaviour(std::make_unique<SeekBehaviour>());
 			}
-			//enemy->setBehaviour(std::make_unique<SeekBehaviour>());
-			//std::cout << "Leader behavior set to SeekBehaviour." << std::endl;
 		}
 		else {
 			if (enemy->getType() == EnemyType::Thief)
@@ -254,8 +246,6 @@ void Horde::assignLeader()
 			{
 				enemy->setBehaviour(std::make_unique<FollowLeaderBehaviour>(m_leader));
 			}
-			//enemy->setBehaviour(std::make_unique<FollowLeaderBehaviour>(m_leader));
-			//std::cout << "Follower behavior set to FollowLeaderBehaviour." << std::endl;
 		}
 	}
 }

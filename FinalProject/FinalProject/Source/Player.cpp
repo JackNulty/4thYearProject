@@ -86,7 +86,6 @@ void Player::fixedUpdate(float deltaTime, sf::Vector2f mousePos, sf::View& camer
             }
         }
     }
-    //m_bow.fixedUpdate(deltaTime, getPos(), mousePos, cameraView);
     // loop through the player bullets depending on size and if it goes out of the screen bounds then delete it
     for (auto bullet = m_bulletVector.begin(); bullet != m_bulletVector.end();)
     {
@@ -115,7 +114,6 @@ void Player::render(sf::RenderWindow& window, sf::View& cameraViewRef)
         if(weapon->isActive)
 		    weapon->render(window);
 	}
-    //m_bow.render(window);
     for (Bullet& bullet : m_bulletVector)
     {
         bullet.draw(window);
@@ -362,7 +360,7 @@ void Player::updateHitEffects()
 		}
 		else
 		{
-			++it;
+			it++;
 		}
 	}
 }

@@ -6,8 +6,6 @@ Game::Game(sf::RenderWindow& windowRef)
     m_timeAccumulator(0.0f),
     m_isRunning(true),
     m_horde(enemyCount, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), HordeFormation::Circle, enemySpacing),
-	m_heavy(700, 100),
-    m_archer(700, 300),
     cameraView(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT))
 {
 	if (!mapTexture.loadFromFile("ASSETS/UI/map.png"))
@@ -25,9 +23,6 @@ Game::Game(sf::RenderWindow& windowRef)
     window.setMouseCursorVisible(false);
     m_cursorSprite.setTexture(cursorTexture);
 	m_cursorSprite.setOrigin(m_cursorSprite.getGlobalBounds().width / 2, m_cursorSprite.getGlobalBounds().height / 2);
-
-	m_heavy.setBehaviour(std::make_unique<SeekBehaviour>());
-    m_archer.setBehaviour(std::make_unique<KeepDistance>());
     
     cameraView.setCenter(m_player.getPos());
 }
@@ -79,14 +74,11 @@ void Game::fixedUpdate(float deltaTime)
     m_player.fixedUpdate(deltaTime, window.mapPixelToCoords(sf::Mouse::getPosition(window)), cameraView);
     m_gameWorld.fixedUpdate(deltaTime);
     m_horde.fixedUpdate(deltaTime, m_player.getPos(), cameraView);
-	//m_heavy.fixedUpdate(deltaTime, m_player.getPos(), cameraView);
-    //m_archer.fixedUpdate(deltaTime, m_player.getPos(), cameraView);
     handleBulletCollisions();
     handleArrowCollisions();
     handleSwordCollisions();
     handleShurikenCollisions();
     playerCollision();
-    m_archer.attack(m_player.getPos());
     if (m_horde.m_enemies.empty())
     {
         spawnWave();
@@ -117,7 +109,6 @@ void Game::fixedUpdate(float deltaTime)
 		}
     }
     cameraUpdate(deltaTime);
-    //cameraView.setCenter(m_player.getPos());
 }
 
 void Game::update(float deltaTime) 
@@ -125,9 +116,7 @@ void Game::update(float deltaTime)
     //std::cout << "Regular Update: " << deltaTime << " seconds\n";
     m_player.update(deltaTime, window.mapPixelToCoords(sf::Mouse::getPosition(window)), cameraView);
     m_gameWorld.update(deltaTime);
-    //m_archer.update(deltaTime);
     m_horde.update(deltaTime, m_player.getPos());
-	//m_heavy.update(deltaTime);
 	m_cursorSprite.setPosition(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
 	m_cursorSprite.setScale(0.5f, 0.5f);
 }
@@ -140,9 +129,6 @@ void Game::render()
     m_gameWorld.render(window);
     m_horde.render(window);
     m_player.render(window, cameraView);
-	//m_heavy.render(window);
-    //m_archer.render(window);
-    //m_archer.drawArrows(window);
     ResourceManager::getParticleManager().render(window);
 	window.draw(m_cursorSprite);
     window.display();
@@ -269,30 +255,6 @@ void Game::handleArrowCollisions()
 				enemy++;
 			}
 		}
-
-        if (arrow->getBounds().intersects(m_heavy.getBounds()))
-        {
-            m_heavy.dealDamage();
-            std::cout << "Heavy hit" << std::endl;
-            ParticleManager& particleManager = ResourceManager::getParticleManager();
-            std::shared_ptr<ParticleSystem> system = particleManager.addParticleSystem(
-                "heavy_hit", 10, m_heavy.getPos());
-            system->configure(200.f, 0.4f, 1.f, sf::Color::Red);
-            std::cout << "Added new particle system: heavy_hit\n";
-			arrowHit = true;
-        }
-        if (arrow->getBounds().intersects(m_archer.getBounds()))
-        {
-            m_archer.dealDamage();
-            std::cout << "Archer hit" << std::endl;
-            ParticleManager& particleManager = ResourceManager::getParticleManager();
-            std::shared_ptr<ParticleSystem> system = particleManager.addParticleSystem(
-                "archer_hit", 10, m_archer.getPos());
-            system->configure(200.f, 0.4f, 1.f, sf::Color::Red);
-            std::cout << "Added new particle system: archer_hit\n";
-            arrowHit = true;
-        }
-
 		// remove arrow if it collides
 		if (arrowHit)
 		{
@@ -456,25 +418,6 @@ void Game::playerCollision()
             enemy++;
         }
 	}
-    if(m_heavy.getBounds().intersects(m_player.getBounds()))
-	{
-		if(m_heavy.canAttack())
-		{
-            m_heavy.attack(m_player.getPos());
-			m_player.removeLife();
-		}
-	}
-    for (auto arrow = m_archer.getArrowVector().begin(); arrow != m_archer.getArrowVector().end();)
-    {
-        if (arrow->getBounds().intersects(m_player.getBounds()))
-        {
-            m_player.removeLife();
-            arrow = m_archer.getArrowVector().erase(arrow);
-        }
-        else {
-            arrow++;
-        }
-    }
 }
 
 void Game::spawnWave()

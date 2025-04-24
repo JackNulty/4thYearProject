@@ -31,8 +31,6 @@ private:
     Player m_player;
     Level m_gameWorld;
     Horde m_horde;
-	Heavy m_heavy;
-    Archer m_archer;
 
     sf::View cameraView; // viewport for following player
     sf::Sprite m_cursorSprite;

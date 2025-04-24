@@ -30,10 +30,17 @@ void MainMenuScene::update(float deltaTime)
 
 void MainMenuScene::draw(sf::RenderWindow& window) 
 {
-    //std::cout << "Drawing MainMenuScene..." << std::endl;
+    std::cout << "Drawing MainMenuScene..." << std::endl;
     //window.clear();
     window.draw(m_startButtonSprite);
     //window.display();
+}
+
+void MainMenuScene::onEnter()
+{
+	loadAssets();
+    m_startButtonSprite.setTexture(m_buttonTexture);
+    m_startButtonSprite.setPosition(300, 250);
 }
 
 void MainMenuScene::loadAssets()

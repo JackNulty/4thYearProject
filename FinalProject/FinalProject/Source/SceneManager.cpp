@@ -16,6 +16,7 @@ void SceneManager::changeScene(const std::string& name)
     auto it = m_scenes.find(name);
     if (it != m_scenes.end()) {
         m_currentScene = it->second.get();
+		m_currentScene->onEnter();
 
         //check if the current scene is gameplay to start the game.run()
         if (GameplayScene* gameplayScene = dynamic_cast<GameplayScene*>(m_currentScene)) {
