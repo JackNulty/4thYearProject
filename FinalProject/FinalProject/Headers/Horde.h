@@ -18,6 +18,10 @@ enum class CircleState {
 	MovingToPositions, ClosingIn, Idle 
 };
 
+enum class ConvergingState {
+	MovingToClusters, Engaging 
+};
+
 class Horde  
 {  
 public:  
@@ -43,9 +47,13 @@ private:
    std::weak_ptr<Enemy> m_leader;  
    void assignLeader();  
    void updateCircleFormation(sf::Vector2f playerPos, float deltaTime);  
+   void updateConvergingFormation(sf::Vector2f playerPos, float deltaTime);
    std::vector<sf::Vector2f> m_circleTargets;  
+   std::vector<sf::Vector2f> m_clusterTargets;
    float m_currentRadius;  
    float m_targetRadius;  
-   bool m_circleFormation = false;  
+   bool m_circleFormation = false; 
+   bool m_converging = false;
    CircleState m_circleState = CircleState::Idle;
+   ConvergingState m_convergingState = ConvergingState::MovingToClusters;
 };

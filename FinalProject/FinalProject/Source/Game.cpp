@@ -5,7 +5,7 @@ Game::Game(sf::RenderWindow& windowRef)
     fixedTimeStep(1.0f / 60.0f),// 60fps fixed update
     m_timeAccumulator(0.0f),
     m_isRunning(true),
-    m_horde(enemyCount, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), HordeFormation::Circle, enemySpacing),
+    m_horde(enemyCount, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), HordeFormation::Cluster, enemySpacing),
     cameraView(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT))
 {
 	if (!mapTexture.loadFromFile("ASSETS/UI/map.png"))
