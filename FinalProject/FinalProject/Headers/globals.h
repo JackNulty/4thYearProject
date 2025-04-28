@@ -23,6 +23,9 @@
 const int WINDOW_HEIGHT = 800;
 const int WINDOW_WIDTH = 1200;
 
+const int MAP_WIDTH = 800;
+const int MAP_HEIGHT = 800;
+
 //global for PI
 const float PI = 3.14159f;
 
@@ -43,4 +46,3 @@ static sf::Texture shurikenTexture;
 static sf::Texture thiefTexture;
 static sf::Texture cursorTexture;
 static sf::Texture heartTexture;
-static sf::Texture mapTexture;

@@ -34,7 +34,15 @@ private:
 
     sf::View cameraView; // viewport for following player
     sf::Sprite m_cursorSprite;
-	sf::Sprite m_mapSprite;
+    
+    //map
+	std::vector<std::vector<int>> m_map;
+	sf::Texture m_mapTexture;
+    sf::Sprite tiles[4];
+    sf::VertexArray m_tileVertices;
+    sf::Vector2f lastCameraPos;
+    static constexpr int MAP_OFFSET_X = 500;
+    static constexpr int MAP_OFFSET_Y = 500;
 
     void handleEvents();
     void fixedUpdate(float deltaTime);
@@ -47,6 +55,7 @@ private:
     void handleShurikenCollisions();
     void spawnWave();
     void playerCollision();
+    void updateMap();
 };
 
 #endif
