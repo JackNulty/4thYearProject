@@ -46,3 +46,4 @@ static sf::Texture shurikenTexture;
 static sf::Texture thiefTexture;
 static sf::Texture cursorTexture;
 static sf::Texture heartTexture;
+static sf::Texture dynamiteTexture;

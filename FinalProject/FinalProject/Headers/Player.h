@@ -4,6 +4,7 @@
 #include "Bow.h"
 #include "../Sword.h"
 #include "../Shuriken.h"
+#include "../Dynamite.h"
 
 #include "ResourceManager.h"
 #include "Weapon.h"
