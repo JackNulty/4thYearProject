@@ -91,6 +91,7 @@ void Game::fixedUpdate(float deltaTime)
     handleArrowCollisions();
     handleSwordCollisions();
     handleShurikenCollisions();
+	handleDynamiteCollisions();
     playerCollision();
     if (m_horde.m_enemies.empty())
     {
@@ -483,6 +484,48 @@ void Game::handleShurikenCollisions()
 		}
 	}
 
+}
+
+void Game::handleDynamiteCollisions()
+{
+	//use dynamic cast to get the selected weapon to get its unique type
+	auto* selectedWeapon = m_player.m_weaponInventory.getSelectedWeapon();
+	Dynamite* dynamite = dynamic_cast<Dynamite*>(selectedWeapon);
+	if (!dynamite)
+	{
+		//std::cout << "No dynamite equipped skipping dynamite collision checks.\n";
+		return;
+	}
+	for (auto enemy = m_horde.m_enemies.begin(); enemy != m_horde.m_enemies.end();)
+	{
+		if (dynamite->m_explosionCircle.getGlobalBounds().intersects((*enemy)->getBounds()) && dynamite->getAttackFlag())
+		{
+			std::cout << "Grunt hit" << std::endl;
+			(*enemy)->dealDamage();
+			ParticleManager& particleManager = ResourceManager::getParticleManager();
+			std::shared_ptr<ParticleSystem> system = particleManager.addParticleSystem(
+				"grunt_hit", 10, (*enemy)->getPos());
+			system->configure(200.f, 0.4f, 1.f, sf::Color::Red);
+			std::cout << "Added new particle system: grunt_hit\n";
+			auto leader = m_horde.getLeader().lock();
+			if ((*enemy)->isDead())
+			{
+				bool wasLeader = (leader && enemy->get() == leader.get());
+				enemy = m_horde.m_enemies.erase(enemy);
+				if (wasLeader) {
+					m_horde.setLeader();
+				}
+			}
+			else
+			{
+				enemy++;
+			}
+		}
+		else
+		{
+			enemy++;
+		}
+	}
 }
 
 void Game::playerCollision()

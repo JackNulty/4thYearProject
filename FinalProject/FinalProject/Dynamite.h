@@ -15,6 +15,7 @@ public:
     sf::Sprite getSprite() override;
     void setActive(bool active) override { isActive = active; }
     void reset() override;
+	bool getAttackFlag() { return showExplosion; }
 
     sf::CircleShape m_explosionCircle;
 
