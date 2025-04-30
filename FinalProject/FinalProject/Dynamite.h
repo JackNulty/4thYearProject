@@ -16,12 +16,13 @@ public:
     void setActive(bool active) override { isActive = active; }
     void reset() override;
 
+    sf::CircleShape m_explosionCircle;
+
 private:
 
     sf::Sprite m_dynamiteSprite;
 	sf::Sprite m_dynamiteIcon;
-
-    sf::CircleShape m_explosionCircle;
+    
     float explosionRadius = 0.f;
     float maxExplosionRadius = 100.f;
 
@@ -32,4 +33,5 @@ private:
 	bool hasExploded = false;
 
     bool showExplosion = false;
+	bool isThrown = false;
 };

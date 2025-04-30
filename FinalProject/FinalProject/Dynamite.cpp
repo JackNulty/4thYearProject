@@ -26,11 +26,11 @@ void Dynamite::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::Vector2f
 {
 	if (isActive) 
 	{
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !hasExploded)
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !showExplosion && !isThrown)
 		{
 			fire(playerPos, mousePos);
 		}
-		if (explosionTimer < timeBeforeExplode)
+		if (explosionTimer < timeBeforeExplode && isThrown)
 		{
 			explosionTimer += deltaTime;
 
@@ -98,6 +98,7 @@ void Dynamite::fire(sf::Vector2f playerPos, sf::Vector2f mousePos)
 	velocity = direction * 300.f;
 
 	explosionTimer = 0;
+	isThrown = true;
 	
 }
 
@@ -112,6 +113,7 @@ void Dynamite::reset()
 	m_dynamiteSprite.setPosition(10000, 10000);
 	showExplosion = false;
 	hasExploded = false;
+	isThrown = false;
 	explosionRadius = 0;
 	explosionTimer = 0;
 }

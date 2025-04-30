@@ -117,6 +117,7 @@ void ParticleSystem::emitParticles()
 					m_particleSpeed * speedJitter * std::cos(angle),
 					m_particleSpeed * speedJitter * std::sin(angle)
 				};
+				particle.shape.setRadius(m_particleRadius * (0.7f + (std::rand() % 60) / 100.f));
 			}
 			else {
 				angle = (std::rand() % 360) * PI / 180.0f;
