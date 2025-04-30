@@ -2,6 +2,7 @@
 #pragma once
 #include "globals.h"
 #include "Weapon.h"
+#include "ResourceManager.h"
 
 class Dynamite : public Weapon {
 public:
@@ -25,10 +26,10 @@ private:
     float maxExplosionRadius = 100.f;
 
     sf::Vector2f velocity;
-    float gravity = 500.f;
 
     float explosionTimer = 0.f;
     const float timeBeforeExplode = 2.f;
+	bool hasExploded = false;
 
     bool showExplosion = false;
 };

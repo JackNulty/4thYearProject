@@ -24,69 +24,81 @@ void Dynamite::update(float deltaTime, sf::Vector2f playerPos)
 
 void Dynamite::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::Vector2f mousePos, sf::View& cameraView)
 {
-	if (isActive && state == Thrown)
+	if (isActive) 
 	{
-		velocity.y += gravity * deltaTime;
-		m_dynamiteSprite.move(velocity * deltaTime);
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !hasExploded)
+		{
+			fire(playerPos, mousePos);
+		}
+		if (explosionTimer < timeBeforeExplode)
+		{
+			explosionTimer += deltaTime;
 
-		explosionTimer += deltaTime;
-		if (explosionTimer >= timeBeforeExplode)
-		{
-			state = Exploding;
-			explosionRadius = 0.f;
-			showExplosion = true;
+			float throwProgress = explosionTimer / timeBeforeExplode;
+			float throwDecay = 1 - throwProgress;
+			m_dynamiteSprite.move(velocity * throwDecay * deltaTime);
+			
+			if (explosionTimer >= timeBeforeExplode)
+			{
+				hasExploded = true;
+				showExplosion = true;
+				explosionRadius = 0;
+
+				ParticleManager& particleManager = ResourceManager::getParticleManager();
+				std::shared_ptr<ParticleSystem> system = particleManager.addParticleSystem(
+					"dynamite_explosion", 250, m_dynamiteSprite.getPosition());
+				system->configure(200.f, 0.8f, 2.f, sf::Color::Red);
+				std::cout << "Added new particle system: dynamite_explosion\n";
+			}
 		}
-	}
-	else if (state == Exploding)
-	{
-		if (explosionRadius < maxExplosionRadius)
+		else if (showExplosion)
 		{
-			explosionRadius += 300.f * deltaTime; // expand quickly
+			explosionRadius += 200 * deltaTime;
 			m_explosionCircle.setRadius(explosionRadius);
-			m_explosionCircle.setOrigin(explosionRadius, explosionRadius);
-			m_explosionCircle.setPosition(m_dynamiteSprite.getPosition());
-		}
-		else
-		{
-			reset();
+			m_explosionCircle.setPosition(m_dynamiteSprite.getPosition().x - explosionRadius, m_dynamiteSprite.getPosition().y - explosionRadius);
+			if (explosionRadius >= maxExplosionRadius)
+			{
+				reset();
+			}
 		}
 	}
 }
 
 void Dynamite::render(sf::RenderWindow& window)
 {
-	if (isActive && (state == Thrown || state == Exploding))
+	if (!isActive)
 	{
-		if (state == Thrown)
-		{
-			window.draw(m_dynamiteSprite);
-		}
-		if (showExplosion)
-		{
-			window.draw(m_explosionCircle);
-		}
+		return;
+	}
+	if (showExplosion)
+	{
+		window.draw(m_explosionCircle);
+	}
+	else if (!hasExploded)
+	{
+		window.draw(m_dynamiteSprite);
 	}
 }
 
 void Dynamite::fire(sf::Vector2f playerPos, sf::Vector2f mousePos)
 {
 	if (!isActive)
+	{
 		return;
-
+	}
 	m_dynamiteSprite.setPosition(playerPos);
+	m_dynamiteSprite.setRotation(atan2(mousePos.y - playerPos.y, mousePos.x - playerPos.x) * 180 / 3.14);
 
 	sf::Vector2f direction = mousePos - playerPos;
-	float magnitude = std::sqrt(direction.x * direction.x + direction.y * direction.y);
-	if (magnitude != 0)
+	float length = sqrt(direction.x * direction.x + direction.y * direction.y);
+	if (length != 0)
 	{
-		direction /= magnitude;
+		direction /= length;
 	}
+	velocity = direction * 300.f;
 
-	velocity = direction * 400.f; 
-	velocity.y -= 200.f; 
-
-	state = Thrown;
-	explosionTimer = 0.0f;
+	explosionTimer = 0;
+	
 }
 
 sf::Sprite Dynamite::getSprite()
@@ -97,9 +109,9 @@ sf::Sprite Dynamite::getSprite()
 void Dynamite::reset()
 {
 	isActive = false;
+	m_dynamiteSprite.setPosition(10000, 10000);
 	showExplosion = false;
-	explosionTimer = 0.f;
-	explosionRadius = 0.f;
-	m_dynamiteSprite.setPosition(-10000, -10000);
-	state = Idle;
+	hasExploded = false;
+	explosionRadius = 0;
+	explosionTimer = 0;
 }

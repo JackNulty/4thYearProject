@@ -94,16 +94,34 @@ void ParticleSystem::emitParticles()
 				angle = (std::rand() % 60 + 210) * PI / 180.0f;
 				particle.velocity.x *= (std::rand() % 2 + 0.5f); // Varying spread
 				particle.velocity.y *= (std::rand() % 2 + 0.5f);
+				particle.velocity = { m_particleSpeed * std::cos(angle), m_particleSpeed * std::sin(angle) };
 			}
 			else if (m_id == "arrow_fired")
 			{
 				angle = 270 * PI / 180.0f;
 				particle.velocity.x *= 0.1f; 
+				particle.velocity = { m_particleSpeed * std::cos(angle), m_particleSpeed * std::sin(angle) };
+			}
+			else if (m_id == "dynamite_explosion")
+			{
+				angle = (std::rand() % 360) * PI / 180.0f;
+
+				// random jitter
+				float angleJitter = ((std::rand() % 2001) - 1000) / 1000.f * (10.f * PI / 180.f);
+				angle += angleJitter;
+
+				//variable speed
+				float speedJitter = static_cast<float>((std::rand() % 70 + 60)) / 100.f;
+
+				particle.velocity = {
+					m_particleSpeed * speedJitter * std::cos(angle),
+					m_particleSpeed * speedJitter * std::sin(angle)
+				};
 			}
 			else {
 				angle = (std::rand() % 360) * PI / 180.0f;
+				particle.velocity = { m_particleSpeed * std::cos(angle), m_particleSpeed * std::sin(angle) };
 			}
-            particle.velocity = { m_particleSpeed * std::cos(angle), m_particleSpeed * std::sin(angle) };
 
             particle.lifetime = m_particleLifetime;
 
