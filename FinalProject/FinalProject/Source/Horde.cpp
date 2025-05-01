@@ -570,7 +570,7 @@ void Horde::updateWallFormation(sf::Vector2f playerPos, float deltaTime)
 		}
 
 		//check if wall has gotten to player
-		for (const auto& target : m_wallTargets)
+		for (sf::Vector2f& target : m_wallTargets)
 		{
 			sf::Vector2f toPlayer = playerPos - target;
 			float distance = std::sqrt(toPlayer.x * toPlayer.x + toPlayer.y * toPlayer.y);

@@ -563,6 +563,7 @@ void Game::playerCollision()
 void Game::spawnWave()
 {
     waveNum++;
+	m_player.addLife();
     // increase enemies by 10% every wave
     int newEnemyCount = enemyCount * std::pow(1.1, waveNum - 1);
     std::cout << "Wave " << waveNum << "now spawning " << newEnemyCount << " enemies in next wave" << std::endl;
