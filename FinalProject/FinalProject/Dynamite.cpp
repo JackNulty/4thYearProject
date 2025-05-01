@@ -95,7 +95,9 @@ void Dynamite::fire(sf::Vector2f playerPos, sf::Vector2f mousePos)
 	{
 		direction /= length;
 	}
-	velocity = direction * 300.f;
+	float clampedLength = std::min(std::max(length, 30.f), 300.f);
+
+	velocity = direction * clampedLength;
 
 	explosionTimer = 0;
 	isThrown = true;
