@@ -16,6 +16,11 @@ Horde::Horde(int maxEnemies, sf::Vector2f centreHorde, HordeFormation startForma
 		m_converging = true;
 		m_convergingState = ConvergingState::MovingToClusters;
 	}
+	if (startFormation == HordeFormation::Wall)
+	{
+		m_wallFormation = true;
+		m_wallState = WallState::MovingToWall;
+	}
 	positions = generateFormation(maxEnemies, centreHorde, enemySpacing);
     std::vector<int> types = enemyTypes(maxEnemies);
     for (size_t i = 0; i < positions.size(); ++i)
@@ -109,6 +114,21 @@ std::vector<sf::Vector2f> Horde::generateFormation(int maxEnemies, sf::Vector2f 
 			// Add the positions to the cluster and the global positions
 			clusterPositions.emplace_back(newEnemyPosition);
 			positions.emplace_back(newEnemyPosition);
+		}
+	}
+	if (m_currentFormation == HordeFormation::Wall)
+	{
+		int count = maxEnemies;
+		int spacing = enemySpacing;
+		float startX = centreHorde.x - ((count - 1) * spacing) / 2;
+		float y = centreHorde.y;
+
+		for (int i = 0; i < count; ++i)
+		{
+			float x = startX + i * spacing;
+			sf::Vector2f pos(x, y);
+			positions.emplace_back(pos);
+			m_wallTargets.push_back(pos);
 		}
 	}
 
@@ -247,6 +267,48 @@ void Horde::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::View& camer
 				if (behaviour)
 				{
 					behaviour->setTarget(m_clusterTargets[i]);
+				}
+			}
+		}
+	}
+	if (m_wallFormation)
+	{
+		updateWallFormation(playerPos, deltaTime);
+		if (m_wallState == WallState::MovingToWall)
+		{
+			bool checkHordeInPlace = true;
+			for (int i = 0; i < m_enemies.size(); i++)
+			{
+				auto* behaviour = dynamic_cast<CirclePointBehaviour*>(m_enemies[i]->getBehaviour());
+				if (!behaviour)
+				{
+					auto newBehaviour = std::make_unique<CirclePointBehaviour>(m_wallTargets[i]);
+					m_enemies[i]->setBehaviour(std::move(newBehaviour));
+				}
+				else {
+					behaviour->setTarget(m_wallTargets[i]);
+				}
+				sf::Vector2f vectorBetween = m_wallTargets[i] - m_enemies[i]->getPos();
+				float distanceBetween = std::sqrt(vectorBetween.x * vectorBetween.x + vectorBetween.y * vectorBetween.y);
+				if (distanceBetween > 80.0f)
+				{
+					checkHordeInPlace = false;
+				}
+			}
+			if (checkHordeInPlace)
+			{
+				std::cout << "Horde in place" << std::endl;
+				m_wallState = WallState::EngagingWall;
+			}
+		}
+		else if (m_wallState == WallState::EngagingWall)
+		{
+			for (int i = 0; i < m_enemies.size(); i++)
+			{
+				auto* behaviour = dynamic_cast<CirclePointBehaviour*>(m_enemies[i]->getBehaviour());
+				if (behaviour)
+				{
+					behaviour->setTarget(m_wallTargets[i]);
 				}
 			}
 		}
@@ -443,6 +505,103 @@ void Horde::updateConvergingFormation(sf::Vector2f playerPos, float deltaTime)
 			m_converging = false;
 			m_convergingState = ConvergingState::MovingToClusters;
 			m_clusterTargets.clear();
+		}
+	}
+}
+
+void Horde::updateWallFormation(sf::Vector2f playerPos, float deltaTime)
+{
+	if (m_wallState == WallState::MovingToWall)
+	{
+		//offest from player left or right depending on the closest enemy
+		float minDistance = std::numeric_limits<float>::max();
+		std::shared_ptr<Enemy> closestEnemy = nullptr;
+		for (auto& enemy : m_enemies)
+		{
+			sf::Vector2f toPlayer = playerPos - enemy->getPos();
+			float distance = std::sqrt(toPlayer.x * toPlayer.x + toPlayer.y * toPlayer.y);
+			if (distance < minDistance)
+			{
+				minDistance = distance;
+				closestEnemy = enemy;
+			}
+		}
+		if (!closestEnemy)
+		{
+			return;
+		}
+		sf::Vector2f closestEnemyPos = closestEnemy->getPos();
+		bool checkRight = (closestEnemyPos.x > playerPos.x);
+
+		m_wallTargets.clear();
+		int count = m_enemies.size();
+		float spacing = 50.0f;
+
+        float offsetX;  
+        if (checkRight) {  
+           offsetX = -spacing;  
+        } else {  
+           offsetX = spacing;  
+        }
+		float startX = playerPos.x + offsetX -((count - 1) * spacing) / 2;
+		float y = playerPos.y;
+
+		for (int i = 0; i < count; ++i)
+		{
+			float x = startX + i * spacing;
+			sf::Vector2f pos(x, y);
+			m_wallTargets.emplace_back(pos);
+		}
+	}
+	else if (m_wallState == WallState::EngagingWall)
+	{
+		std::cout << "Horde is engaging wall" << std::endl;
+		float wallSpeed = 30.0f;
+		for (int i = 0; i < m_wallTargets.size(); ++i)
+		{
+			sf::Vector2f& target = m_wallTargets[i];
+			sf::Vector2f toPlayer = playerPos - target;
+			float distance = std::sqrt(toPlayer.x * toPlayer.x + toPlayer.y * toPlayer.y);
+			if (distance > 5.f)
+			{
+				toPlayer /= distance;
+				target += toPlayer * wallSpeed * deltaTime;
+			}
+		}
+
+		//check if wall has gotten to player
+		for (const auto& target : m_wallTargets)
+		{
+			sf::Vector2f toPlayer = playerPos - target;
+			float distance = std::sqrt(toPlayer.x * toPlayer.x + toPlayer.y * toPlayer.y);
+			if (distance < 100)
+			{
+				std::cout << "Wall has reached player\n";
+				m_wallFormation = false;
+				m_circleFormation = true;
+				m_circleState = CircleState::MovingToPositions;
+				m_currentRadius = 300.0f;
+				m_targetRadius = 50.0f;
+
+				//generate new circle targets
+				m_circleTargets.clear();
+				int count = m_enemies.size();
+				float angleDivder = 2 * PI / count;
+				for (int i = 0; i < count; i++)
+				{
+					float angle = i * angleDivder;
+					float x = playerPos.x + std::cos(angle) * m_currentRadius;
+					float y = playerPos.y + std::sin(angle) * m_currentRadius;
+					m_circleTargets.emplace_back(x, y);
+				}
+				// asssign behaviour to each enemy
+				for (int i = 0; i < m_enemies.size(); i++)
+				{
+					auto behaviour = std::make_unique<CirclePointBehaviour>(m_circleTargets[i]);
+					m_enemies[i]->setBehaviour(std::move(behaviour));
+				}
+				break;
+			}
 		}
 	}
 }

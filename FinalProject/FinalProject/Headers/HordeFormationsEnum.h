@@ -4,5 +4,6 @@ enum class HordeFormation
 {
 	Circle,
 	Grid,
-	Cluster
+	Cluster,
+	Wall
 };

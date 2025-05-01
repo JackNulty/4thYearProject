@@ -5,7 +5,7 @@ Game::Game(sf::RenderWindow& windowRef)
     fixedTimeStep(1.0f / 60.0f),// 60fps fixed update
     m_timeAccumulator(0.0f),
     m_isRunning(true),
-    m_horde(enemyCount, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), HordeFormation::Cluster, enemySpacing),
+    m_horde(enemyCount, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), HordeFormation::Wall, enemySpacing),
     cameraView(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT))
 {
     if (!cursorTexture.loadFromFile("ASSETS/UI/Arrow4.png"))
@@ -568,11 +568,13 @@ void Game::spawnWave()
     std::cout << "Wave " << waveNum << "now spawning " << newEnemyCount << " enemies in next wave" << std::endl;
     HordeFormation Formation;
     // cycle through formations 
-    if (waveNum % 3 == 0)
-        Formation = HordeFormation::Circle;
-    else if (waveNum % 3 == 2)
-        Formation = HordeFormation::Grid;
-    else
-        Formation = HordeFormation::Cluster;
+    if (waveNum % 4 == 0)  
+        Formation = HordeFormation::Circle;  
+    else if (waveNum % 4 == 3)  
+        Formation = HordeFormation::Grid;  
+    else if (waveNum % 4 == 2)  
+        Formation = HordeFormation::Cluster;  
+    else  
+        Formation = HordeFormation::Wall;
     m_horde = Horde(newEnemyCount, sf::Vector2f(randomPosition(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT))), Formation, enemySpacing);
 }
