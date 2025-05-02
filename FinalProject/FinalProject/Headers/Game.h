@@ -54,6 +54,7 @@ private:
     void handleSwordCollisions();
     void handleShurikenCollisions();
 	void handleDynamiteCollisions();
+	void handleBoomerangCollisions();
     void spawnWave();
     void playerCollision();
     void updateMap();

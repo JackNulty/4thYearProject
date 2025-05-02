@@ -32,6 +32,7 @@ Player::Player()
     m_weaponInventory.addWeapon(std::make_unique<Sword>());
     m_weaponInventory.addWeapon(std::make_unique<Shuriken>());
 	m_weaponInventory.addWeapon(std::make_unique<Dynamite>());
+	m_weaponInventory.addWeapon(std::make_unique<Boomerang>());
 }
 
 void Player::update(float deltaTime, sf::Vector2f mousePos, sf::View& cameraView)

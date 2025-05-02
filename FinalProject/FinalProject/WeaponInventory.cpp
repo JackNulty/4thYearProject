@@ -62,9 +62,15 @@ void WeaponInventory::render(sf::RenderWindow& window, const sf::View& cameraVie
 		window.draw(slot);
 
 		// Draw the weapon in the center of the slot if available
-		if (i < m_weapons.size()) {
-			sf::Sprite weaponSprite = m_weapons[i]->getSprite();
-			weaponSprite.setScale(3.f, 3.f);
+        if (i < m_weapons.size()) {  
+			sf::Sprite weaponSprite = m_weapons[i]->getSprite();  
+
+			// Check if the weapon is a Boomerang and scale less as sprite is a bit bigger
+			if (dynamic_cast<Boomerang*>(m_weapons[i].get())) {  
+				weaponSprite.setScale(2.f, 2.f);  
+			} else {  
+				weaponSprite.setScale(3.f, 3.f);  
+			}
 
 			// Center the weapon sprite within the slot
 			sf::FloatRect slotBounds = slot.getGlobalBounds();

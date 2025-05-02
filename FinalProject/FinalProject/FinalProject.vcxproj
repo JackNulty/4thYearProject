@@ -130,6 +130,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AmbushBehaviour.cpp" />
+    <ClCompile Include="Boomerang.cpp" />
     <ClCompile Include="CirclePointBehaviour.cpp" />
     <ClCompile Include="Dynamite.cpp" />
     <ClCompile Include="FleeBehaviour.cpp" />
@@ -165,6 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AmbushBehaviour.h" />
+    <ClInclude Include="Boomerang.h" />
     <ClInclude Include="CirclePointBehaviour.h" />
     <ClInclude Include="Dynamite.h" />
     <ClInclude Include="FleeBehaviour.h" />

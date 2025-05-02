@@ -92,6 +92,7 @@ void Game::fixedUpdate(float deltaTime)
     handleSwordCollisions();
     handleShurikenCollisions();
 	handleDynamiteCollisions();
+	handleBoomerangCollisions();
     playerCollision();
     if (m_horde.m_enemies.empty())
     {
@@ -507,6 +508,43 @@ void Game::handleDynamiteCollisions()
 				"grunt_hit", 10, (*enemy)->getPos());
 			system->configure(200.f, 0.4f, 1.f, sf::Color::Red);
 			std::cout << "Added new particle system: grunt_hit\n";
+			auto leader = m_horde.getLeader().lock();
+			if ((*enemy)->isDead())
+			{
+				bool wasLeader = (leader && enemy->get() == leader.get());
+				enemy = m_horde.m_enemies.erase(enemy);
+				if (wasLeader) {
+					m_horde.setLeader();
+				}
+			}
+			else
+			{
+				enemy++;
+			}
+		}
+		else
+		{
+			enemy++;
+		}
+	}
+}
+
+void Game::handleBoomerangCollisions()
+{
+	//use dynamic cast to get the selected weapon to get its unique type
+	auto* selectedWeapon = m_player.m_weaponInventory.getSelectedWeapon();
+	Boomerang* boomerang = dynamic_cast<Boomerang*>(selectedWeapon);
+	if (!boomerang)
+	{
+		//std::cout << "No boomerang equipped skipping boomerang collision checks.\n";
+		return;
+	}
+	for (auto enemy = m_horde.m_enemies.begin(); enemy != m_horde.m_enemies.end();)
+	{
+		if (boomerang->getBounds().intersects((*enemy)->getBounds()) && boomerang->getAttackFlag())
+		{
+			std::cout << "Grunt hit" << std::endl;
+			(*enemy)->dealDamage();
 			auto leader = m_horde.getLeader().lock();
 			if ((*enemy)->isDead())
 			{

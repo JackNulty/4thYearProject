@@ -1,6 +1,7 @@
 #pragma once
 #include "globals.h"
 #include "Weapon.h"
+#include "Boomerang.h"
 
 class WeaponInventory {
 public:
