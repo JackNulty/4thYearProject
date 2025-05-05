@@ -21,6 +21,11 @@ Horde::Horde(int maxEnemies, sf::Vector2f centreHorde, HordeFormation startForma
 		m_wallFormation = true;
 		m_wallState = WallState::MovingToWall;
 	}
+	if (startFormation == HordeFormation::Claw)
+	{
+		m_clawFormation = true;
+		m_clawState = ClawState::MovingToClaw;
+	}
 	positions = generateFormation(maxEnemies, centreHorde, enemySpacing);
     std::vector<int> types = enemyTypes(maxEnemies);
     for (size_t i = 0; i < positions.size(); ++i)
@@ -129,6 +134,32 @@ std::vector<sf::Vector2f> Horde::generateFormation(int maxEnemies, sf::Vector2f 
 			sf::Vector2f pos(x, y);
 			positions.emplace_back(pos);
 			m_wallTargets.push_back(pos);
+		}
+	}
+	if (m_currentFormation == HordeFormation::Claw)
+	{
+		int halfCount = maxEnemies / 2;
+		float halfRadius = 250.0f;
+		float spacing = PI / (halfCount + 1);
+
+		//left side of claw
+		for (int i = 0; i < halfCount; ++i)
+		{
+			float angle = PI + spacing * (i + 1);
+			float x = centreHorde.x + std::cos(angle) * halfRadius;
+			float y = centreHorde.y + std::sin(angle) * halfRadius;
+			positions.emplace_back(x, y);
+			m_clawTargets.push_back(sf::Vector2f(x, y));
+		}
+
+		//right side of claw
+		for (int i = 0; i < halfCount; ++i)
+		{
+			float angle = -spacing * (i + 1);
+			float x = centreHorde.x + std::cos(angle) * halfRadius;
+			float y = centreHorde.y + std::sin(angle) * halfRadius;
+			positions.emplace_back(x, y);
+			m_clawTargets.push_back(sf::Vector2f(x, y));
 		}
 	}
 
@@ -309,6 +340,54 @@ void Horde::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::View& camer
 				if (behaviour)
 				{
 					behaviour->setTarget(m_wallTargets[i]);
+				}
+			}
+		}
+	}
+	if (m_clawFormation)
+	{
+		updateClawFormation(playerPos, deltaTime);
+		if (!m_clawFormation)
+		{
+			return;
+		}
+		if (m_clawState == ClawState::MovingToClaw)
+		{
+			bool allInPlace = true;
+			for (int i = 0; i < m_enemies.size(); i++)
+			{
+				auto* behaviour = dynamic_cast<CirclePointBehaviour*>(m_enemies[i]->getBehaviour());
+				if (!behaviour)
+				{
+					auto newBehaviour = std::make_unique<CirclePointBehaviour>(m_clawTargets[i]);
+					m_enemies[i]->setBehaviour(std::move(newBehaviour));
+				}
+				else {
+					behaviour->setTarget(m_clawTargets[i]);
+				}
+				float distance = std::hypot(
+					m_clawTargets[i].x - m_enemies[i]->getPos().x,
+					m_clawTargets[i].y - m_enemies[i]->getPos().y
+				);
+				if (distance > 80.0f)
+				{
+					allInPlace = false;
+				}
+			}
+			if (allInPlace)
+			{
+				std::cout << "Horde in place" << std::endl;
+				m_clawState = ClawState::EngagingClaw;
+			}
+		}
+		else if (m_clawState == ClawState::EngagingClaw && m_clawTargets.size() == m_enemies.size())
+		{
+			for (int i = 0; i < m_enemies.size(); i++)
+			{
+				auto* behaviour = dynamic_cast<CirclePointBehaviour*>(m_enemies[i]->getBehaviour());
+				if (behaviour)
+				{
+					behaviour->setTarget(m_clawTargets[i]);
 				}
 			}
 		}
@@ -602,6 +681,92 @@ void Horde::updateWallFormation(sf::Vector2f playerPos, float deltaTime)
 				}
 				break;
 			}
+		}
+	}
+}
+
+void Horde::updateClawFormation(sf::Vector2f playerPos, float deltaTime)
+{
+	if (m_clawState == ClawState::MovingToClaw)
+	{
+		m_clawTargets.clear();
+		int halfCount = m_enemies.size() / 2;
+		float halfRadius = 250.0f;
+		float spacing = PI / (halfCount + 1);
+
+		//left side of claw
+		for (int i = 0; i < halfCount; ++i)
+		{
+			float angle = PI + spacing * (i + 1);
+			float x = playerPos.x + std::cos(angle) * halfRadius;
+			float y = playerPos.y + std::sin(angle) * halfRadius;
+			m_clawTargets.push_back(sf::Vector2f(x, y));
+		}
+
+		//right side of claw
+		for (int i = 0; i < halfCount; ++i)
+		{
+			float angle = -spacing * (i + 1);
+			float x = playerPos.x + std::cos(angle) * halfRadius;
+			float y = playerPos.y + std::sin(angle) * halfRadius;
+			m_clawTargets.push_back(sf::Vector2f(x, y));
+		}
+	}
+	else if (m_clawState == ClawState::EngagingClaw)
+	{
+		std::cout << "Horde is engaging claw" << std::endl;
+		float clawSpeed = 30.0f;
+		for (int i = 0; i < m_clawTargets.size(); ++i)
+		{
+			sf::Vector2f& target = m_clawTargets[i];
+			sf::Vector2f toPlayer = playerPos - target;
+			float distance = std::sqrt(toPlayer.x * toPlayer.x + toPlayer.y * toPlayer.y);
+			if (distance > 5.f)
+			{
+				toPlayer /= distance;
+				target += toPlayer * clawSpeed * deltaTime;
+			}
+		}
+
+		// Check if player moved too far away from the closest claw target
+		float minDistance = std::numeric_limits<float>::max();
+		for (const auto& target : m_clawTargets)
+		{
+			sf::Vector2f toPlayer = playerPos - target;
+			float distance = std::sqrt(toPlayer.x * toPlayer.x + toPlayer.y * toPlayer.y);
+			if (distance < minDistance)
+			{
+				minDistance = distance;
+			}
+		}
+
+		if (minDistance > 400.f)
+		{
+			std::cout << "Player moved too far from claw\n";
+
+			std::shared_ptr<Enemy> leader = m_leader.lock();
+
+			for (auto& enemy : m_enemies)
+			{
+				if (enemy->getType() == EnemyType::Thief)
+				{
+					enemy->setBehaviour(std::make_unique<AmbushBehaviour>());
+				}
+				else
+				{
+					if (enemy == leader)
+					{
+						enemy->setBehaviour(std::make_unique<SeekBehaviour>());
+					}
+					else
+					{
+						enemy->setBehaviour(std::make_unique<FollowLeaderBehaviour>(m_leader));
+					}
+				}
+			}
+			m_clawFormation = false;
+			m_clawState = ClawState::MovingToClaw;
+			m_clawTargets.clear();
 		}
 	}
 }

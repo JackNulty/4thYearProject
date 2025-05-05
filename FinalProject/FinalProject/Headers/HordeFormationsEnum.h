@@ -5,5 +5,6 @@ enum class HordeFormation
 	Circle,
 	Grid,
 	Cluster,
-	Wall
+	Wall,
+	Claw
 };

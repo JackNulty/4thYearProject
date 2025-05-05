@@ -26,6 +26,10 @@ enum class WallState {
 	MovingToWall, EngagingWall
 };
 
+enum class ClawState {
+	MovingToClaw, EngagingClaw
+};
+
 class Horde  
 {  
 public:  
@@ -53,15 +57,19 @@ private:
    void updateCircleFormation(sf::Vector2f playerPos, float deltaTime);  
    void updateConvergingFormation(sf::Vector2f playerPos, float deltaTime);
    void updateWallFormation(sf::Vector2f playerPos, float deltaTime);
+   void updateClawFormation(sf::Vector2f playerPos, float deltaTime);
    std::vector<sf::Vector2f> m_circleTargets;  
    std::vector<sf::Vector2f> m_clusterTargets;
    std::vector<sf::Vector2f> m_wallTargets;
+   std::vector<sf::Vector2f> m_clawTargets;
    float m_currentRadius;  
    float m_targetRadius;  
    bool m_circleFormation = false; 
    bool m_converging = false;
    bool m_wallFormation = false;
+   bool m_clawFormation = false;
    CircleState m_circleState = CircleState::Idle;
    ConvergingState m_convergingState = ConvergingState::MovingToClusters;
    WallState m_wallState = WallState::MovingToWall;
+   ClawState m_clawState = ClawState::MovingToClaw;
 };
