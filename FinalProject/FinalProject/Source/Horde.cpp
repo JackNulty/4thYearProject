@@ -715,7 +715,7 @@ void Horde::updateClawFormation(sf::Vector2f playerPos, float deltaTime)
 	else if (m_clawState == ClawState::EngagingClaw)
 	{
 		std::cout << "Horde is engaging claw" << std::endl;
-		float clawSpeed = 30.0f;
+		float clawSpeed = 50.0f;
 		for (int i = 0; i < m_clawTargets.size(); ++i)
 		{
 			sf::Vector2f& target = m_clawTargets[i];
@@ -740,7 +740,7 @@ void Horde::updateClawFormation(sf::Vector2f playerPos, float deltaTime)
 			}
 		}
 
-		if (minDistance > 400.f)
+		if (minDistance > 300.f)
 		{
 			std::cout << "Player moved too far from claw\n";
 
