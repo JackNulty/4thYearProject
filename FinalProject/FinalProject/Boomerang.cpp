@@ -14,6 +14,10 @@ Boomerang::Boomerang()
 	m_icon.setTexture(boomerangTexture);
 	m_icon.setTextureRect(sf::IntRect(0, 0, 32, 32));
 	m_icon.setScale(0.5, 0.5);
+
+	// trail particles
+	trailParticles = ResourceManager::getParticleManager().addParticleSystem("boomerang_trail", 50, m_boomerangSprite.getPosition());
+	trailParticles->configure(50.f, 0.3f, 2.f, sf::Color(255, 255, 150, 180));
 }
 
 void Boomerang::render(sf::RenderWindow& window)
@@ -72,6 +76,19 @@ void Boomerang::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::Vector2
 
 	m_boomerangSprite.setPosition(position);
 	m_boomerangSprite.rotate(rotationSpeed * deltaTime);
+
+	if (isFlying)
+	{
+		if (!trailParticles || trailParticles->isEmpty()) 
+		{
+			trailParticles = ResourceManager::getParticleManager().addParticleSystem("boomerang_trail", 10, m_boomerangSprite.getPosition());
+			trailParticles->configure(50.f, 0.3f, 2.f, sf::Color(255, 255, 150, 180));
+		}
+		else
+		{
+			trailParticles->setEmitter(m_boomerangSprite.getPosition());
+		}
+	}
 }
 
 void Boomerang::fire(sf::Vector2f playerPos, sf::Vector2f mousePos)

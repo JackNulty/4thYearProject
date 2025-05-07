@@ -25,7 +25,6 @@ void ParticleManager::update(float deltaTime)
 {
     //std::cout << "Updating particle systems...\n";
     //std::cout << "Total systems: " << m_particleSystems.size() << "\n";
-
     for (auto iterator = m_particleSystems.begin(); iterator != m_particleSystems.end();)
     {
         //std::cout << "Updating system: " << iterator->first << "\n";
