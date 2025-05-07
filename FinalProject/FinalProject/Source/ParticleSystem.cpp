@@ -81,70 +81,73 @@ int ParticleSystem::getParticleCount() const
 void ParticleSystem::emitParticles()
 {
 	if (!m_active) return;
-    for (size_t i = 0; i < m_maxParticles; ++i)
-    {
-        Particle particle(m_particleRadius, m_particleColour);
-        particle.shape.setPosition(m_emitter);
-
-		float angle; //= (std::rand() % 360) * PI / 180.0f;
-		if (m_id == "grunt_hit")
-		{ 
-			angle = (std::rand() % 60 + 210) * PI / 180.0f;
-			particle.velocity.x *= (std::rand() % 2 + 0.5f); // Varying spread
-			particle.velocity.y *= (std::rand() % 2 + 0.5f);
-			particle.velocity = { m_particleSpeed * std::cos(angle), m_particleSpeed * std::sin(angle) };
-		}
-		else if (m_id == "arrow_trail_")
+	if (m_particles.empty())
+	{
+		for (int i = 0; i < m_maxParticles; i++)
 		{
-			angle = 270 * PI / 180.0f;
+			Particle particle(m_particleRadius, m_particleColour);
+			particle.shape.setPosition(m_emitter);
 
-			float angleJitter = ((std::rand() % 1001) - 500) / 1000.f * (10.f * PI / 180.f); 
+			float angle; //= (std::rand() % 360) * PI / 180.0f;
+			if (m_id == "grunt_hit")
+			{
+				angle = (std::rand() % 60 + 210) * PI / 180.0f;
+				particle.velocity.x *= (std::rand() % 2 + 0.5f); // Varying spread
+				particle.velocity.y *= (std::rand() % 2 + 0.5f);
+				particle.velocity = { m_particleSpeed * std::cos(angle), m_particleSpeed * std::sin(angle) };
+			}
+			else if (m_id == "arrow_trail_")
+			{
+				angle = 270 * PI / 180.0f;
 
-			// variation in speed
-			float speedJitter = 0.8f + static_cast<float>(std::rand() % 40) / 100.f; 
+				float angleJitter = ((std::rand() % 1001) - 500) / 1000.f * (10.f * PI / 180.f);
 
-			particle.velocity = {
-				m_particleSpeed * speedJitter * std::cos(angle),
-				m_particleSpeed * speedJitter * std::sin(angle)
-			};
+				// variation in speed
+				float speedJitter = 0.8f + static_cast<float>(std::rand() % 40) / 100.f;
 
-			particle.shape.setRadius(m_particleRadius * (0.9f + (std::rand() % 20) / 100.f));
+				particle.velocity = {
+					m_particleSpeed * speedJitter * std::cos(angle),
+					m_particleSpeed * speedJitter * std::sin(angle)
+				};
+
+				particle.shape.setRadius(m_particleRadius * (0.9f + (std::rand() % 20) / 100.f));
+			}
+			else if (m_id == "dynamite_explosion")
+			{
+				angle = (std::rand() % 360) * PI / 180.0f;
+
+				// random jitter
+				float angleJitter = ((std::rand() % 2001) - 1000) / 1000.f * (10.f * PI / 180.f);
+				angle += angleJitter;
+
+				//variable speed
+				float speedJitter = static_cast<float>((std::rand() % 70 + 60)) / 100.f;
+
+				particle.velocity = {
+					m_particleSpeed * speedJitter * std::cos(angle),
+					m_particleSpeed * speedJitter * std::sin(angle)
+				};
+				particle.shape.setRadius(m_particleRadius * (0.7f + (std::rand() % 60) / 100.f));
+			}
+			else if (m_id == "boomerang_trail")
+			{
+				float angle = (std::rand() % 360) * PI / 180.0f;
+				float speedJitter = static_cast<float>((std::rand() % 100 + 50)) / 100.f;
+				particle.velocity = {
+					m_particleSpeed * speedJitter * std::cos(angle),
+					m_particleSpeed * speedJitter * std::sin(angle)
+				};
+
+				particle.shape.setRadius(m_particleRadius * (0.8f + (std::rand() % 40) / 100.f));
+			}
+			else {
+				angle = (std::rand() % 360) * PI / 180.0f;
+				particle.velocity = { m_particleSpeed * std::cos(angle), m_particleSpeed * std::sin(angle) };
+			}
+
+			particle.lifetime = m_particleLifetime;
+
+			m_particles.push_back(particle);
 		}
-		else if (m_id == "dynamite_explosion")
-		{
-			angle = (std::rand() % 360) * PI / 180.0f;
-
-			// random jitter
-			float angleJitter = ((std::rand() % 2001) - 1000) / 1000.f * (10.f * PI / 180.f);
-			angle += angleJitter;
-
-			//variable speed
-			float speedJitter = static_cast<float>((std::rand() % 70 + 60)) / 100.f;
-
-			particle.velocity = {
-				m_particleSpeed * speedJitter * std::cos(angle),
-				m_particleSpeed * speedJitter * std::sin(angle)
-			};
-			particle.shape.setRadius(m_particleRadius * (0.7f + (std::rand() % 60) / 100.f));
-		}
-		else if (m_id == "boomerang_trail")
-		{
-			float angle = (std::rand() % 360) * PI / 180.0f;
-			float speedJitter = static_cast<float>((std::rand() % 100 + 50)) / 100.f;
-			particle.velocity = {
-				m_particleSpeed * speedJitter * std::cos(angle),
-				m_particleSpeed * speedJitter * std::sin(angle)
-			};
-
-			particle.shape.setRadius(m_particleRadius * (0.8f + (std::rand() % 40) / 100.f));
-		}
-		else {
-			angle = (std::rand() % 360) * PI / 180.0f;
-			particle.velocity = { m_particleSpeed * std::cos(angle), m_particleSpeed * std::sin(angle) };
-		}
-
-        particle.lifetime = m_particleLifetime;
-
-        m_particles.push_back(particle);
-    }
+	}
 }
