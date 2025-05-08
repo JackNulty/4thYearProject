@@ -18,6 +18,7 @@ Boomerang::Boomerang()
 	// trail particles
 	trailParticles = ResourceManager::getParticleManager().addParticleSystem("boomerang_trail", 50, m_boomerangSprite.getPosition());
 	trailParticles->configure(50.f, 0.3f, 2.f, sf::Color(255, 255, 150, 180));
+	trailParticles->setEmissionMode(EmmissionMode::Constant);
 }
 
 void Boomerang::render(sf::RenderWindow& window)
@@ -83,6 +84,7 @@ void Boomerang::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::Vector2
 		{
 			trailParticles = ResourceManager::getParticleManager().addParticleSystem("boomerang_trail", 10, m_boomerangSprite.getPosition());
 			trailParticles->configure(50.f, 0.3f, 2.f, sf::Color(255, 255, 150, 180));
+			trailParticles->setEmissionMode(EmmissionMode::Constant);
 		}
 		else
 		{

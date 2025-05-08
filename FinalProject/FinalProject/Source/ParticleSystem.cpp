@@ -81,7 +81,7 @@ int ParticleSystem::getParticleCount() const
 void ParticleSystem::emitParticles()
 {
 	if (!m_active) return;
-	if (m_particles.empty())
+	if (m_emissionMode == EmmissionMode::Constant || m_emissionMode == EmmissionMode::Single && m_particles.empty())
 	{
 		for (int i = 0; i < m_maxParticles; i++)
 		{

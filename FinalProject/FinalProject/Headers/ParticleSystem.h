@@ -11,6 +11,12 @@ struct Particle
 	Particle(float radius, const sf::Color& colour);
 };
 
+enum class EmmissionMode
+{
+	Constant,
+	Single
+};
+
 class ParticleSystem
 {
 public:
@@ -21,6 +27,7 @@ public:
 	void configure(float speed, float lifetime, float radius, const sf::Color& colour);
 	bool isEmpty() const;
 	int getParticleCount() const;
+	void setEmissionMode(EmmissionMode mode) { m_emissionMode = mode; }
 
 	void deactivate() { m_active = false; }
 	bool isActive() const { return m_active; }
@@ -39,4 +46,5 @@ private:
 	sf::Color m_particleColour = sf::Color::White;
 
 	bool m_active = true;
+	EmmissionMode m_emissionMode = EmmissionMode::Single;
 };
