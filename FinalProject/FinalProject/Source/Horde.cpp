@@ -690,12 +690,13 @@ void Horde::updateClawFormation(sf::Vector2f playerPos, float deltaTime)
 	if (m_clawState == ClawState::MovingToClaw)
 	{
 		m_clawTargets.clear();
-		int halfCount = m_enemies.size() / 2;
+		int leftCount = m_enemies.size() / 2;
+		int rightCount = m_enemies.size() - leftCount;
 		float halfRadius = 250.0f;
-		float spacing = PI / (halfCount + 1);
+		float spacing = PI / (leftCount + 1);
 
 		//left side of claw
-		for (int i = 0; i < halfCount; ++i)
+		for (int i = 0; i < leftCount; i++)
 		{
 			float angle = PI + spacing * (i + 1);
 			float x = playerPos.x + std::cos(angle) * halfRadius;
@@ -704,7 +705,7 @@ void Horde::updateClawFormation(sf::Vector2f playerPos, float deltaTime)
 		}
 
 		//right side of claw
-		for (int i = 0; i < halfCount; ++i)
+		for (int i = 0; i < rightCount; i++)
 		{
 			float angle = -spacing * (i + 1);
 			float x = playerPos.x + std::cos(angle) * halfRadius;
@@ -716,7 +717,7 @@ void Horde::updateClawFormation(sf::Vector2f playerPos, float deltaTime)
 	{
 		std::cout << "Horde is engaging claw" << std::endl;
 		float clawSpeed = 50.0f;
-		for (int i = 0; i < m_clawTargets.size(); ++i)
+		for (int i = 0; i < m_clawTargets.size(); i++)
 		{
 			sf::Vector2f& target = m_clawTargets[i];
 			sf::Vector2f toPlayer = playerPos - target;
