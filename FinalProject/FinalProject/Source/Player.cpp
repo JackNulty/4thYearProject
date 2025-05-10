@@ -28,11 +28,7 @@ Player::Player()
     m_livesSpriteEmpty.setTextureRect(sf::IntRect(32, 0, 16, 16));
     m_livesSpriteEmpty.setPosition(70, 10);
     m_livesSpriteEmpty.setScale(2, 2);
-    m_weaponInventory.addWeapon(std::make_unique<Bow>());
-    m_weaponInventory.addWeapon(std::make_unique<Sword>());
-    m_weaponInventory.addWeapon(std::make_unique<Shuriken>());
-	m_weaponInventory.addWeapon(std::make_unique<Dynamite>());
-	m_weaponInventory.addWeapon(std::make_unique<Boomerang>());
+	initWeaponInventory();
 }
 
 void Player::update(float deltaTime, sf::Vector2f mousePos, sf::View& cameraView)
@@ -365,5 +361,14 @@ void Player::updateHitEffects()
 			it++;
 		}
 	}
+}
+
+void Player::initWeaponInventory()
+{
+    m_weaponInventory.addWeapon(std::make_unique<Bow>());
+    m_weaponInventory.addWeapon(std::make_unique<Sword>());
+    m_weaponInventory.addWeapon(std::make_unique<Shuriken>());
+    m_weaponInventory.addWeapon(std::make_unique<Dynamite>());
+    m_weaponInventory.addWeapon(std::make_unique<Boomerang>());
 }
 
