@@ -20,8 +20,8 @@
 #include <cmath>
 
 // global access to window size
-const int WINDOW_HEIGHT = 800;
-const int WINDOW_WIDTH = 1200;
+const int WINDOW_HEIGHT = 720;
+const int WINDOW_WIDTH = 1280;
 
 const int MAP_WIDTH = 800;
 const int MAP_HEIGHT = 800;

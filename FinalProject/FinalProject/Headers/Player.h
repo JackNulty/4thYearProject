@@ -42,6 +42,7 @@ private:
 	void displayLives(); // func for displaying player lives
 	void handleWeaponSwitch(); // func for handling weapon switch
 	void updateHitEffects(); // func for updating hit effects
+	void initWeaponInventory(); // func for initialising weapon inventory
 
 	//private vars
 	sf::Texture m_playerTexture; // player texture

@@ -87,7 +87,7 @@ void Bow::fixedUpdate(float deltaTime, sf::Vector2f playerPos, sf::Vector2f mous
 			arrow = m_arrowVector.erase(arrow);
 		}
 		else {
-			++arrow;
+			arrow++;
 		}
 	}
 }
